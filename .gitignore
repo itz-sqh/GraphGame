@@ -1,0 +1,60 @@
+# Игнорируем пользовательские настройки IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Кэш CMake и временные файлы сборки
+cmake-build-*/
+build/
+out/
+x64/
+x86/
+Win32/
+Debug/
+Release/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+compile_commands.json
+*.cmake
+
+### Системные файлы ###
+# Резервные копии и временные файлы
+*~
+*.bak
+*.swp
+*.swo
+*.orig
+
+# Логи и дампы
+*.log
+*.dmp
+*.stackdump
+
+### Библиотеки и зависимости ###
+# Игнорируем скомпилированные библиотеки
+*.a
+*.so
+*.dylib
+*.lib
+*.dll
+
+# Игнорируем исполняемые файлы
+*.exe
+*.out
+*.app
+
+### Дополнительно ###
+# Файлы пакетов и зависимостей (Conan, vcpkg)
+conanbuildinfo.*
+conaninfo.txt
+.vcpkg-root
+
+# Файлы отладки (если используются)
+*.pdb
+*.idb
+*.ilk
