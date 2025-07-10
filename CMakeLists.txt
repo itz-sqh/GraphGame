@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 3.29)
 project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
-add_executable(GraphGame src/main.cpp)
+add_executable(GraphGame src/main.cpp
+        src/ExpressionParser.cpp
+        src/ExpressionParser.h
+        src/Expression.cpp
+        src/Expression.h
+        src/Token.cpp
+        src/Token.h
+        src/constants.h)
 
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
