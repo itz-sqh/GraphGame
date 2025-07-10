@@ -12,7 +12,7 @@ int main()
                 window.close();
             }
         }
-        window.clear();
+        window.clear(sf::Color::Cyan);
         window.display();
     }
 
