@@ -1,21 +1,48 @@
 #pragma once
 #include<string>
 #include<map>
+#include<functional>
+#include<cmath>
 
 
-constexpr double PI = 3.141592653589793;
-constexpr double E 	= 2.71828182845903;
 
-// function --> argc
-const std::map<std::string,int> FUNCTIONS = {
-    {"sin",1},{"cos",1},{"tan",1},{"exp",1},{"log",1},{"sqrt",1},{"max",2},{"min",2}
+struct BinaryOperator {
+    int precedence;
+    bool associative;
+    std::function<double(double,double)> operation;
 };
-
-const std::map<std::string, int> OPERATOR_PRECEDENCE = {
-  {"u-",5},{"u+",5},{"^",4},{"*",3},{"/",3},{"+",2},{"-",2}
+struct UnaryOperator {
+    int precedence;
+    std::function<double(double)> operation;
 };
-//u- = unary -
-
-const std::map<std::string,bool> OPERATOR_IS_ASSOCIATIVE = {
-        {"^",false},{"*",true},{"/",true},{"+",true},{"-",true}
+struct Function {
+    int argCount;
+    std::function<double(const std::vector<double>&)> operation;
 };
+namespace Constants {
+    constexpr double PI = 3.141592653589793;
+    constexpr double E 	= 2.71828182845903;
+    const std::map<std::string, BinaryOperator> BINARY_OPERATORS = {
+        {"+", {2, true, [](double a, double b) { return a + b; }}},
+        {"-", {2, true, [](double a, double b) { return a - b; }}},
+        {"*", {3, true, [](double a, double b) { return a * b; }}},
+        {"/", {3, true, [](double a, double b) { return a / b; }}},
+        {"^", {4, false, [](double a, double b) { return std::pow(a, b); }}}
+    };
+    const std::map<std::string, UnaryOperator> UNARY_OPERATORS = {
+        {"u+", {5,[](double a) { return a; }}},
+        {"u-", {5,[](double a) { return -a; }}}
+    };
+    const std::map<std::string, Function> FUNCTIONS = {
+        {"sin", {1, [](const std::vector<double>& args) { return std::sin(args[0]); }}},
+        {"cos", {1, [](const std::vector<double>& args) { return std::cos(args[0]); }}},
+        {"tan", {1, [](const std::vector<double>& args) { return std::tan(args[0]); }}},
+        {"exp", {1, [](const std::vector<double>& args) { return std::exp(args[0]); }}},
+        {"log", {1, [](const std::vector<double>& args) { return std::log(args[0]); }}},
+        {"sqrt", {1, [](const std::vector<double>& args) { return std::sqrt(args[0]); }}},
+        {"max", {2, [](const std::vector<double>& args) { return std::max(args[0], args[1]); }}},
+        {"min", {2, [](const std::vector<double>& args) { return std::min(args[0], args[1]); }}}
+    };
+    //namespace Constants
+}
+

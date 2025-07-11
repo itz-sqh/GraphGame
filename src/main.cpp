@@ -4,7 +4,10 @@
 int main()
 {
 
-    Expression expression = ExpressionParser::parse("max(-x+5,x)*sin(x)-min(+5+x,x)*cos(x)");
-    std::cout << expression.toString();
+    Expression expression = ExpressionParser::parse("max(1,x)*(x-3)/(x-3)");
+
+    std::cout << Expression::isValid(expression) << std::endl;
+
+    std::cout << expression.evaluate(3).value() << std::endl;
 
 }

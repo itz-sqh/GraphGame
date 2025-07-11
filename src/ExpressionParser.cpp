@@ -12,6 +12,28 @@ Expression ExpressionParser::parse(const std::string &infix) {
     return shuntingYard(tokens);
 }
 
+int ExpressionParser::getPrecedence(const Token& token) {
+    switch (token.type) {
+        case TokenType::UnaryOperator: {
+            auto it = Constants::UNARY_OPERATORS.find(token.val);
+            if (it != Constants::UNARY_OPERATORS.end()) {
+                return it->second.precedence;
+            }
+            break;
+        }
+        case TokenType::BinaryOperator: {
+            auto it = Constants::BINARY_OPERATORS.find(token.val);
+            if (it != Constants::BINARY_OPERATORS.end()) {
+                return it->second.precedence;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    throw std::runtime_error("Invalid operator");
+}
+
 std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
     std::vector<Token> tokens;
     int i = 0;
@@ -25,7 +47,7 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             while (i < infix.size() && std::isalnum(infix[i])) i++;
             std::string s = infix.substr(start, i - start);
 
-            if (FUNCTIONS.contains(s)) {
+            if (Constants::FUNCTIONS.contains(s)) {
                 tokens.emplace_back(TokenType::Function,s);
             } else {
                 tokens.emplace_back(TokenType::Variable,s);
@@ -59,13 +81,13 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             i++;
             continue;
         }
-        if (infix[i] == ',') {
-            tokens.emplace_back(TokenType::Comma,",");
+        if (Constants::BINARY_OPERATORS.contains(std::string(1, infix[i]))) {
+            tokens.emplace_back(TokenType::BinaryOperator, std::string(1, infix[i]));
             i++;
             continue;
         }
-        if (OPERATOR_IS_ASSOCIATIVE.contains(std::string(1,infix[i]))) {
-            tokens.emplace_back(TokenType::BinaryOperator,std::string(1,infix[i]));
+        if (infix[i] == ',') {
+            tokens.emplace_back(TokenType::Comma,",");
             i++;
             continue;
         }
@@ -89,9 +111,6 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
     Expression res;
     std::stack<Token> st;
 
-    auto getPrecedence = [](const Token& token) {
-        return OPERATOR_PRECEDENCE.at(token.val);
-    };
 
     for (const Token& token : tokens) {
         switch (token.type) {
@@ -106,7 +125,7 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
                        st.top().type == TokenType::UnaryOperator) &&
                       (getPrecedence(st.top()) > getPrecedence(token) ||
                       (getPrecedence(st.top()) == getPrecedence(token) &&
-                       OPERATOR_IS_ASSOCIATIVE.at(token.val)))) {
+                       Constants::BINARY_OPERATORS.at(token.val).associative))) {
                     res.add(st.top());
                     st.pop();
                 }
