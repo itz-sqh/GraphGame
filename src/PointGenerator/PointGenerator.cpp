@@ -39,14 +39,14 @@ sf::Vector2<double> PointGenerator::GetY(double x) {
     return {x, y.value()};
 }
 
-std::vector<sf::Vector2<double>> PointGenerator::GetY(std::vector<double> vecX) {
+std::vector<sf::Vector2<double>> PointGenerator::GetY(const std::vector<double>& vecX) {
 
     std::vector<sf::Vector2<double>> result;
     for (auto x: vecX) {
         std::optional<double> y = this->expression.evaluate(x);
 
         if (!y.has_value())
-            throw std::runtime_error("he value at the point is indeterminate");
+            throw std::runtime_error("The value at the point is indeterminate");
 
         result.emplace_back(x, y.value());
     }
