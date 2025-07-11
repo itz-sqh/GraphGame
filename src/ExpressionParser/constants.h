@@ -23,15 +23,15 @@ namespace Constants {
     constexpr double PI = 3.141592653589793;
     constexpr double E 	= 2.71828182845903;
     const std::map<std::string, BinaryOperator> BINARY_OPERATORS = {
-        {"+", {2, true, [](double a, double b) { return a + b; }}},
-        {"-", {2, true, [](double a, double b) { return a - b; }}},
-        {"*", {3, true, [](double a, double b) { return a * b; }}},
-        {"/", {3, true, [](double a, double b) { return a / b; }}},
-        {"^", {4, false, [](double a, double b) { return std::pow(a, b); }}}
+        {"+", {2, true, [](const double a, const double b) { return a + b; }}},
+        {"-", {2, true, [](const double a, const double b) { return a - b; }}},
+        {"*", {3, true, [](const double a, const double b) { return a * b; }}},
+        {"/", {3, true, [](const double a, const double b) { return a / b; }}},
+        {"^", {4, false, [](const double a, const double b) { return std::pow(a, b); }}}
     };
     const std::map<std::string, UnaryOperator> UNARY_OPERATORS = {
-        {"u+", {5,[](double a) { return a; }}},
-        {"u-", {5,[](double a) { return -a; }}}
+        {"u+", {5,[](const double a) { return a; }}},
+        {"u-", {5,[](const double a) { return -a; }}}
     };
     const std::map<std::string, Function> FUNCTIONS = {
         {"sin", {1, [](const std::vector<double>& args) { return std::sin(args[0]); }}},
@@ -45,4 +45,3 @@ namespace Constants {
     };
     //namespace Constants
 }
-

@@ -1,11 +1,5 @@
 #include "ExpressionParser.h"
 
-#include <stdexcept>
-
-#include "constants.h"
-
-#include<stack>
-
 
 Expression ExpressionParser::parse(const std::string &infix) {
     std::vector<Token> tokens = tokenize(infix);
