@@ -14,7 +14,8 @@ Expression ExpressionParser::parse(const std::string &infix) {
 
 std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
     std::vector<Token> tokens;
-    for (int i = 0; i < infix.size();) {
+    int i = 0;
+    while (i < infix.size()) {
         if (std::isspace(infix[i])) {
             i++;
             continue;
@@ -42,13 +43,29 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
                 }
                 i++;
             }
-            std::string num = infix.substr(start, i - start);
-            if (num == ".") throw std::runtime_error("Expected a number, but found dot");
+            if (std::string num = infix.substr(start, i - start); num[0] == '.') throw std::runtime_error("Expected a number, but found dot");
             tokens.emplace_back(TokenType::Constant,infix.substr(start, i - start));
             continue;
         }
+        if (infix[i] == '+' || infix[i] == '-') {
+            bool isUnary = tokens.empty() || tokens.back().type == TokenType::BinaryOperator ||
+                tokens.back().type == TokenType::UnaryOperator ||
+                    tokens.back().type == TokenType::LeftParen ||
+                        tokens.back().type == TokenType::Comma;
+            if (isUnary)
+                tokens.emplace_back(TokenType::UnaryOperator,"u"+std::string(1,infix[i]));
+            else
+                tokens.emplace_back(TokenType::BinaryOperator,std::string(1,infix[i]));
+            i++;
+            continue;
+        }
+        if (infix[i] == ',') {
+            tokens.emplace_back(TokenType::Comma,",");
+            i++;
+            continue;
+        }
         if (OPERATOR_IS_ASSOCIATIVE.contains(std::string(1,infix[i]))) {
-            tokens.emplace_back(TokenType::Operator,std::string(1,infix[i]));
+            tokens.emplace_back(TokenType::BinaryOperator,std::string(1,infix[i]));
             i++;
             continue;
         }
@@ -71,29 +88,37 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
 Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
     Expression res;
     std::stack<Token> st;
+
+    auto getPrecedence = [](const Token& token) {
+        return OPERATOR_PRECEDENCE.at(token.val);
+    };
+
     for (const Token& token : tokens) {
         switch (token.type) {
             case TokenType::Constant:
             case TokenType::Variable:
                 res.add(token);
                 break;
-            case TokenType::Function:
-                st.push(token);
-                break;
-            case TokenType::Operator: {
-                while (!st.empty() && st.top().type == TokenType::Operator &&
-                       ((OPERATOR_PRECEDENCE.at(st.top().val) > OPERATOR_PRECEDENCE.at(token.val)) ||
-                        (OPERATOR_PRECEDENCE.at(st.top().val) == OPERATOR_PRECEDENCE.at(token.val) &&
-                         OPERATOR_IS_ASSOCIATIVE.at(token.val)))) {
+
+            case TokenType::BinaryOperator: {
+                while (!st.empty() &&
+                      (st.top().type == TokenType::BinaryOperator ||
+                       st.top().type == TokenType::UnaryOperator) &&
+                      (getPrecedence(st.top()) > getPrecedence(token) ||
+                      (getPrecedence(st.top()) == getPrecedence(token) &&
+                       OPERATOR_IS_ASSOCIATIVE.at(token.val)))) {
                     res.add(st.top());
                     st.pop();
-                         }
+                }
                 st.push(token);
                 break;
             }
+            case TokenType::Function:
+            case TokenType::UnaryOperator:
             case TokenType::LeftParen:
                 st.push(token);
                 break;
+
             case TokenType::RightParen:
                 while (!st.empty() && st.top().type != TokenType::LeftParen) {
                     res.add(st.top());
@@ -107,11 +132,20 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
                     st.pop();
                 }
                 break;
-            default:
+
+            case TokenType::Comma:
+                while (!st.empty() && st.top().type != TokenType::LeftParen) {
+                    res.add(st.top());
+                    st.pop();
+                }
+                if (st.empty()) throw std::runtime_error("Mismatched parentheses");
                 break;
 
+            default:
+                break;
         }
     }
+
     while (!st.empty()) {
         if (st.top().type == TokenType::LeftParen) {
             throw std::runtime_error("Mismatched parentheses");
@@ -122,4 +156,3 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
 
     return res;
 }
-

@@ -5,10 +5,12 @@
 enum class TokenType {
     Constant,
     Variable,
-    Operator,
+    BinaryOperator,
+    UnaryOperator,
     Function,
     LeftParen,
-    RightParen
+    RightParen,
+    Comma
 };
 class Token {
 public:
