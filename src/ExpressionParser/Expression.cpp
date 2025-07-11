@@ -1,6 +1,4 @@
 #include "Expression.h"
-#include"constants.h"
-#include<stack>
 
 void Expression::add(const Token& token) {
     tokens.push_back(token);
@@ -32,7 +30,7 @@ bool Expression::isValid(const Expression& expression) {
             case TokenType::Function: {
                 auto it = Constants::FUNCTIONS.find(token.val);
                 if (it == Constants::FUNCTIONS.end()) return false;
-                int argc = it->second.argCount;
+                const int argc = it->second.argCount;
                 if (size < argc) return false;
                 size = size - argc + 1;
                 break;
@@ -44,7 +42,7 @@ bool Expression::isValid(const Expression& expression) {
     return size == 1;
 }
 
-std::optional<double> Expression::evaluate(double x) const {
+std::optional<double> Expression::evaluate(const double x) const {
     if (!isValid(*this))
         return std::nullopt;
 
@@ -66,7 +64,7 @@ std::optional<double> Expression::evaluate(double x) const {
                     const auto& op = Constants::UNARY_OPERATORS.find(token.val);
                     if (op == Constants::UNARY_OPERATORS.end()) return std::nullopt;
 
-                    double operand = st.top();
+                    const double operand = st.top();
                     st.pop();
                     st.push(op->second.operation(operand));
                     break;
@@ -77,10 +75,12 @@ std::optional<double> Expression::evaluate(double x) const {
                     const auto& op = Constants::BINARY_OPERATORS.find(token.val);
                     if (op == Constants::BINARY_OPERATORS.end()) return std::nullopt;
 
-                    double b = st.top(); st.pop();
-                    double a = st.top(); st.pop();
+                    const double b = st.top(); st.pop();
+                    const double a = st.top(); st.pop();
 
-                    st.push(op->second.operation(a, b));
+                    const double res = op->second.operation(a,b);
+                    if (std::isinf(res)) return std::nullopt;
+                    st.push(res);
                     break;
                 }
 
@@ -95,7 +95,9 @@ std::optional<double> Expression::evaluate(double x) const {
                         st.pop();
                     }
 
-                    st.push(func->second.operation(args));
+                    const double res = func->second.operation(args);
+                    if (std::isinf(res)) return std::nullopt;
+                    st.push(res);
                     break;
                 }
 

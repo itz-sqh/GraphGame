@@ -3,13 +3,13 @@ project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
 add_executable(GraphGame src/main.cpp
-        src/ExpressionParser.cpp
-        src/ExpressionParser.h
-        src/Expression.cpp
-        src/Expression.h
-        src/Token.cpp
-        src/Token.h
-        src/constants.h)
+        src/ExpressionParser/ExpressionParser.cpp
+        src/ExpressionParser/ExpressionParser.h
+        src/ExpressionParser/Expression.cpp
+        src/ExpressionParser/Expression.h
+        src/ExpressionParser/Token.cpp
+        src/ExpressionParser/Token.h
+        src/ExpressionParser/constants.h)
 
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED

@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
-
 #include "Expression.h"
 #include "Token.h"
+#include <stdexcept>
+#include "constants.h"
+#include<stack>
 
 class ExpressionParser {
 public:
