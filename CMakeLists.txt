@@ -9,7 +9,11 @@ add_executable(GraphGame src/main.cpp
         src/ExpressionParser/Expression.h
         src/ExpressionParser/Token.cpp
         src/ExpressionParser/Token.h
-        src/ExpressionParser/constants.h)
+        src/ExpressionParser/constants.h
+        src/GameConstants.h
+        src/GameConstants.h
+        src/PointGenerator/PointGenerator.cpp
+        src/PointGenerator/PointGenerator.h)
 
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
