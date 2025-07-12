@@ -26,6 +26,7 @@ add_executable(GraphGame src/main.cpp
         src/rng.h
 )
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/ARIAL.TTF  DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
         PATHS

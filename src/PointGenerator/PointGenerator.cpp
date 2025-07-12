@@ -9,15 +9,15 @@ PointGenerator::PointGenerator(const Expression &expression) {
 }
 
 
-std::vector<sf::Vector2<double>>
-PointGenerator::getSegmentPoints(double leftX, double rightX) {
+std::vector<sf::Vector2f>
+PointGenerator::getSegmentPoints(float leftX, float rightX) {
     if (leftX >= rightX)
         throw std::runtime_error("Method GetSegmentPoints requires leftX<Right");
 
-    std::vector<sf::Vector2<double>> result;
+    std::vector<sf::Vector2f> result;
 
-    double currentX = leftX;
-    std::optional<double> currentY;
+    float currentX = leftX;
+    std::optional<float> currentY;
     while (currentX < rightX) {
         currentY = this->expression.evaluate(currentX);
 
@@ -35,8 +35,8 @@ PointGenerator::getSegmentPoints(double leftX, double rightX) {
     return result;
 }
 
-sf::Vector2<double> PointGenerator::getY(double x) {
-    std::optional<double> y = this->expression.evaluate(x);
+sf::Vector2f PointGenerator::getY(float x) {
+    std::optional<float> y = this->expression.evaluate(x);
 
     if (!y.has_value())
         throw std::runtime_error("he value at the point is indeterminate");
@@ -44,11 +44,11 @@ sf::Vector2<double> PointGenerator::getY(double x) {
     return {x, y.value()};
 }
 
-std::vector<sf::Vector2<double>> PointGenerator::getY(const std::vector<double>& vecX) {
+std::vector<sf::Vector2f> PointGenerator::getY(const std::vector<float>& vecX) {
 
-    std::vector<sf::Vector2<double>> result;
+    std::vector<sf::Vector2f> result;
     for (auto x: vecX) {
-        std::optional<double> y = this->expression.evaluate(x);
+        std::optional<float> y = this->expression.evaluate(x);
 
         if (!y.has_value())
             throw std::runtime_error("The value at the point is indeterminate");

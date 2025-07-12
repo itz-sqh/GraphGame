@@ -9,12 +9,12 @@ public:
 
     void draw(sf::RenderTarget& target) const;
 
-    bool isAlive() const;
-    float getX() const;
-    float getY() const;
-    sf::Vector2f getPosition() const;
-    float getRadius() const;
-    sf::Color getColor() const;
+    [[nodiscard]] bool isAlive() const;
+    [[nodiscard]] float getX() const;
+    [[nodiscard]] float getY() const;
+    [[nodiscard]] sf::Vector2f getPosition() const;
+    [[nodiscard]] float getRadius() const;
+    [[nodiscard]] sf::Color getColor() const;
 
 private:
     sf::Vector2f position;

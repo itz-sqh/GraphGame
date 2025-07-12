@@ -25,7 +25,7 @@ private:
     bool showingShot = false;
     sf::Clock shotClock;
     float shotDisplayTime;
-
+    sf::Font inputTextFont;
 
 
 
