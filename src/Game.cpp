@@ -47,8 +47,9 @@ void Game::generatePlayers() {
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
-        players.push_back(std::make_unique<Player>(point,
+        players.push_back(std::make_shared<Player>(point,
                                                    GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+        playersQueue.push(players.back());
     }
 }
 
@@ -80,6 +81,8 @@ void Game::generateObstacles() {
 }
 
 void Game::run() {
+    currentPlayer = playersQueue.front();
+    playersQueue.pop();
     while (isRunning()) {
         pollEvents();
         update();
@@ -141,7 +144,7 @@ void Game::render() {
     window->clear(sf::Color::White);
 
     for (const auto &player: players) {
-        player->draw(*window);
+        player->draw(*window, player == currentPlayer);
     }
 
     for (const auto &obstacle: obstacles) {
@@ -149,7 +152,7 @@ void Game::render() {
     }
 
     if (showingShot) {
-        plotter->draw(*window, players[currentPlayer]->getPosition());
+        plotter->draw(*window, currentPlayer->getPosition());
     }
 
     drawInputBox();
@@ -157,23 +160,20 @@ void Game::render() {
 }
 
 void Game::fireExpression(const Expression &expr) {
-    plotter->update(expr, players[currentPlayer]->getColor());
+    plotter->update(expr, currentPlayer->getColor());
     showingShot = true;
     shotClock.restart();
 }
 
 void Game::nextTurn() {
-    int startPlayer = currentPlayer;
+    sf::Color prevPlayerColor = currentPlayer->getColor();
+    playersQueue.push(currentPlayer);
     do {
-        currentPlayer = (currentPlayer + 1) % players.size();
-    } while (currentPlayer != startPlayer && !players[currentPlayer]->isAlive());
+        currentPlayer = playersQueue.front();
+        playersQueue.pop();
+    } while (!playersQueue.empty() && !currentPlayer->isAlive());
 
-    int aliveCount = 0;
-    for (const auto &player: players) {
-        if (player->isAlive()) aliveCount++;
-    }
-
-    if (aliveCount == 5) {
+    if (prevPlayerColor == currentPlayer->getColor()) {
         gameOver = true;
     }
 
@@ -183,11 +183,9 @@ void Game::nextTurn() {
 void Game::drawInputBox() const {
     sf::RectangleShape inputBox({400, 40});
     inputBox.setFillColor(sf::Color(255, 255, 255, 150));
-    inputBox.setOutlineColor(sf::Color::Black);
+    inputBox.setOutlineColor(currentPlayer->getColor());
     inputBox.setOutlineThickness(2.f);
-    inputBox.setOutlineThickness(1);
     inputBox.setPosition({(GameConstants::WIDTH - 400.f) / 2, GameConstants::HEIGHT - 40});
-
     sf::Text text(inputTextFont, playerInput);
     text.setFillColor(sf::Color::Black);
     while (text.getGlobalBounds().size.x - inputBox.getSize().x >= -2)

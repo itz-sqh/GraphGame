@@ -7,7 +7,7 @@ class Player {
 public:
     Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS);
 
-    void draw(sf::RenderTarget& target) const;
+    void draw(sf::RenderTarget& target,bool isCurrent = false) const;
 
     [[nodiscard]] bool isAlive() const;
     [[nodiscard]] float getX() const;
@@ -18,7 +18,7 @@ public:
 
 private:
     sf::Vector2f position;
-    bool gotHit;
+    bool gotHit = false;
     float radius;
     sf::Color color;
 };
