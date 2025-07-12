@@ -40,6 +40,12 @@ void Game::generatePlayers() {
                     GameConstants::DISTANCE_BETWEEN_PLAYERS)
                     placed = false;
             }
+
+            if (std::min((float) size.x - mapToWindow(point, size).x, mapToWindow(point, size).x) <
+                GameConstants::PLAYER_WIDTH_OFFSET ||
+                std::min((float) size.y - mapToWindow(point, size).y, mapToWindow(point, size).y) <
+                GameConstants::PLAYER_HEIGHT_OFFSET)
+                placed = false;
         }
         players.push_back(std::make_unique<Player>(point,
                                                    GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));

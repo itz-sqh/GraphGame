@@ -21,6 +21,8 @@ namespace GameConstants {
     constexpr float DISTANCE_BETWEEN_OBSTACLES = OBSTACLE_RADIUS;
     constexpr sf::Color PLAYER_COLOR[] = {sf::Color::Red, sf::Color::Blue};
     constexpr unsigned int MAX_INPUT_SIZE = 50;
+    constexpr float PLAYER_WIDTH_OFFSET = 20;
+    constexpr float PLAYER_HEIGHT_OFFSET = 50;
 }
 
 static sf::Vector2f mapToWindow(sf::Vector2f pos,
