@@ -24,6 +24,19 @@ namespace GameConstants {
     constexpr float PLAYER_WIDTH_OFFSET = 20;
     constexpr float PLAYER_HEIGHT_OFFSET = 50;
 }
+struct Line {//ax+by+c=0;
+    float a, b, c;
+
+    Line(const sf::Vector2f p1, const sf::Vector2f p2) {
+        a = p2.y - p1.y;
+        b = p1.x - p2.x;
+        c = -p1.x * a - p1.y * b;
+        float m = std::sqrt(a * a + b * b);
+        a /= m;
+        b /= m;
+        c /= m;
+    }
+};
 
 static sf::Vector2f mapToWindow(sf::Vector2f pos,
                                 sf::Vector2u size) {
@@ -31,8 +44,8 @@ static sf::Vector2f mapToWindow(sf::Vector2f pos,
     float y = (pos.y - GameConstants::MIN_Y) / (GameConstants::MAX_Y - GameConstants::MIN_Y);
 
     return {
-            x * size.x,
-            size.y - y * size.y
+            x * (float) size.x,
+            (float) size.y - y * (float) size.y
     };
 }
 
@@ -43,3 +56,4 @@ static float dist(const sf::Vector2f p1, const sf::Vector2f p2 = {0, 0}) {
 static float distSq(const sf::Vector2f p1, const sf::Vector2f p2 = {0, 0}) {
     return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
 }
+

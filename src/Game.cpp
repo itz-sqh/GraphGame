@@ -105,7 +105,7 @@ void Game::pollEvents() {
                     try {
                         Expression expr = ExpressionParser::parse(playerInput);
                         fireExpression(expr);
-                    } catch (sf::Exception exception) {
+                    } catch (sf::Exception &exception) {
                         std::cerr << exception.what() << std::endl;
                         std::cerr << playerInput << std::endl;
                         playerInput.clear();
@@ -121,7 +121,7 @@ void Game::pollEvents() {
         if (auto *textEvent = event->getIf<sf::Event::TextEntered>()) {
             if (!showingShot && !gameOver && textEvent->unicode >= 32 && textEvent->unicode != 127) {
                 if (playerInput.size() >= GameConstants::MAX_INPUT_SIZE) {
-                    //TODO EXCEPRION
+                    //TODO EXCEPTION
                 } else {
                     playerInput += static_cast<char>(textEvent->unicode);
 

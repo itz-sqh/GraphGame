@@ -2,12 +2,16 @@
 #include <SFML/Graphics.hpp>
 #include "../PointGenerator/PointGenerator.h"
 #include"../GameConstants.h"
+#include "../Obstacle.h"
+#include "../Player.h"
+#include <vector>
+#include <memory>
 
 class FunctionPlotter {
 public:
     FunctionPlotter(const Expression& expr, sf::Color color);
     void update(const Expression& newExpr, sf::Color color);
-    void draw(sf::RenderTarget& target,const sf::Vector2f offset = {0,0});
+    void draw(sf::RenderTarget& target,sf::Vector2f offset = {0,0});
 private:
     void updatePoints();
     PointGenerator pointGenerator;

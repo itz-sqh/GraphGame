@@ -4,7 +4,7 @@
 
 class Obstacle {
 public:
-    Obstacle(sf::Vector2f position, float radius = GameConstants::OBSTACLE_RADIUS);
+    explicit Obstacle(sf::Vector2f position, float radius = GameConstants::OBSTACLE_RADIUS);
 
     void draw(sf::RenderTarget& target) const;
 
