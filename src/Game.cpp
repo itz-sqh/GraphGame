@@ -2,15 +2,12 @@
 #include"Rng.h"
 
 #include <iostream>
-#include <fstream>
 
 
-Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME) {
+Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME), inputTextFont("ARIAL.TTF") {
     initWindow();
     initMap();
     plotter = std::make_unique<FunctionPlotter>(ExpressionParser::parse("0"), sf::Color::Red);
-    if (inputTextFont.openFromFile("ARIAL.TTF"))
-        throw std::runtime_error("Couldn't load text font");
 }
 
 void Game::initWindow() {
@@ -113,8 +110,13 @@ void Game::pollEvents() {
         }
 
         if (auto *textEvent = event->getIf<sf::Event::TextEntered>()) {
-            if (!showingShot && !gameOver) {
-                playerInput += static_cast<char>(textEvent->unicode);
+            if (!showingShot && !gameOver && textEvent->unicode >= 32 && textEvent->unicode != 127) {
+                if (playerInput.size() >= GameConstants::MAX_INPUT_SIZE) {
+                    //TODO EXCEPRION
+                } else {
+                    playerInput += static_cast<char>(textEvent->unicode);
+
+                }
             }
         }
     }
@@ -174,9 +176,21 @@ void Game::nextTurn() {
 
 void Game::drawInputBox() const {
     sf::RectangleShape inputBox({400, 40});
-    sf::Text text(inputTextFont, playerInput);
+    inputBox.setFillColor(sf::Color(255, 255, 255, 150));
+    inputBox.setOutlineColor(sf::Color::Black);
+    inputBox.setOutlineThickness(2.f);
+    inputBox.setOutlineThickness(1);
     inputBox.setPosition({(GameConstants::WIDTH - 400.f) / 2, GameConstants::HEIGHT - 40});
-    text.setPosition({(GameConstants::WIDTH - 400.f) / 2, GameConstants::HEIGHT - 40});
+
+    sf::Text text(inputTextFont, playerInput);
+    text.setFillColor(sf::Color::Black);
+    while (text.getGlobalBounds().size.x - inputBox.getSize().x >= -2)
+        text.setCharacterSize(text.getCharacterSize() - 1);
+    text.setOrigin(text.getGlobalBounds().size / 2.f + text.getLocalBounds().position);
+    text.setPosition(
+            {inputBox.getPosition().x + inputBox.getSize().x / 2.f,
+             inputBox.getPosition().y + inputBox.getSize().y / 2.f}
+    );
     window->draw(inputBox);
     window->draw(text);
 }

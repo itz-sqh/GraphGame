@@ -7,6 +7,7 @@ void Obstacle::draw(sf::RenderTarget &target) const {
     sf::CircleShape shape(radius);
     shape.setFillColor(sf::Color::Black);
     shape.setPosition(mapToWindow(position,size));
+    shape.setOrigin({radius, radius});
     target.draw(shape);
 }
 
