@@ -4,8 +4,13 @@ PointGenerator::PointGenerator(const std::string &expression) {
     this->expression = ExpressionParser::parse(expression);
 }
 
+PointGenerator::PointGenerator(const Expression &expression) {
+    this->expression = expression;
+}
+
+
 std::vector<sf::Vector2<double>>
-PointGenerator::GetSegmentPoints(double leftX, double rightX) {
+PointGenerator::getSegmentPoints(double leftX, double rightX) {
     if (leftX >= rightX)
         throw std::runtime_error("Method GetSegmentPoints requires leftX<Right");
 
@@ -30,7 +35,7 @@ PointGenerator::GetSegmentPoints(double leftX, double rightX) {
     return result;
 }
 
-sf::Vector2<double> PointGenerator::GetY(double x) {
+sf::Vector2<double> PointGenerator::getY(double x) {
     std::optional<double> y = this->expression.evaluate(x);
 
     if (!y.has_value())
@@ -39,7 +44,7 @@ sf::Vector2<double> PointGenerator::GetY(double x) {
     return {x, y.value()};
 }
 
-std::vector<sf::Vector2<double>> PointGenerator::GetY(const std::vector<double>& vecX) {
+std::vector<sf::Vector2<double>> PointGenerator::getY(const std::vector<double>& vecX) {
 
     std::vector<sf::Vector2<double>> result;
     for (auto x: vecX) {
