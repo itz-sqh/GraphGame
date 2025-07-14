@@ -1,5 +1,7 @@
 #include "FunctionPlotter.h"
 
+#include "../Geometry.h"
+
 
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)
         : pointGenerator(expr), color(color) {
@@ -14,10 +16,10 @@ void FunctionPlotter::update(const Expression &newExpr, sf::Color newColor) {
 }
 
 void FunctionPlotter::draw(sf::RenderTarget &target, const sf::Vector2f offset) {
-    sf::Vector2u size = target.getSize();
+    const sf::Vector2u size = target.getSize();
     auto tmp = vertices;
     for (int i = 0; i < vertices.getVertexCount(); ++i) {
-        tmp[i].position = mapToWindow(vertices[i].position + offset, size);
+        tmp[i].position = Geometry::mapToWindow(vertices[i].position + offset, size);
     }
     target.draw(tmp);
 }

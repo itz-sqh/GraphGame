@@ -10,10 +10,9 @@ void CircleObject::draw(sf::RenderTarget &target) const {
 }
 
 bool CircleObject::operator==(const CircleObject &other) const {
-    const float EPS = 1e-6;
-    return abs(this->getX()-other.getX()) < EPS &&
-        abs(this->getY()-other.getY()) < EPS &&
-            abs(this->getRadius()-other.getRadius()) < EPS;
+    return abs(this->getX()-other.getX()) < GameConstants::EPS &&
+        abs(this->getY()-other.getY()) < GameConstants::EPS &&
+            abs(this->getRadius()-other.getRadius()) < GameConstants::EPS;
 }
 
 float CircleObject::getX() const { return position.x; }

@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include "Geometry.h"
+
 Player::Player(sf::Vector2f position, sf::Color color, float radius)
         : CircleObject(position,radius), color(color) {}
 
@@ -13,14 +15,14 @@ void Player::draw(sf::RenderTarget &target) const {
         outerRing.setOutlineThickness(2);
         outerRing.setOutlineColor(color);
         outerRing.setOrigin({2 * radius, 2 * radius});
-        outerRing.setPosition(mapToWindow(position, size));
+        outerRing.setPosition(Geometry::mapToWindow(position, size));
         target.draw(outerRing);
     }
 
 
     sf::CircleShape shape(radius);
     shape.setFillColor(color);
-    shape.setPosition(mapToWindow(position, size));
+    shape.setPosition(Geometry::mapToWindow(position, size));
     shape.setOrigin({radius, radius});
     target.draw(shape);
 }

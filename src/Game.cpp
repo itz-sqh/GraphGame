@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include "Geometry.h"
 #include "ExpressionParser/ExpressionException.h"
 
 
@@ -39,14 +40,14 @@ void Game::generatePlayers() {
             };
             placed = true;
             for (const auto &p: players) {
-                if (dist(mapToWindow(point, size), mapToWindow(p->getPosition(), size)) <
+                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(p->getPosition(), size)) <
                     GameConstants::DISTANCE_BETWEEN_PLAYERS)
                     placed = false;
             }
 
-            if (std::min(static_cast<float>(size.x) - mapToWindow(point, size).x, mapToWindow(point, size).x) <
+            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size).x, Geometry::mapToWindow(point, size).x) <
                 GameConstants::PLAYER_WIDTH_OFFSET ||
-                std::min(static_cast<float>(size.y) - mapToWindow(point, size).y, mapToWindow(point, size).y) <
+                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size).y, Geometry::mapToWindow(point, size).y) <
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
@@ -72,12 +73,12 @@ void Game::generateObstacles() {
             };
             placed = true;
             for (const auto &p: players) {
-                if (dist(mapToWindow(point, size), mapToWindow(p->getPosition(), size)) <
+                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(p->getPosition(), size)) <
                     GameConstants::DISTANCE_BETWEEN_PLAYER_AND_OBSTACLE)
                     placed = false;
             }
             for (const auto &o: obstacles) {
-                if (dist(mapToWindow(point, size), mapToWindow(o->getPosition(), size)) <
+                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(o->getPosition(), size)) <
                     GameConstants::DISTANCE_BETWEEN_OBSTACLES)
                     placed = false;
             }
@@ -112,7 +113,7 @@ void Game::pollEvents() {
                     try {
                         Expression expr = ExpressionParser::parse(playerInput);
                         fireExpression(expr);
-                    } catch (ExpressionException exception) {
+                    } catch (const ExpressionException& exception) {
                         playerInput.clear();
                     }
                 } else if (keyEvent->code == sf::Keyboard::Key::Backspace) {
