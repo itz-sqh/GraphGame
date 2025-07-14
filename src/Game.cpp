@@ -1,8 +1,6 @@
 #include "Game.h"
 #include"Rng.h"
-
 #include <iostream>
-
 #include "Geometry.h"
 #include "ExpressionParser/ExpressionException.h"
 
@@ -54,9 +52,6 @@ void Game::generatePlayers() {
         players.push_back(std::make_shared<Player>(point,
                                                    GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
         playersQueue.push(players.back());
-
-
-
     }
 }
 
@@ -114,6 +109,7 @@ void Game::pollEvents() {
                         Expression expr = ExpressionParser::parse(playerInput);
                         fireExpression(expr);
                     } catch (const ExpressionException& exception) {
+                        std::cerr << exception.what() << std::endl;
                         playerInput.clear();
                     }
                 } else if (keyEvent->code == sf::Keyboard::Key::Backspace) {

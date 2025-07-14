@@ -45,9 +45,10 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
 
             if (Constants::FUNCTIONS.contains(s)) {
                 tokens.emplace_back(TokenType::Function,s);
-            } else {
+            } else if (s == "x" || s == "X") {
                 tokens.emplace_back(TokenType::Variable,s);
             }
+            else throw ExpressionException("Invalid variable name or function");
             continue;
         }
         if (std::isdigit(infix[i]) || infix[i] == '.') {
