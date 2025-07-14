@@ -1,0 +1,55 @@
+#pragma once
+
+#include <SFML/Graphics/RenderWindow.hpp>
+#include "FunctionPlotter/FunctionPlotter.h"
+#include "GameConstants.h"
+#include <memory>
+#include <random>
+#include <vector>
+#include "queue"
+
+#include "Player.h"
+#include "Obstacle.h"
+
+class Game {
+public:
+    Game();
+
+    void run();
+
+    constexpr bool isRunning() const { return window->isOpen() && !gameOver; }
+
+private:
+    std::unique_ptr<sf::RenderWindow> window;
+    std::vector<std::shared_ptr<Player>> players;
+    std::vector<std::unique_ptr<Obstacle>> obstacles;
+    bool gameOver = false;
+    std::queue<std::shared_ptr<Player>> playersQueue;
+    std::string playerInput;
+    std::unique_ptr<FunctionPlotter> plotter = nullptr;
+    bool showingShot = false;
+    sf::Clock shotClock;
+    float shotDisplayTime;
+    sf::Font inputTextFont;
+
+
+    void initWindow();
+
+    void initMap();
+
+    void generateObstacles();
+
+    void generatePlayers();
+
+    void nextTurn();
+
+    void fireExpression(const Expression &expr);
+
+    void drawInputBox() const;
+
+    void update();
+
+    void render() const;
+
+    void pollEvents();
+};

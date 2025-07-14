@@ -1,6 +1,7 @@
-#include "../include/Obstacle.h"
 
-#include "../include/Geometry.h"
+#include "Obstacle.h"
+
+#include "Geometry.h"
 
 Obstacle::Obstacle(sf::Vector2f position, float radius) : CircleObject(position, radius) {}
 

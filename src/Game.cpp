@@ -1,11 +1,11 @@
-#include "../include/Game.h"
-#include "../include/Rng.h"
+#include "Game.h"
+#include"Rng.h"
 #include <iostream>
-#include "../include/Geometry.h"
-#include "../include/ExpressionException.h"
+#include "Geometry.h"
+#include "ExpressionParser/ExpressionException.h"
 
 
-Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME), inputTextFont("../resources/ARIAL.TTF") {
+Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME), inputTextFont("ARIAL.TTF") {
     initWindow();
     initMap();
     plotter = std::make_unique<FunctionPlotter>(ExpressionParser::parse("0"), sf::Color::Red);

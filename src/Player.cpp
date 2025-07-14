@@ -1,6 +1,7 @@
-#include "../include/Player.h"
 
-#include "../include/Geometry.h"
+#include "Player.h"
+
+#include "Geometry.h"
 
 Player::Player(sf::Vector2f position, sf::Color color, float radius)
         : CircleObject(position,radius), color(color) {}
