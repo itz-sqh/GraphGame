@@ -1,5 +1,7 @@
 #include "Expression.h"
 
+#include "ExpressionException.h"
+
 
 void Expression::add(const Token& token) {
     tokens.push_back(token);
@@ -45,7 +47,7 @@ bool Expression::isValid(const Expression& expression) {
 
 std::optional<double> Expression::evaluate(const double x) const {
     if (!isValid(*this))
-        return std::nullopt;
+        throw ExpressionException("Invalid expression");
 
     std::stack<double> st;
 

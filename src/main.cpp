@@ -1,7 +1,8 @@
-#include "PointGenerator/PointGenerator.h"
-#include "GameConstants.h"
-#include<iostream>
-#include <string>
+#include"Game.h"
 
-int main() {
+int main()
+{
+    auto game = new Game();
+    game->run();
+    delete game;
 }

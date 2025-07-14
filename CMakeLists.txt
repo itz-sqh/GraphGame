@@ -13,8 +13,26 @@ add_executable(GraphGame src/main.cpp
         src/GameConstants.h
         src/GameConstants.h
         src/PointGenerator/PointGenerator.cpp
-        src/PointGenerator/PointGenerator.h)
+        src/PointGenerator/PointGenerator.h
+        src/FunctionPlotter/FunctionPlotter.cpp
+        src/FunctionPlotter/FunctionPlotter.h
+        src/Game.cpp
+        src/Game.h
+        src/Player.cpp
+        src/Player.h
+        src/Obstacle.cpp
+        src/Obstacle.h
+        src/rng.cpp
+        src/rng.h
+        src/CircleObject.cpp
+        src/CircleObject.h
+        src/ExpressionParser/ExpressionException.cpp
+        src/ExpressionParser/ExpressionException.h
+        src/Geometry.cpp
+        src/Geometry.h
+)
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/ARIAL.TTF  DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
         PATHS
