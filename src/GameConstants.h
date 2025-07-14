@@ -72,8 +72,8 @@ static std::vector<sf::Vector2f> circleLineIntersection(const CircleObject& circ
 
     line.c += line.a * offset.x + line.b * offset.y;
 
-    float x0 = -line.a*line.c;
-    float y0 = -line.b*line.c;
+    float x0 = -line.a*line.c + offset.x;
+    float y0 = -line.b*line.c + offset.y;
     if (line.c*line.c > r*r + GameConstants::EPS) {
         return {};
     }
@@ -87,7 +87,7 @@ static std::vector<sf::Vector2f> circleLineIntersection(const CircleObject& circ
     bx = x0 - line.b*mult;
     ay = y0 - line.a*mult;
     by = y0 + line.a*mult;
-    return {{ax+offset.x,ay+offset.y},{bx+offset.x,by+offset.y}};
+    return {{ax,ay},{bx,by}};
 }
 static std::vector<sf::Vector2f> circleIntersection(const CircleObject& circle1, const CircleObject& circle2) {
     //TODO check case when circle centers at the same point
