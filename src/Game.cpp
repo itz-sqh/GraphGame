@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "ExpressionParser/ExpressionException.h"
+
 
 Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME), inputTextFont("ARIAL.TTF") {
     initWindow();
@@ -26,7 +28,7 @@ void Game::initMap() {
 void Game::generatePlayers() {
     players.clear();
     playersQueue = std::queue<std::shared_ptr<Player>>();
-    sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
+    constexpr sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
     for (int i = 0; i < GameConstants::PLAYER_COUNT; i++) {
         bool placed = false;
         sf::Vector2f point;
@@ -59,7 +61,7 @@ void Game::generatePlayers() {
 
 void Game::generateObstacles() {
     obstacles.clear();
-    sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
+    constexpr sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
     for (int i = 0; i < GameConstants::OBSTACLE_COUNT; ++i) {
         bool placed = false;
         sf::Vector2f point;
@@ -96,7 +98,7 @@ void Game::run() {
 }
 
 void Game::pollEvents() {
-    while (auto event = window->pollEvent()) {
+    while (const auto event = window->pollEvent()) {
         if (event->is<sf::Event::Closed>()) {
             window->close();
         }
@@ -110,9 +112,7 @@ void Game::pollEvents() {
                     try {
                         Expression expr = ExpressionParser::parse(playerInput);
                         fireExpression(expr);
-                    } catch (sf::Exception &exception) {
-                        std::cerr << exception.what() << std::endl;
-                        std::cerr << playerInput << std::endl;
+                    } catch (ExpressionException exception) {
                         playerInput.clear();
                     }
                 } else if (keyEvent->code == sf::Keyboard::Key::Backspace) {
@@ -172,7 +172,7 @@ void Game::fireExpression(const Expression &expr) {
 
 void Game::nextTurn() {
 
-    auto prevPlayer = playersQueue.front();
+    const auto prevPlayer = playersQueue.front();
     prevPlayer->switchCurrent();
     playersQueue.pop();
     playersQueue.push(prevPlayer);
@@ -180,7 +180,7 @@ void Game::nextTurn() {
     while (!playersQueue.empty() && !playersQueue.front()->isAlive()) {
         playersQueue.pop();
     }
-    auto newPlayer = playersQueue.front();
+    const auto newPlayer = playersQueue.front();
     if (newPlayer == prevPlayer) {
         gameOver = true;
     }

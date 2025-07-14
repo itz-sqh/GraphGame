@@ -10,7 +10,7 @@ namespace GameConstants {
     constexpr float MAX_Y = 15;
     constexpr float MIN_Y = -15;
     constexpr float POINTS_STEP = 0.025;
-    constexpr int PLAYER_COUNT = 2;
+    constexpr int PLAYER_COUNT = 3;
     constexpr int OBSTACLE_COUNT = 10;
     constexpr int WIDTH = 800;
     constexpr int HEIGHT = 600;
@@ -22,7 +22,7 @@ namespace GameConstants {
     constexpr float DISTANCE_BETWEEN_PLAYERS = PLAYER_RADIUS;
     constexpr float DISTANCE_BETWEEN_PLAYER_AND_OBSTACLE = OBSTACLE_RADIUS + PLAYER_RADIUS;
     constexpr float DISTANCE_BETWEEN_OBSTACLES = OBSTACLE_RADIUS;
-    constexpr sf::Color PLAYER_COLOR[] = {sf::Color::Red, sf::Color::Blue};
+    constexpr sf::Color PLAYER_COLOR[] = {sf::Color::Red, sf::Color::Blue, sf::Color::Green, sf::Color::Yellow};
     constexpr unsigned int MAX_INPUT_SIZE = 50;
     constexpr float PLAYER_WIDTH_OFFSET = 20;
     constexpr float PLAYER_HEIGHT_OFFSET = 50;

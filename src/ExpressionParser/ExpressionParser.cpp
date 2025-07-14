@@ -1,5 +1,7 @@
 #include "ExpressionParser.h"
 
+#include "ExpressionException.h"
+
 
 Expression ExpressionParser::parse(const std::string &infix) {
     std::vector<Token> tokens = tokenize(infix);
@@ -25,7 +27,7 @@ int ExpressionParser::getPrecedence(const Token& token) {
         default:
             break;
     }
-    throw std::runtime_error("Invalid operator");
+    throw ExpressionException("Invalid operator");
 }
 
 std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
@@ -54,12 +56,12 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             i++;
             while (i < infix.size() && (std::isdigit(infix[i]) || infix[i] == '.')) {
                 if (infix[i] == '.') {
-                    if (dot) throw std::runtime_error("Expected a number, but found 2 dots");
+                    if (dot) throw ExpressionException("Expected a number, but found 2 dots");
                     dot = true;
                 }
                 i++;
             }
-            if (std::string num = infix.substr(start, i - start); num[0] == '.') throw std::runtime_error("Expected a number, but found dot");
+            if (std::string num = infix.substr(start, i - start); num[0] == '.') throw ExpressionException("Expected a number, but found dot");
             tokens.emplace_back(TokenType::Constant,infix.substr(start, i - start));
             continue;
         }
@@ -95,7 +97,7 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             i++;
             continue;
         }
-        throw std::runtime_error("Unknown character: "  + infix[i]);
+        throw ExpressionException("Unknown character: "  + infix[i]);
 
     }
     return tokens;
@@ -137,7 +139,7 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
                     res.add(st.top());
                     st.pop();
                 }
-                if (st.empty()) throw std::runtime_error("Mismatched parentheses");
+                if (st.empty()) throw ExpressionException("Mismatched parentheses");
                 st.pop();
 
                 if (!st.empty() && st.top().type == TokenType::Function) {
@@ -151,7 +153,7 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
                     res.add(st.top());
                     st.pop();
                 }
-                if (st.empty()) throw std::runtime_error("Mismatched parentheses");
+                if (st.empty()) throw ExpressionException("Mismatched parentheses");
                 break;
 
             default:
@@ -161,7 +163,7 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
 
     while (!st.empty()) {
         if (st.top().type == TokenType::LeftParen) {
-            throw std::runtime_error("Mismatched parentheses");
+            throw ExpressionException("Mismatched parentheses");
         }
         res.add(st.top());
         st.pop();

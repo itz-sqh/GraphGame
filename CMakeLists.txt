@@ -26,6 +26,8 @@ add_executable(GraphGame src/main.cpp
         src/rng.h
         src/CircleObject.cpp
         src/CircleObject.h
+        src/ExpressionParser/ExpressionException.cpp
+        src/ExpressionParser/ExpressionException.h
 )
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/ARIAL.TTF  DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
