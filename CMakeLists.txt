@@ -2,35 +2,12 @@ cmake_minimum_required(VERSION 3.29)
 project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
-add_executable(GraphGame src/main.cpp
-        src/ExpressionParser.cpp
-        include/ExpressionParser.h
-        src/Expression.cpp
-        include/Expression.h
-        src/Token.cpp
-        include/Token.h
-        include/constants.h
-        include/GameConstants.h
-        include/GameConstants.h
-        src/PointGenerator.cpp
-        include/PointGenerator.h
-        src/FunctionPlotter.cpp
-        include/FunctionPlotter.h
-        src/Game.cpp
-        include/Game.h
-        src/Player.cpp
-        include/Player.h
-        src/Obstacle.cpp
-        include/Obstacle.h
-        src/rng.cpp
-        include/Rng.h
-        src/CircleObject.cpp
-        include/CircleObject.h
-        src/ExpressionException.cpp
-        include/ExpressionException.h
-        src/Geometry.cpp
-        include/Geometry.h
-)
+
+file(GLOB source_files "src/*.cpp")
+
+set(SOURCES ${source_files})
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 file(COPY resources/ARIAL.TTF DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
