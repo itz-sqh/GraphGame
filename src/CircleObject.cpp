@@ -2,6 +2,7 @@
 
 
 
+
 CircleObject::CircleObject(sf::Vector2f position, float radius) : position(position), radius(radius) {}
 
 

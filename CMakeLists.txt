@@ -2,37 +2,14 @@ cmake_minimum_required(VERSION 3.29)
 project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
-add_executable(GraphGame src/main.cpp
-        src/ExpressionParser/ExpressionParser.cpp
-        src/ExpressionParser/ExpressionParser.h
-        src/ExpressionParser/Expression.cpp
-        src/ExpressionParser/Expression.h
-        src/ExpressionParser/Token.cpp
-        src/ExpressionParser/Token.h
-        src/ExpressionParser/constants.h
-        src/GameConstants.h
-        src/GameConstants.h
-        src/PointGenerator/PointGenerator.cpp
-        src/PointGenerator/PointGenerator.h
-        src/FunctionPlotter/FunctionPlotter.cpp
-        src/FunctionPlotter/FunctionPlotter.h
-        src/Game.cpp
-        src/Game.h
-        src/Player.cpp
-        src/Player.h
-        src/Obstacle.cpp
-        src/Obstacle.h
-        src/rng.cpp
-        src/rng.h
-        src/CircleObject.cpp
-        src/CircleObject.h
-        src/ExpressionParser/ExpressionException.cpp
-        src/ExpressionParser/ExpressionException.h
-        src/Geometry.cpp
-        src/Geometry.h
-)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/ARIAL.TTF  DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB source_files "src/*.cpp")
+
+set(SOURCES ${source_files})
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+file(COPY resources/ARIAL.TTF DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
         PATHS
@@ -48,16 +25,17 @@ if(NOT SFML_FOUND)
     message(WARNING "SFML not found. Please install it to drive C")
 endif()
 
+target_include_directories(${PROJECT_NAME} PRIVATE "include" "lib")
 
-target_link_libraries(GraphGame PRIVATE
+target_link_libraries(${PROJECT_NAME} PRIVATE
         SFML::System
         SFML::Window
         SFML::Graphics
         SFML::Audio
 )
 
-add_custom_command(TARGET GraphGame POST_BUILD
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${SFML_DIR}/../../../bin"
-        $<TARGET_FILE_DIR:GraphGame>
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
