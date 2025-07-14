@@ -1,6 +1,6 @@
-#include "../include/FunctionPlotter.h"
+#include "FunctionPlotter.h"
 
-#include "../include/Geometry.h"
+#include "Geometry.h"
 
 
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)

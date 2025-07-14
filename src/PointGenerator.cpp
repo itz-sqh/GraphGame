@@ -1,4 +1,4 @@
-#include "../include/PointGenerator.h"
+#include "PointGenerator.h"
 
 PointGenerator::PointGenerator(const std::string &expression) {
     this->expression = ExpressionParser::parse(expression);

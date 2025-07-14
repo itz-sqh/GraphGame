@@ -1,6 +1,6 @@
-#include "../include/Expression.h"
+#include "Expression.h"
 
-#include "../include/ExpressionException.h"
+#include "ExpressionException.h"
 
 
 void Expression::add(const Token& token) {

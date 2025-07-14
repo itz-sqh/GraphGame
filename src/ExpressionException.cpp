@@ -1,4 +1,4 @@
-#include "../include/ExpressionException.h"
+#include "ExpressionException.h"
 
 ExpressionException::ExpressionException(const std::string &message) : msg(message) {}
 
