@@ -24,7 +24,6 @@ private:
     std::vector<std::shared_ptr<Player>> players;
     std::vector<std::unique_ptr<Obstacle>> obstacles;
     bool gameOver = false;
-    std::shared_ptr<Player> currentPlayer;
     std::queue<std::shared_ptr<Player>> playersQueue;
     std::string playerInput;
     std::unique_ptr<FunctionPlotter> plotter = nullptr;
@@ -50,7 +49,7 @@ private:
 
     void update();
 
-    void render();
+    void render() const;
 
     void pollEvents();
 };

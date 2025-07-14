@@ -1,6 +1,6 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(sf::Vector2f position, float radius) : position(position), radius(radius) {}
+Obstacle::Obstacle(sf::Vector2f position, float radius) : CircleObject(position, radius) {}
 
 void Obstacle::draw(sf::RenderTarget &target) const {
     sf::Vector2u size = target.getSize();
@@ -12,8 +12,5 @@ void Obstacle::draw(sf::RenderTarget &target) const {
 }
 
 
-float Obstacle::getX() const { return position.x; }
-float Obstacle::getY() const { return position.y; }
-float Obstacle::getRadius() const { return radius; }
-sf::Vector2f Obstacle::getPosition() const {return position;}
+
 

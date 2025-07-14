@@ -1,24 +1,25 @@
-#pragma once
-#include "ExpressionParser/Expression.h"
-#include <SFML/Graphics.hpp>
-#include"GameConstants.h"
+    #pragma once
+    #include "ExpressionParser/Expression.h"
+    #include <SFML/Graphics.hpp>
+    #include "CircleObject.h"
+    #include"GameConstants.h"
 
-class Player {
-public:
-    Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS);
+    class Player : public CircleObject {
+    public:
+        Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS);
 
-    void draw(sf::RenderTarget& target,bool isCurrent = false) const;
+        void draw(sf::RenderTarget& target) const override;
 
-    [[nodiscard]] bool isAlive() const;
-    [[nodiscard]] float getX() const;
-    [[nodiscard]] float getY() const;
-    [[nodiscard]] sf::Vector2f getPosition() const;
-    [[nodiscard]] float getRadius() const;
-    [[nodiscard]] sf::Color getColor() const;
+        ~Player() override = default;
 
-private:
-    sf::Vector2f position;
-    bool gotHit = false;
-    float radius;
-    sf::Color color;
-};
+        [[nodiscard]] bool isAlive() const;
+        [[nodiscard]] sf::Color getColor() const;
+        void switchCurrent();
+
+        bool getIsCurrent() const;
+
+    private:
+        bool gotHit = false;
+        bool isCurrent = false;
+        sf::Color color;
+    };

@@ -25,6 +25,7 @@ void Game::initMap() {
 
 void Game::generatePlayers() {
     players.clear();
+    playersQueue = std::queue<std::shared_ptr<Player>>();
     sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
     for (int i = 0; i < GameConstants::PLAYER_COUNT; i++) {
         bool placed = false;
@@ -41,15 +42,18 @@ void Game::generatePlayers() {
                     placed = false;
             }
 
-            if (std::min((float) size.x - mapToWindow(point, size).x, mapToWindow(point, size).x) <
+            if (std::min(static_cast<float>(size.x) - mapToWindow(point, size).x, mapToWindow(point, size).x) <
                 GameConstants::PLAYER_WIDTH_OFFSET ||
-                std::min((float) size.y - mapToWindow(point, size).y, mapToWindow(point, size).y) <
+                std::min(static_cast<float>(size.y) - mapToWindow(point, size).y, mapToWindow(point, size).y) <
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
         players.push_back(std::make_shared<Player>(point,
                                                    GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
         playersQueue.push(players.back());
+
+
+
     }
 }
 
@@ -81,8 +85,9 @@ void Game::generateObstacles() {
 }
 
 void Game::run() {
-    currentPlayer = playersQueue.front();
-    playersQueue.pop();
+    if (!playersQueue.empty()) {
+        playersQueue.front()->switchCurrent();
+    }
     while (isRunning()) {
         pollEvents();
         update();
@@ -140,11 +145,11 @@ void Game::update() {
     }
 }
 
-void Game::render() {
+void Game::render() const {
     window->clear(sf::Color::White);
 
     for (const auto &player: players) {
-        player->draw(*window, player == currentPlayer);
+        player->draw(*window);
     }
 
     for (const auto &obstacle: obstacles) {
@@ -152,7 +157,7 @@ void Game::render() {
     }
 
     if (showingShot) {
-        plotter->draw(*window, currentPlayer->getPosition());
+        plotter->draw(*window, playersQueue.front()->getPosition());
     }
 
     drawInputBox();
@@ -160,22 +165,26 @@ void Game::render() {
 }
 
 void Game::fireExpression(const Expression &expr) {
-    plotter->update(expr, currentPlayer->getColor());
+    plotter->update(expr, playersQueue.front()->getColor());
     showingShot = true;
     shotClock.restart();
 }
 
 void Game::nextTurn() {
-    sf::Color prevPlayerColor = currentPlayer->getColor();
-    playersQueue.push(currentPlayer);
-    do {
-        currentPlayer = playersQueue.front();
-        playersQueue.pop();
-    } while (!playersQueue.empty() && !currentPlayer->isAlive());
 
-    if (prevPlayerColor == currentPlayer->getColor()) {
+    auto prevPlayer = playersQueue.front();
+    prevPlayer->switchCurrent();
+    playersQueue.pop();
+    playersQueue.push(prevPlayer);
+
+    while (!playersQueue.empty() && !playersQueue.front()->isAlive()) {
+        playersQueue.pop();
+    }
+    auto newPlayer = playersQueue.front();
+    if (newPlayer == prevPlayer) {
         gameOver = true;
     }
+    newPlayer->switchCurrent();
 
     playerInput.clear();
 }
@@ -183,7 +192,7 @@ void Game::nextTurn() {
 void Game::drawInputBox() const {
     sf::RectangleShape inputBox({400, 40});
     inputBox.setFillColor(sf::Color(255, 255, 255, 150));
-    inputBox.setOutlineColor(currentPlayer->getColor());
+    inputBox.setOutlineColor(playersQueue.front()->getColor());
     inputBox.setOutlineThickness(2.f);
     inputBox.setPosition({(GameConstants::WIDTH - 400.f) / 2, GameConstants::HEIGHT - 40});
     sf::Text text(inputTextFont, playerInput);

@@ -1,12 +1,12 @@
 #include "Player.h"
 
 Player::Player(sf::Vector2f position, sf::Color color, float radius)
-        : position(position), gotHit(false), radius(radius), color(color) {}
+        : CircleObject(position,radius), color(color) {}
 
 
-void Player::draw(sf::RenderTarget &target, bool isCurrent) const {
+void Player::draw(sf::RenderTarget &target) const {
     if (gotHit) return;
-    sf::Vector2u size = target.getSize();
+    const sf::Vector2u size = target.getSize();
     if (isCurrent) {
         sf::CircleShape outerRing(2 * radius);
         outerRing.setFillColor(sf::Color::White);
@@ -28,25 +28,16 @@ void Player::draw(sf::RenderTarget &target, bool isCurrent) const {
 sf::Color Player::getColor() const {
     return color;
 }
-
-float Player::getX() const {
-    return position.x;
-}
-
-float Player::getY() const {
-    return position.y;
-}
-
-float Player::getRadius() const {
-    return radius;
-}
-
-sf::Vector2f Player::getPosition() const {
-    return position;
+void Player::switchCurrent() {
+    isCurrent = !isCurrent;
 }
 
 bool Player::isAlive() const {
     return !gotHit;
+}
+
+bool Player::getIsCurrent() const {
+    return isCurrent;
 }
 
 

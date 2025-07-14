@@ -24,6 +24,8 @@ add_executable(GraphGame src/main.cpp
         src/Obstacle.h
         src/rng.cpp
         src/rng.h
+        src/CircleObject.cpp
+        src/CircleObject.h
 )
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/ARIAL.TTF  DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
