@@ -25,7 +25,7 @@ public:
 private:
     std::unique_ptr<sf::RenderWindow> window;
     std::vector<std::shared_ptr<Player>> players;
-    std::vector<std::unique_ptr<Obstacle>> obstacles;
+    std::vector<std::shared_ptr<Obstacle>> obstacles;
     bool gameOver = false;
     std::queue<std::shared_ptr<Player>> playersQueue;
     std::string playerInput;

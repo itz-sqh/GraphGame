@@ -9,7 +9,7 @@ class Player : public CircleObject {
 public:
     Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS);
 
-    void draw(sf::RenderTarget& target) const override;
+    void draw(sf::RenderTarget& target) const;
 
     ~Player() override = default;
 

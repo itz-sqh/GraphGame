@@ -34,7 +34,7 @@ void Game::generatePlayers() {
             };
             placed = true;
             for (const auto &p: players) {
-                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(p->getPosition(), size)) <
+                if (Geometry::dist(point, p->getPosition()) <
                     GameConstants::DISTANCE_BETWEEN_PLAYERS)
                     placed = false;
             }
@@ -47,7 +47,8 @@ void Game::generatePlayers() {
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
-        players.push_back(std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+        players.push_back(
+                std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
         playersQueue.push(players.back());
     }
 }
@@ -65,12 +66,12 @@ void Game::generateObstacles() {
             };
             placed = true;
             for (const auto &p: players) {
-                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(p->getPosition(), size)) <
+                if (Geometry::dist(point, p->getPosition()) <
                     GameConstants::DISTANCE_BETWEEN_PLAYER_AND_OBSTACLE)
                     placed = false;
             }
             for (const auto &o: obstacles) {
-                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(o->getPosition(), size)) <
+                if (Geometry::dist(point, o->getPosition()) <
                     GameConstants::DISTANCE_BETWEEN_OBSTACLES)
                     placed = false;
             }
@@ -142,9 +143,6 @@ void Game::update() {
 void Game::render() const {
     window->clear(sf::Color::White);
 
-    for (const auto &player: players) {
-        player->draw(*window);
-    }
 
     for (const auto &obstacle: obstacles) {
         obstacle->draw(*window);
@@ -152,6 +150,10 @@ void Game::render() const {
 
     if (showingShot) {
         plotter->draw(*window, obstacles, players, playersQueue.front()->getPosition());
+    }
+
+    for (const auto &player: players) {
+        player->draw(*window);
     }
 
     drawInputBox();
