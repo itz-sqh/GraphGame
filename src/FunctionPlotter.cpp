@@ -13,23 +13,78 @@ void FunctionPlotter::update(const Expression &newExpr, sf::Color newColor) {
     updatePoints();
 }
 
-void FunctionPlotter::draw(sf::RenderTarget &target, sf::Vector2f offset) {
+
+void FunctionPlotter::draw(sf::RenderTarget &target, const std::vector<std::unique_ptr<Obstacle>> &obstacles,
+                           const sf::Vector2f playerPosition) {
+    sf::Vector2f offset = playerPosition;
     const sf::Vector2u size = target.getSize();
-    auto tmp = vertices;
+    int centerInd = getCenterIndex(offset);
+    sf::VertexArray graphForDrawing;
+    graphForDrawing.setPrimitiveType(sf::PrimitiveType::LineStrip);
+    if (vertices[centerInd].position.y == NAN) {
+        throw std::runtime_error("The function must be defined when x = 0");
+    }
+    {//graph's left part
+        int leftGoodInd = centerInd;
+        std::optional<sf::Vector2f> leftIntersect;
+        bool stopLeft = false;
+        while (leftGoodInd != 0) {
+            sf::Vector2f p1 = vertices[leftGoodInd].position;
+            sf::Vector2f p2 = vertices[leftGoodInd - 1].position;
+            for (auto &obstacle: obstacles) {
+                auto intersectionPoints = Geometry::circleLineIntersection(*obstacle, Geometry::Line(p1, p2));
+                for (auto &point: intersectionPoints) {
+                    if (point.x >= std::max(p1.x, p2.x) || point.x <= std::min(p1.x, p2.x))
+                        continue;
+                    if (!leftIntersect.has_value() ||
+                        abs(playerPosition.x - point.x) < abs(playerPosition.x - leftIntersect->x))
+                        leftIntersect = point;
+                    stopLeft = true;
+                }
+            }
+            if (stopLeft)
+                break;
+            leftGoodInd -= 1;
+        }
+        if (leftIntersect.has_value())
+            graphForDrawing.append(sf::Vertex(leftIntersect.value()));
+        while (leftGoodInd != centerInd) {
+            graphForDrawing.append(vertices[leftGoodInd]);
+            leftGoodInd += 1;
+        }
+    }
 
-
-    //TODO binary search first vertex with x > 0 and y not inf for correct alignment
-    for (int i = 0; i < vertices.getVertexCount(); i++) {
-        if (vertices[i].position.x >= 0 && abs(vertices[i].position.y) <= GameConstants::MAX_Y && abs(vertices[i].position.x) >= 0.5f) {
-            offset -= vertices[i].position;
-            break;
+    {//graph's right part
+        int rightGoodInd = centerInd;
+        std::optional<sf::Vector2f> rightIntersection;
+        bool stopRight = false;
+        while (rightGoodInd != vertices.getVertexCount()) {
+            sf::Vector2f p1 = vertices[rightGoodInd].position;
+            sf::Vector2f p2 = vertices[rightGoodInd + 1].position;
+            for (auto &obstacle: obstacles) {
+                auto intersectionPoints = Geometry::circleLineIntersection(*obstacle, Geometry::Line(p1, p2));
+                for (auto &point: intersectionPoints) {
+                    if (point.x >= std::max(p1.x, p2.x) || point.x <= std::min(p1.x, p2.x))
+                        continue;
+                    if (!rightIntersection.has_value() ||
+                        abs(playerPosition.x - point.x) < abs(playerPosition.x - rightIntersection->x))
+                        rightIntersection = point;
+                    stopRight = true;
+                }
+            }
+            if (stopRight)
+                break;
+            rightGoodInd += 1;
+        }
+        if (rightIntersection.has_value())
+            graphForDrawing.append(sf::Vertex(rightIntersection.value()));
+        while (rightGoodInd >= centerInd) {
+            graphForDrawing.append(vertices[centerInd]);
+            centerInd += 1;
         }
     }
     //TODO partition points into segments to not draw asymptotes by checking dy b/w points
-    for (int i = 0; i < vertices.getVertexCount(); ++i) {
-        tmp[i].position = Geometry::mapToWindow(vertices[i].position + offset, size);
-    }
-    target.draw(tmp);
+    target.draw(graphForDrawing);
 }
 
 void FunctionPlotter::updatePoints() {
@@ -40,7 +95,18 @@ void FunctionPlotter::updatePoints() {
     }
 }
 
-
+int FunctionPlotter::getCenterIndex(sf::Vector2f position) {
+    int left = 0, right = (int) vertices.getVertexCount();
+    while (left + 1 != right) {
+        int m = (left + right) / 2;
+        bool condition = (vertices[m].position.x - position.x < 0);
+        if (condition)
+            left = m;
+        else
+            right = m;
+    }
+    return left;
+}
 
 
 

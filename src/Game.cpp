@@ -39,9 +39,11 @@ void Game::generatePlayers() {
                     placed = false;
             }
 
-            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size).x, Geometry::mapToWindow(point, size).x) <
+            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size).x,
+                         Geometry::mapToWindow(point, size).x) <
                 GameConstants::PLAYER_WIDTH_OFFSET ||
-                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size).y, Geometry::mapToWindow(point, size).y) <
+                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size).y,
+                         Geometry::mapToWindow(point, size).y) <
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
@@ -104,7 +106,7 @@ void Game::pollEvents() {
                     try {
                         Expression expr = ExpressionParser::parse(playerInput);
                         fireExpression(expr);
-                    } catch (const ExpressionException& exception) {
+                    } catch (const ExpressionException &exception) {
                         std::cerr << exception.what() << std::endl;
                         playerInput.clear();
                     }
@@ -150,7 +152,7 @@ void Game::render() const {
     }
 
     if (showingShot) {
-        plotter->draw(*window, playersQueue.front()->getPosition());
+        plotter->draw(*window, obstacles, playersQueue.front()->getPosition());
     }
 
     drawInputBox();

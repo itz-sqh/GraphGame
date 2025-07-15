@@ -41,7 +41,9 @@ namespace Constants {
         {"log", {1, [](const std::vector<double>& args) { return std::log(args[0]); }}},
         {"sqrt", {1, [](const std::vector<double>& args) { return std::sqrt(args[0]); }}},
         {"max", {2, [](const std::vector<double>& args) { return std::max(args[0], args[1]); }}},
-        {"min", {2, [](const std::vector<double>& args) { return std::min(args[0], args[1]); }}}
+        {"min", {2, [](const std::vector<double>& args) { return std::min(args[0], args[1]); }}},
+        {"abs", {2, [](const std::vector<double>& args) { return std::abs(args[0]); }}},
+        {"sign", {2, [](const std::vector<double>& args) { return (args[0]==0 ? 0:args[0]/std::abs(args[0])); }}}
     };
 
 }
