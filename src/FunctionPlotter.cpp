@@ -1,4 +1,5 @@
 #include "FunctionPlotter.h"
+#include "Geometry.h"
 
 
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)

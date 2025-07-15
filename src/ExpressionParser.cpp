@@ -1,6 +1,5 @@
 #include "ExpressionParser.h"
-
-
+#include "ExpressionException.h"
 
 
 Expression ExpressionParser::parse(const std::string &infix) {
