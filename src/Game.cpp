@@ -38,19 +38,21 @@ void Game::generatePlayers() {
             };
             placed = true;
             for (const auto &p: players) {
-                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(p->getPosition(), size)) <
+                if (Geometry::dist(point, p->getPosition()) <
                     GameConstants::DISTANCE_BETWEEN_PLAYERS)
                     placed = false;
             }
 
-            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size).x, Geometry::mapToWindow(point, size).x) <
+            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size).x,
+                         Geometry::mapToWindow(point, size).x) <
                 GameConstants::PLAYER_WIDTH_OFFSET ||
-                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size).y, Geometry::mapToWindow(point, size).y) <
+                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size).y,
+                         Geometry::mapToWindow(point, size).y) <
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
-        players.push_back(std::make_shared<Player>(point,
-                                                   GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+        players.push_back(
+                std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
         playersQueue.push(players.back());
     }
 }
@@ -68,12 +70,12 @@ void Game::generateObstacles() {
             };
             placed = true;
             for (const auto &p: players) {
-                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(p->getPosition(), size)) <
+                if (Geometry::dist(point, p->getPosition()) <
                     GameConstants::DISTANCE_BETWEEN_PLAYER_AND_OBSTACLE)
                     placed = false;
             }
             for (const auto &o: obstacles) {
-                if (Geometry::dist(Geometry::mapToWindow(point, size), Geometry::mapToWindow(o->getPosition(), size)) <
+                if (Geometry::dist(point, o->getPosition()) <
                     GameConstants::DISTANCE_BETWEEN_OBSTACLES)
                     placed = false;
             }
@@ -108,7 +110,7 @@ void Game::pollEvents() {
                     try {
                         Expression expr = ExpressionParser::parse(playerInput);
                         fireExpression(expr);
-                    } catch (const ExpressionException& exception) {
+                    } catch (const ExpressionException &exception) {
                         std::cerr << exception.what() << std::endl;
                         playerInput.clear();
                     }
@@ -145,16 +147,17 @@ void Game::update() {
 void Game::render() const {
     window->clear(sf::Color::White);
 
-    for (const auto &player: players) {
-        player->draw(*window);
-    }
 
     for (const auto &obstacle: obstacles) {
         obstacle->draw(*window);
     }
 
     if (showingShot) {
-        plotter->draw(*window, playersQueue.front()->getPosition());
+        plotter->draw(*window, obstacles, players, playersQueue.front()->getPosition());
+    }
+
+    for (const auto &player: players) {
+        player->draw(*window);
     }
 
     drawInputBox();

@@ -10,12 +10,10 @@ public:
     explicit CircleObject(sf::Vector2f position, float radius);
 
     bool operator==(const CircleObject &other) const;
-
+    bool operator!=(const CircleObject &other) const;
     virtual ~CircleObject() = default;
 
-    virtual void draw(sf::RenderTarget &target) const;
-
-
+    bool inside(sf::Vector2f point);
     [[nodiscard]] float getX() const;
     [[nodiscard]] float getY() const;
     [[nodiscard]] float getRadius() const;

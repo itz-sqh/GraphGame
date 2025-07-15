@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include "constants.h"
 #include<stack>
+#include "ExpressionException.h"
 
 class ExpressionParser {
 public:

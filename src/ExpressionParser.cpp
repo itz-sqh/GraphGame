@@ -1,5 +1,4 @@
 #include "ExpressionParser.h"
-
 #include "ExpressionException.h"
 
 

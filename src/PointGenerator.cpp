@@ -21,8 +21,7 @@ PointGenerator::getSegmentPoints(float leftX, float rightX) {
     while (currentX < rightX) {
         currentY = this->expression.evaluate(currentX);
 
-        if (currentY.has_value())
-            result.emplace_back(currentX, currentY.value());
+        result.emplace_back(currentX, currentY.value_or(NAN));
 
         currentX += GameConstants::POINTS_STEP;
     }
