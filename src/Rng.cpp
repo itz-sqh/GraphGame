@@ -1,6 +1,5 @@
 
 #include "Rng.h"
-#include <chrono>
 
 std::mt19937 Rng::gen;
 bool Rng::initiated = false;

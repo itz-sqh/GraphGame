@@ -7,7 +7,10 @@
 #include <random>
 #include <vector>
 #include "queue"
-
+#include"Rng.h"
+#include <iostream>
+#include "Geometry.h"
+#include "ExpressionException.h"
 #include "Player.h"
 #include "Obstacle.h"
 

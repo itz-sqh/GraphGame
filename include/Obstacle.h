@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
+#include "Geometry.h"
 #include "CircleObject.h"
 #include "GameConstants.h"
 

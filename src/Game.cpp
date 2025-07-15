@@ -1,8 +1,4 @@
 #include "Game.h"
-#include"Rng.h"
-#include <iostream>
-#include "Geometry.h"
-#include "ExpressionException.h"
 
 
 Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME), inputTextFont("ARIAL.TTF") {

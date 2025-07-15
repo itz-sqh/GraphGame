@@ -1,7 +1,5 @@
 #include "FunctionPlotter.h"
 
-#include "Geometry.h"
-
 
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)
         : pointGenerator(expr), color(color) {
@@ -15,9 +13,19 @@ void FunctionPlotter::update(const Expression &newExpr, sf::Color newColor) {
     updatePoints();
 }
 
-void FunctionPlotter::draw(sf::RenderTarget &target, const sf::Vector2f offset) {
+void FunctionPlotter::draw(sf::RenderTarget &target, sf::Vector2f offset) {
     const sf::Vector2u size = target.getSize();
     auto tmp = vertices;
+
+
+    //TODO binary search first vertex with x > 0 and y not inf for correct alignment
+    for (int i = 0; i < vertices.getVertexCount(); i++) {
+        if (vertices[i].position.x >= 0 && abs(vertices[i].position.y) <= GameConstants::MAX_Y && abs(vertices[i].position.x) >= 0.5f) {
+            offset -= vertices[i].position;
+            break;
+        }
+    }
+    //TODO partition points into segments to not draw asymptotes by checking dy b/w points
     for (int i = 0; i < vertices.getVertexCount(); ++i) {
         tmp[i].position = Geometry::mapToWindow(vertices[i].position + offset, size);
     }

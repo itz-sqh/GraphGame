@@ -6,6 +6,7 @@
 #include "Player.h"
 #include <vector>
 #include <memory>
+#include "Geometry.h"
 
 class FunctionPlotter {
 public:

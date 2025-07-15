@@ -1,8 +1,9 @@
-    #pragma once
-    #include "Expression.h"
+#pragma once
+#include "Expression.h"
 #include <SFML/Graphics.hpp>
-    #include "CircleObject.h"
+#include "CircleObject.h"
 #include "GameConstants.h"
+#include "Geometry.h"
 
     class Player : public CircleObject {
     public:
