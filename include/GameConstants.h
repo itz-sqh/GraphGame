@@ -3,8 +3,8 @@
 namespace GameConstants {
     constexpr float MAX_X = 25;
     constexpr float MIN_X = -25;
-    constexpr float MAX_Y = 15;
-    constexpr float MIN_Y = -15;
+    constexpr float MAX_Y = 18.75;
+    constexpr float MIN_Y = -18.75;
     constexpr float POINTS_STEP = 0.025;
     constexpr int PLAYER_COUNT = 3;
     constexpr int OBSTACLE_COUNT = 10;
@@ -13,8 +13,8 @@ namespace GameConstants {
     constexpr float EPS = 1e-3;
     constexpr float HIT_RADIUS = 0.5f;
     constexpr float SHOT_DISPLAY_TIME = 5.0f;
-    constexpr float PLAYER_RADIUS = 5.0f;
-    constexpr float OBSTACLE_RADIUS = 30.0f;
+    constexpr float PLAYER_RADIUS = 0.33f;
+    constexpr float OBSTACLE_RADIUS = 2;
     constexpr float DISTANCE_BETWEEN_PLAYERS = PLAYER_RADIUS;
     constexpr float DISTANCE_BETWEEN_PLAYER_AND_OBSTACLE = OBSTACLE_RADIUS + PLAYER_RADIUS;
     constexpr float DISTANCE_BETWEEN_OBSTACLES = OBSTACLE_RADIUS;

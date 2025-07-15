@@ -1,6 +1,6 @@
 #include "CircleObject.h"
 
-
+#include "Player.h"
 
 
 CircleObject::CircleObject(sf::Vector2f position, float radius) : position(position), radius(radius) {}

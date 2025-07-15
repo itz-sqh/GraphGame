@@ -15,7 +15,8 @@ public:
 
     void update(const Expression &newExpr, sf::Color color);
 
-    void draw(sf::RenderTarget &target, const std::vector<std::unique_ptr<Obstacle>>& obstacles, sf::Vector2f offset = {0, 0});
+    void draw(sf::RenderTarget &target, const std::vector<std::unique_ptr<Obstacle>>& obstacles,
+    const std::vector<std::shared_ptr<Player>>& players, sf::Vector2f offset = {0, 0});
 
 
 private:

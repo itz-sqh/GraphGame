@@ -1,6 +1,7 @@
 #include "FunctionPlotter.h"
 
 
+
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)
         : pointGenerator(expr), color(color) {
     vertices.setPrimitiveType(sf::PrimitiveType::LineStrip);
@@ -13,79 +14,113 @@ void FunctionPlotter::update(const Expression &newExpr, sf::Color newColor) {
     updatePoints();
 }
 
-
-void FunctionPlotter::draw(sf::RenderTarget &target, const std::vector<std::unique_ptr<Obstacle>> &obstacles,
-                           const sf::Vector2f playerPosition) {
-    sf::Vector2f offset = playerPosition;
+void FunctionPlotter::draw(sf::RenderTarget &target,
+                         const std::vector<std::unique_ptr<Obstacle>>& obstacles,
+                         const std::vector<std::shared_ptr<Player>>& players,
+                         sf::Vector2f playerPosition) {
     const sf::Vector2u size = target.getSize();
-    int centerInd = getCenterIndex(offset);
+    const int vertexCount = vertices.getVertexCount();
+    int centerInd = getCenterIndex(playerPosition);
+
+    if (abs(vertices[centerInd].position.y) > GameConstants::MAX_Y) {
+        throw std::runtime_error("y(0) must fit on screen");
+    }
+    const sf::Vector2f offset = vertices[centerInd].position;
+    playerPosition -= offset;
+
     sf::VertexArray graphForDrawing;
     graphForDrawing.setPrimitiveType(sf::PrimitiveType::LineStrip);
-    if (vertices[centerInd].position.y == NAN) {
-        throw std::runtime_error("The function must be defined when x = 0");
-    }
-    {//graph's left part
-        int leftGoodInd = centerInd;
-        std::optional<sf::Vector2f> leftIntersect;
-        bool stopLeft = false;
-        while (leftGoodInd != 0) {
-            sf::Vector2f p1 = vertices[leftGoodInd].position;
-            sf::Vector2f p2 = vertices[leftGoodInd - 1].position;
-            for (auto &obstacle: obstacles) {
-                auto intersectionPoints = Geometry::circleLineIntersection(*obstacle, Geometry::Line(p1, p2));
-                for (auto &point: intersectionPoints) {
-                    if (point.x >= std::max(p1.x, p2.x) || point.x <= std::min(p1.x, p2.x))
-                        continue;
-                    if (!leftIntersect.has_value() ||
-                        abs(playerPosition.x - point.x) < abs(playerPosition.x - leftIntersect->x))
-                        leftIntersect = point;
-                    stopLeft = true;
+
+    int leftEnd = 0;
+    std::optional<sf::Vector2f> leftIntersection;
+
+    for (int i = centerInd; i > 0; --i) {
+        sf::Vector2f p1 = vertices[i].position + playerPosition;
+        sf::Vector2f p2 = vertices[i-1].position + playerPosition;
+        Geometry::Line line(p1, p2);
+
+        for (const auto& player : players) {
+            if (player->getIsCurrent()) continue;
+            auto intersections = Geometry::circleLineIntersection(*player,line);
+            for (const auto& point : intersections) {
+                if (point.x >= std::min(p1.x, p2.x) && point.x <= std::max(p1.x, p2.x)) {
+                    player->kill();
                 }
             }
-            if (stopLeft)
-                break;
-            leftGoodInd -= 1;
         }
-        if (leftIntersect.has_value())
-            graphForDrawing.append(sf::Vertex(leftIntersect.value()));
-        while (leftGoodInd != centerInd) {
-            graphForDrawing.append(vertices[leftGoodInd]);
-            leftGoodInd += 1;
+
+
+        bool intersected = false;
+        for (auto& obstacle : obstacles) {
+            auto intersections = Geometry::circleLineIntersection(*obstacle, line);
+            for (auto& point : intersections) {
+                if (point.x >= std::min(p1.x, p2.x) && point.x <= std::max(p1.x, p2.x)) {
+                    leftIntersection = point;
+                    obstacle->addOverlap(point);
+                    leftEnd = i;
+                    intersected = true;
+                    break;
+                }
+            }
+            if (intersected) break;
         }
+        if (intersected) break;
     }
 
-    {//graph's right part
-        int rightGoodInd = centerInd;
-        std::optional<sf::Vector2f> rightIntersection;
-        bool stopRight = false;
-        while (rightGoodInd != vertices.getVertexCount()) {
-            sf::Vector2f p1 = vertices[rightGoodInd].position;
-            sf::Vector2f p2 = vertices[rightGoodInd + 1].position;
-            for (auto &obstacle: obstacles) {
-                auto intersectionPoints = Geometry::circleLineIntersection(*obstacle, Geometry::Line(p1, p2));
-                for (auto &point: intersectionPoints) {
-                    if (point.x >= std::max(p1.x, p2.x) || point.x <= std::min(p1.x, p2.x))
-                        continue;
-                    if (!rightIntersection.has_value() ||
-                        abs(playerPosition.x - point.x) < abs(playerPosition.x - rightIntersection->x))
-                        rightIntersection = point;
-                    stopRight = true;
+    int rightEnd = vertexCount - 1;
+    std::optional<sf::Vector2f> rightIntersection;
+
+    for (int i = centerInd; i < vertexCount - 1; ++i) {
+        sf::Vector2f p1 = vertices[i].position + playerPosition;
+        sf::Vector2f p2 = vertices[i+1].position + playerPosition;
+        Geometry::Line line(p1, p2);
+
+        for (const auto& player : players) {
+            if (player->getIsCurrent()) continue;
+            auto intersections = Geometry::circleLineIntersection(*player, line);
+            for (const auto& point : intersections) {
+                if (point.x >= std::min(p1.x, p2.x) && point.x <= std::max(p1.x, p2.x)) {
+                    player->kill();
                 }
             }
-            if (stopRight)
-                break;
-            rightGoodInd += 1;
         }
-        if (rightIntersection.has_value())
-            graphForDrawing.append(sf::Vertex(rightIntersection.value()));
-        while (rightGoodInd >= centerInd) {
-            graphForDrawing.append(vertices[centerInd]);
-            centerInd += 1;
+
+        bool intersected = false;
+        for (auto& obstacle : obstacles) {
+            auto intersections = Geometry::circleLineIntersection(*obstacle, line);
+            for (auto& point : intersections) {
+                if (point.x >= std::min(p1.x, p2.x) && point.x <= std::max(p1.x, p2.x)) {
+                    rightIntersection = point;
+                    obstacle->addOverlap(point);
+                    rightEnd = i;
+                    intersected = true;
+                    break;
+                }
+            }
+            if (intersected) break;
         }
+        if (intersected) break;
     }
-    //TODO partition points into segments to not draw asymptotes by checking dy b/w points
+
+    if (leftIntersection) {
+        graphForDrawing.append(sf::Vertex(Geometry::mapToWindow(*leftIntersection, size), color));
+    }
+
+    for (int i = leftEnd; i <= rightEnd; ++i) {
+        graphForDrawing.append(sf::Vertex(
+            Geometry::mapToWindow(vertices[i].position + playerPosition, size),
+            color
+        ));
+    }
+
+    if (rightIntersection) {
+        graphForDrawing.append(sf::Vertex(Geometry::mapToWindow(*rightIntersection, size), color));
+    }
+    //TODO remove asymptotes
+    //TODO allow graph to go past overlap
     target.draw(graphForDrawing);
 }
+
 
 void FunctionPlotter::updatePoints() {
     vertices.clear();
@@ -94,18 +129,12 @@ void FunctionPlotter::updatePoints() {
         vertices.append(sf::Vertex(sf::Vector2f(point), color));
     }
 }
-
 int FunctionPlotter::getCenterIndex(sf::Vector2f position) {
-    int left = 0, right = (int) vertices.getVertexCount();
-    while (left + 1 != right) {
-        int m = (left + right) / 2;
-        bool condition = (vertices[m].position.x - position.x < 0);
-        if (condition)
-            left = m;
-        else
-            right = m;
+    for (int i = 0; i < vertices.getVertexCount(); i++) {
+        if (vertices[i].position.x >= 0)
+            return i;
     }
-    return left;
+    return vertices.getVertexCount() - 1;
 }
 
 

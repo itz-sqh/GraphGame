@@ -1,4 +1,3 @@
-
 #include "Player.h"
 
 
@@ -10,21 +9,22 @@ Player::Player(sf::Vector2f position, sf::Color color, float radius)
 void Player::draw(sf::RenderTarget &target) const {
     if (gotHit) return;
     const sf::Vector2u size = target.getSize();
+    const float windowRadius = Geometry::scaleToWindow(radius,size);
     if (isCurrent) {
-        sf::CircleShape outerRing(2 * radius);
+        sf::CircleShape outerRing(2 * windowRadius);
         outerRing.setFillColor(sf::Color::White);
         outerRing.setOutlineThickness(2);
         outerRing.setOutlineColor(color);
-        outerRing.setOrigin({2 * radius, 2 * radius});
+        outerRing.setOrigin({2 * windowRadius, 2 * windowRadius});
         outerRing.setPosition(Geometry::mapToWindow(position, size));
         target.draw(outerRing);
     }
 
 
-    sf::CircleShape shape(radius);
+    sf::CircleShape shape(windowRadius);
     shape.setFillColor(color);
     shape.setPosition(Geometry::mapToWindow(position, size));
-    shape.setOrigin({radius, radius});
+    shape.setOrigin({windowRadius, windowRadius});
     target.draw(shape);
 }
 
@@ -42,6 +42,10 @@ bool Player::isAlive() const {
 bool Player::getIsCurrent() const {
     return isCurrent;
 }
+void Player::kill() {
+    gotHit = true;
+}
+
 
 
 

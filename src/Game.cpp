@@ -47,8 +47,7 @@ void Game::generatePlayers() {
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }
-        players.push_back(std::make_shared<Player>(point,
-                                                   GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+        players.push_back(std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
         playersQueue.push(players.back());
     }
 }
@@ -152,7 +151,7 @@ void Game::render() const {
     }
 
     if (showingShot) {
-        plotter->draw(*window, obstacles, playersQueue.front()->getPosition());
+        plotter->draw(*window, obstacles, players, playersQueue.front()->getPosition());
     }
 
     drawInputBox();

@@ -10,6 +10,8 @@ public:
 
     void draw(sf::RenderTarget& target) const override;
 
+    void addOverlap(sf::Vector2f position);
+
     ~Obstacle() override = default;
 
 
