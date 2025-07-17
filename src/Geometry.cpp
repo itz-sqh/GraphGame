@@ -30,13 +30,12 @@ namespace Geometry {
             static_cast<float>(size.y) - y * static_cast<float>(size.y)
     };
     }
-    float scaleToWindow(float value, const sf::Vector2u size) {
+    float mapToWindow(float value, const sf::Vector2u size) {
         float s1 = size.y/(GameConstants::MAX_Y - GameConstants::MIN_Y);
         float s2 = size.x/(GameConstants::MAX_X - GameConstants::MIN_X);
         if (abs(s2-s1) > GameConstants::EPS) throw std::runtime_error("i dont wanna work w/ ellipses");
         return value * s1;
     }
-
 
     float dist(const sf::Vector2f p1, const sf::Vector2f p2) {
         return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
@@ -87,7 +86,6 @@ namespace Geometry {
         bx = x0 - line.b*mult;
         ay = y0 - line.a*mult;
         by = y0 + line.a*mult;
-
         return {{ax,ay},{bx,by}};
     }
     std::vector<sf::Vector2f> circleIntersection(const CircleObject& circle1, const CircleObject& circle2) {

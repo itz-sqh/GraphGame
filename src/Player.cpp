@@ -9,7 +9,7 @@ Player::Player(sf::Vector2f position, sf::Color color, float radius)
 void Player::draw(sf::RenderTarget &target) const {
     if (gotHit) return;
     const sf::Vector2u size = target.getSize();
-    const float windowRadius = Geometry::scaleToWindow(radius,size);
+    const float windowRadius = Geometry::mapToWindow(radius,size);
     if (isCurrentPlayer) {
         sf::CircleShape outerRing(2 * windowRadius);
         outerRing.setFillColor(sf::Color::White);

@@ -1,5 +1,7 @@
 #include "FunctionPlotter.h"
 
+#include <iostream>
+
 
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)
         : pointGenerator(expr), color(color),needUpdate(true) {
@@ -18,12 +20,43 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
                            const std::vector<std::shared_ptr<Obstacle>> &obstacles,
                            const std::vector<std::shared_ptr<Player>> &players,
                            sf::Vector2f playerPosition) {
-    if (!needUpdate) {
-        target.draw(vertices);
-        return;
+    if (needUpdate) {
+        updateVertices(obstacles,players,playerPosition,target.getSize());
+        isAnimating = true;
+        needUpdate = false;
+        clock.restart();
     }
-    needUpdate = false;
-    const sf::Vector2u size = target.getSize();
+
+    if (isAnimating) {
+        sf::VertexArray leftTmp;
+        sf::VertexArray rightTmp;
+        leftTmp.setPrimitiveType(sf::PrimitiveType::LineStrip);
+        rightTmp.setPrimitiveType(sf::PrimitiveType::LineStrip);
+        float timePlotting = clock.getElapsedTime().asSeconds();
+        float alpha = timePlotting/GameConstants::TIME_TO_PLOT;
+        int centerIndex = getCenterIndex(Geometry::mapToWindow(playerPosition,target.getSize()));
+        int size = static_cast<int>(vertices.getVertexCount());
+        int pointsToDraw = static_cast<int>(static_cast<float>(size)*alpha);
+        int left = std::max(centerIndex - pointsToDraw,0);
+        for(int i = centerIndex; i >= left; i--) {
+            leftTmp.append(vertices[i]);
+        }
+        int right = std::min(centerIndex + pointsToDraw,size-1);
+        for(int i = centerIndex; i <= right; i++) {
+            rightTmp.append(vertices[i]);
+        }
+        target.draw(leftTmp);
+        target.draw(rightTmp);
+        if(alpha>=1.0f) {
+            isAnimating = false;
+        }
+    }
+    else target.draw(vertices);
+}
+
+void FunctionPlotter::updateVertices(const std::vector<std::shared_ptr<Obstacle>> &obstacles,
+                           const std::vector<std::shared_ptr<Player>> &players,
+                           sf::Vector2f playerPosition, const sf::Vector2u size) {
     int centerInd = getCenterIndex();
 
     if (abs(vertices[centerInd].position.y) > GameConstants::MAX_Y) {
@@ -50,9 +83,7 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
         graphForDrawing.append(sf::Vertex(Geometry::mapToWindow(*rightIntersection, size), color));
     }
     killPlayers(players,playerPosition,leftEnd,rightEnd);
-    //TODO remove asymptotes
     vertices = graphForDrawing;
-    target.draw(vertices);
 }
 
 
@@ -64,10 +95,11 @@ void FunctionPlotter::updatePoints() {
     }
 }
 
-int FunctionPlotter::getCenterIndex() {
-    for (int i = 0; i < vertices.getVertexCount(); i++) {
-        if (vertices[i].position.x >= 0)
+int FunctionPlotter::getCenterIndex(sf::Vector2f position) {
+    for (int i = 0; i <= vertices.getVertexCount(); i++) {
+        if (vertices[i].position.x >= position.x) {
             return i;
+        }
     }
     return static_cast<int>(vertices.getVertexCount()) - 1;
 }
