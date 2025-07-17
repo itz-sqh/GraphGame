@@ -1,5 +1,4 @@
 #include "FunctionPlotter.h"
-#include "Geometry.h"
 
 
 FunctionPlotter::FunctionPlotter(const Expression &expr, sf::Color color)
@@ -36,7 +35,6 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
     sf::VertexArray graphForDrawing;
     graphForDrawing.setPrimitiveType(sf::PrimitiveType::LineStrip);
 
-    killPlayers(players);
     auto [leftEnd, leftIntersection] = getLeftIndexAndIntersection(centerInd, obstacles, playerPosition);
     auto [rightEnd, rightIntersection] = getRightIndexAndIntersection(centerInd, obstacles, playerPosition);
     if (leftIntersection) {
@@ -51,8 +49,8 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
     if (rightIntersection) {
         graphForDrawing.append(sf::Vertex(Geometry::mapToWindow(*rightIntersection, size), color));
     }
+    killPlayers(players,playerPosition,leftEnd,rightEnd);
     //TODO remove asymptotes
-    //TODO allow graph to go past overlap
     vertices = graphForDrawing;
     target.draw(vertices);
 }
@@ -71,20 +69,20 @@ int FunctionPlotter::getCenterIndex() {
         if (vertices[i].position.x >= 0)
             return i;
     }
-    return (int) vertices.getVertexCount() - 1;
+    return static_cast<int>(vertices.getVertexCount()) - 1;
 }
 
 std::tuple<int, std::optional<sf::Vector2f>>
 FunctionPlotter::getRightIndexAndIntersection(int centerInd, const std::vector<std::shared_ptr<Obstacle>> &obstacles,
                                               sf::Vector2f playerPosition) {
-    int rightEnd = (int) vertices.getVertexCount() - 1;
+    int rightEnd = static_cast<int>(vertices.getVertexCount()) - 1;
     std::shared_ptr<Obstacle> intersectObstacle;
     std::optional<sf::Vector2f> rightIntersection;
-    for (int i = centerInd; i < (int) vertices.getVertexCount() - 1; ++i) {
+    for (int i = centerInd; i < static_cast<int>(vertices.getVertexCount()) - 1; ++i) {
         sf::Vector2f p1 = vertices[i].position + playerPosition;
         sf::Vector2f p2 = vertices[i + 1].position + playerPosition;
         rightIntersection = intersectObstacles(obstacles, p1, p2, playerPosition, intersectObstacle);
-        if (rightIntersection) {
+        if (rightIntersection || abs(p2.y) >= GameConstants::MAX_Y) {
             rightEnd = i;
             break;
         }
@@ -104,8 +102,8 @@ FunctionPlotter::getLeftIndexAndIntersection(int centerInd, const std::vector<st
         sf::Vector2f p1 = vertices[i].position + playerPosition;
         sf::Vector2f p2 = vertices[i - 1].position + playerPosition;
         leftIntersection = intersectObstacles(obstacles, p1, p2, playerPosition, intersectObstacle);
-        if (leftIntersection) {
-            leftEnd = i - 1;
+        if (leftIntersection || abs(p1.y) >= GameConstants::MAX_Y) {
+            leftEnd = i-1;
             break;
         }
     }
@@ -114,16 +112,16 @@ FunctionPlotter::getLeftIndexAndIntersection(int centerInd, const std::vector<st
     return {leftEnd, leftIntersection};
 }
 
-void FunctionPlotter::killPlayers(const std::vector<std::shared_ptr<Player>> &players) {
-    for (int i = 0; i < vertices.getVertexCount() - 1; i++) {
-        auto p1 = vertices[i].position;
-        auto p2 = vertices[i + 1].position;
+void FunctionPlotter::killPlayers(const std::vector<std::shared_ptr<Player>> &players, sf::Vector2f position, int left, int right) {
+    for (int i = left; i < right - 1; i++) {
+        auto p1 = vertices[i].position + position;
+        auto p2 = vertices[i + 1].position + position;
         Geometry::Line line(p1, p2);
         for (const auto &player: players) {
-            if (player->getIsCurrent()) continue;
+            if (player->isCurrent()) continue;
             auto intersections = Geometry::circleLineIntersection(*player, line);
             for (const auto &point: intersections) {
-                if (point.x >= std::min(p1.x, p2.x) && point.x <= std::max(p1.x, p2.x)) {
+                if (Geometry::distToSegment(point,p1,p2) <= GameConstants::EPS) {
                     player->kill();
                 }
             }

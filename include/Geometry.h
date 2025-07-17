@@ -16,6 +16,7 @@ namespace Geometry {
     float scaleToWindow(float value, const sf::Vector2u size);
     float dist(const sf::Vector2f p1, const sf::Vector2f p2 = {0, 0});
     float distSq(const sf::Vector2f p1, const sf::Vector2f p2 = {0, 0});
+    float distToSegment(sf::Vector2f p1, sf::Vector2f seg1, sf::Vector2f seg2);
     std::vector<sf::Vector2f> circleLineIntersection(const CircleObject& circle, Line line);
     std::vector<sf::Vector2f> circleIntersection(const CircleObject& circle1, const CircleObject& circle2);
 

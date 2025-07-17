@@ -18,10 +18,10 @@ public:
     [[nodiscard]] sf::Color getColor() const;
     void switchCurrent();
 
-    bool getIsCurrent() const;
+    bool isCurrent() const;
 
 private:
     bool gotHit = false;
-    bool isCurrent = false;
+    bool isCurrentPlayer = false;
     sf::Color color;
 };

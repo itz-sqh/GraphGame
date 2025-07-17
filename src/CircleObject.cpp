@@ -25,6 +25,6 @@ float CircleObject::getRadius() const { return radius; }
 sf::Vector2f CircleObject::getPosition() const { return position; }
 
 bool CircleObject::inside(sf::Vector2f point) {
-    return Geometry::distSq(point, position) - radius * radius <= 0;
+    return Geometry::distSq(point, position) - radius * radius <= GameConstants::EPS;
 }
 
