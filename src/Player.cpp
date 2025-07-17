@@ -10,7 +10,7 @@ void Player::draw(sf::RenderTarget &target) const {
     if (gotHit) return;
     const sf::Vector2u size = target.getSize();
     const float windowRadius = Geometry::scaleToWindow(radius,size);
-    if (isCurrent) {
+    if (isCurrentPlayer) {
         sf::CircleShape outerRing(2 * windowRadius);
         outerRing.setFillColor(sf::Color::White);
         outerRing.setOutlineThickness(2);
@@ -32,15 +32,15 @@ sf::Color Player::getColor() const {
     return color;
 }
 void Player::switchCurrent() {
-    isCurrent = !isCurrent;
+    isCurrentPlayer = !isCurrentPlayer;
 }
 
 bool Player::isAlive() const {
     return !gotHit;
 }
 
-bool Player::getIsCurrent() const {
-    return isCurrent;
+bool Player::isCurrent() const {
+    return isCurrentPlayer;
 }
 void Player::kill() {
     gotHit = true;

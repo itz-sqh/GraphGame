@@ -45,6 +45,22 @@ namespace Geometry {
     float distSq(const sf::Vector2f p1, const sf::Vector2f p2) {
         return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
     }
+    float distToSegment(sf::Vector2f point, sf::Vector2f seg1, sf::Vector2f seg2) {
+        sf::Vector2f AB = seg2 - seg1;
+        sf::Vector2f AP = point - seg1;
+
+        float proj = (AP.x * AB.x + AP.y * AB.y) / (AB.x * AB.x + AB.y * AB.y);
+
+        if (proj < 0.0f) {
+            return dist(point, seg1);
+        } else if (proj > 1.0f) {
+            return dist(point,seg2);
+        } else {
+            sf::Vector2f h = seg1 + proj * AB;
+            return dist(point,h);
+        }
+    }
+
 
     std::vector<sf::Vector2f> circleLineIntersection(const CircleObject& circle,Line line) {
         const float r = circle.getRadius();
@@ -75,7 +91,6 @@ namespace Geometry {
         return {{ax,ay},{bx,by}};
     }
     std::vector<sf::Vector2f> circleIntersection(const CircleObject& circle1, const CircleObject& circle2) {
-        //TODO check case when circle centers at the same point
         const sf::Vector2f offset1 = circle1.getPosition();
         const float r1 = circle1.getRadius();
         const sf::Vector2f offset2 = circle2.getPosition();

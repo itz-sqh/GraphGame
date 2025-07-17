@@ -12,7 +12,7 @@ namespace GameConstants {
     constexpr int HEIGHT = 600;
     constexpr float EPS = 1e-3;
     constexpr float HIT_RADIUS = 0.5f;
-    constexpr float SHOT_DISPLAY_TIME = 5.0f;
+    constexpr float SHOT_DISPLAY_TIME = 2.0f;
     constexpr float PLAYER_RADIUS = 0.33f;
     constexpr float OBSTACLE_RADIUS = 2;
     constexpr float DISTANCE_BETWEEN_PLAYERS = PLAYER_RADIUS;

@@ -33,7 +33,7 @@ private:
     std::tuple<int, std::optional<sf::Vector2f>>
     getRightIndexAndIntersection(int centerInd, const std::vector<std::shared_ptr<Obstacle>> &obstacles,sf::Vector2f offset = {0, 0});
 
-    void killPlayers(const std::vector<std::shared_ptr<Player>> &players);
+    void killPlayers(const std::vector<std::shared_ptr<Player>> &players, sf::Vector2f position, int left, int right);
 
     std::optional<sf::Vector2f>
     intersectObstacles(const std::vector<std::shared_ptr<Obstacle>> &obstacles, sf::Vector2f p1, sf::Vector2f p2,
