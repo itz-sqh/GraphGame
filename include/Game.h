@@ -1,18 +1,16 @@
 #pragma once
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include "FunctionPlotter.h"
-#include "GameConstants.h"
-#include <memory>
-#include <random>
-#include <vector>
-#include "queue"
+#include<SFML/Graphics/RenderWindow.hpp>
+#include"FunctionPlotter.h"
+#include"GameConstants.h"
+#include<memory>
+#include<vector>
+#include<queue>
 #include"Rng.h"
-#include <iostream>
-#include "Geometry.h"
-#include "ExpressionException.h"
-#include "Player.h"
-#include "Obstacle.h"
+#include"Geometry.h"
+#include"ExpressionException.h"
+#include"Player.h"
+#include"Obstacle.h"
 
 class Game {
 public:
@@ -20,7 +18,7 @@ public:
 
     void run();
 
-    constexpr bool isRunning() const { return window->isOpen() && !gameOver; }
+    bool isRunning() const { return window->isOpen() && !gameOver; }
 
 private:
     std::unique_ptr<sf::RenderWindow> window;
