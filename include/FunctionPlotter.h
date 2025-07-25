@@ -25,7 +25,7 @@ public:
 private:
     void updatePoints();
 
-    int getCenterIndex();
+    int getCenterIndex(sf::Vector2f position = {0,0});
 
     std::tuple<int, std::optional<sf::Vector2f>>
     getLeftIndexAndIntersection(int centerInd, const std::vector<std::shared_ptr<Obstacle>> &obstacles,sf::Vector2f offset = {0, 0});
@@ -41,7 +41,11 @@ private:
     PointGenerator pointGenerator;
     sf::Color color;
     sf::VertexArray vertices;
-
+    void updateVertices(const std::vector<std::shared_ptr<Obstacle>> &obstacles,
+                           const std::vector<std::shared_ptr<Player>> &players,
+                           sf::Vector2f playerPosition, sf::Vector2u size);
     bool needUpdate = false;
+    bool isAnimating = false;
+    sf::Clock clock;
 
 };

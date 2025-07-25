@@ -13,7 +13,7 @@ namespace Geometry {
         Line(const float a, const float b, const float c);
     };
     sf::Vector2f mapToWindow(const sf::Vector2f pos, const sf::Vector2u size);
-    float scaleToWindow(float value, const sf::Vector2u size);
+    float mapToWindow(float value, const sf::Vector2u size);
     float dist(const sf::Vector2f p1, const sf::Vector2f p2 = {0, 0});
     float distSq(const sf::Vector2f p1, const sf::Vector2f p2 = {0, 0});
     float distToSegment(sf::Vector2f p1, sf::Vector2f seg1, sf::Vector2f seg2);
