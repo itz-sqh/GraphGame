@@ -2,6 +2,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "GameConstants.h"
+#include <cmath>
 
 
 class CircleObject {
@@ -13,7 +14,7 @@ public:
     bool operator!=(const CircleObject &other) const;
     virtual ~CircleObject() = default;
 
-    bool inside(sf::Vector2f point);
+    [[nodiscard]] bool inside(sf::Vector2f point) const;
     [[nodiscard]] float getX() const;
     [[nodiscard]] float getY() const;
     [[nodiscard]] float getRadius() const;

@@ -10,7 +10,7 @@ PointGenerator::PointGenerator(const Expression &expression) {
 
 
 std::vector<sf::Vector2f>
-PointGenerator::getSegmentPoints(float leftX, float rightX) {
+PointGenerator::getSegmentPoints(float leftX, float rightX) const {
     if (leftX >= rightX)
         throw std::runtime_error("Method GetSegmentPoints requires leftX<Right");
 
@@ -23,7 +23,7 @@ PointGenerator::getSegmentPoints(float leftX, float rightX) {
 
         result.emplace_back(currentX, currentY.value_or(NAN));
 
-        currentX += GameConstants::POINTS_STEP;
+        currentX += GameConstants::POINT_STEP;
     }
 
     currentX = rightX;
@@ -34,7 +34,7 @@ PointGenerator::getSegmentPoints(float leftX, float rightX) {
     return result;
 }
 
-sf::Vector2f PointGenerator::getY(float x) {
+sf::Vector2f PointGenerator::getY(float x) const {
     std::optional<float> y = this->expression.evaluate(x);
 
     if (!y.has_value())
@@ -43,7 +43,7 @@ sf::Vector2f PointGenerator::getY(float x) {
     return {x, y.value()};
 }
 
-std::vector<sf::Vector2f> PointGenerator::getY(const std::vector<float>& vecX) {
+std::vector<sf::Vector2f> PointGenerator::getY(const std::vector<float>& vecX) const {
 
     std::vector<sf::Vector2f> result;
     for (auto x: vecX) {

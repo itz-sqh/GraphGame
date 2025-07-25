@@ -11,7 +11,7 @@ public:
     void draw(sf::RenderTarget& target) const;
     std::vector<CircleObject> getOverlaps();
     void addOverlap(sf::Vector2f position);
-    bool isOverlapped(sf::Vector2f point,const CircleObject& without = CircleObject({0,0},0));
+    bool isOverlapped(sf::Vector2f point,const CircleObject& without = CircleObject({0,0},0)) const;
     ~Obstacle() override = default;
 
 
