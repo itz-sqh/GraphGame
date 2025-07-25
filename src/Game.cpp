@@ -43,11 +43,11 @@ void Game::generatePlayers() {
                     placed = false;
             }
 
-            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size).x,
-                         Geometry::mapToWindow(point, size).x) <
+            if (std::min(static_cast<float>(size.x) - Geometry::mapToWindow(point, size,GameConstants::MIN_X, GameConstants::MAX_X, GameConstants::MIN_Y, GameConstants::MAX_Y).x,
+                         Geometry::mapToWindow(point, size,GameConstants::MIN_X, GameConstants::MAX_X, GameConstants::MIN_Y, GameConstants::MAX_Y).x) <
                 GameConstants::PLAYER_WIDTH_OFFSET ||
-                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size).y,
-                         Geometry::mapToWindow(point, size).y) <
+                std::min(static_cast<float>(size.y) - Geometry::mapToWindow(point, size,GameConstants::MIN_X, GameConstants::MAX_X, GameConstants::MIN_Y, GameConstants::MAX_Y).y,
+                         Geometry::mapToWindow(point, size,GameConstants::MIN_X, GameConstants::MAX_X, GameConstants::MIN_Y, GameConstants::MAX_Y).y) <
                 GameConstants::PLAYER_HEIGHT_OFFSET)
                 placed = false;
         }

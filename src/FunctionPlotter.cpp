@@ -34,7 +34,7 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
         rightTmp.setPrimitiveType(sf::PrimitiveType::LineStrip);
         float timePlotting = clock.getElapsedTime().asSeconds();
         float alpha = timePlotting/GameConstants::TIME_TO_PLOT;
-        int centerIndex = getCenterIndex(Geometry::mapToWindow(playerPosition,target.getSize()));
+        int centerIndex = getCenterIndex(Geometry::mapToWindow(playerPosition,target.getSize(),GameConstants::MIN_X, GameConstants::MAX_X, GameConstants::MIN_Y, GameConstants::MAX_Y));
         int size = static_cast<int>(vertices.getVertexCount());
         int pointsToDraw = static_cast<int>(static_cast<float>(size)*alpha);
         int left = std::max(centerIndex - pointsToDraw,0);
@@ -59,7 +59,7 @@ void FunctionPlotter::updateVertices(const std::vector<std::shared_ptr<Obstacle>
                            sf::Vector2f playerPosition, const sf::Vector2u size) {
     int centerInd = getCenterIndex();
 
-    if (abs(vertices[centerInd].position.y) > GameConstants::MAX_Y) {
+    if (std::abs(vertices[centerInd].position.y) > GameConstants::MAX_Y) {
         throw std::runtime_error("y(0) must fit on screen");
     }
     const sf::Vector2f offset = vertices[centerInd].position;
@@ -114,7 +114,7 @@ FunctionPlotter::getRightIndexAndIntersection(int centerInd, const std::vector<s
         sf::Vector2f p1 = vertices[i].position + playerPosition;
         sf::Vector2f p2 = vertices[i + 1].position + playerPosition;
         rightIntersection = intersectObstacles(obstacles, p1, p2, playerPosition, intersectObstacle);
-        if (rightIntersection || abs(p2.y) >= GameConstants::MAX_Y) {
+        if (rightIntersection || std::abs(p2.y) >= GameConstants::MAX_Y) {
             rightEnd = i;
             break;
         }
@@ -134,7 +134,7 @@ FunctionPlotter::getLeftIndexAndIntersection(int centerInd, const std::vector<st
         sf::Vector2f p1 = vertices[i].position + playerPosition;
         sf::Vector2f p2 = vertices[i - 1].position + playerPosition;
         leftIntersection = intersectObstacles(obstacles, p1, p2, playerPosition, intersectObstacle);
-        if (leftIntersection || abs(p1.y) >= GameConstants::MAX_Y) {
+        if (leftIntersection || std::abs(p1.y) >= GameConstants::MAX_Y) {
             leftEnd = i-1;
             break;
         }

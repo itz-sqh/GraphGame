@@ -14,14 +14,14 @@ public:
 
     explicit PointGenerator(const Expression& expression);
 
-    [[nodiscard]] std::vector<sf::Vector2f> getSegmentPoints(float leftX = GameConstants::MIN_X, float rightX = GameConstants::MAX_X);
+    [[nodiscard]] std::vector<sf::Vector2f> getSegmentPoints(float leftX = GameConstants::MIN_X, float rightX = GameConstants::MAX_X) const;
 
 private:
 
 
-    [[nodiscard]] std::vector<sf::Vector2f> getY(const std::vector<float>& x);
+    [[nodiscard]] std::vector<sf::Vector2f> getY(const std::vector<float>& vecX) const;
 
-    [[nodiscard]] sf::Vector2f getY(float x);
+    [[nodiscard]] sf::Vector2f getY(float x) const;
     Expression expression;
 };
 
