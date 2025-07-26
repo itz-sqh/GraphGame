@@ -8,7 +8,6 @@
 #include<queue>
 #include"Rng.h"
 #include"Geometry.h"
-#include"ExpressionException.h"
 #include"Player.h"
 #include"Obstacle.h"
 

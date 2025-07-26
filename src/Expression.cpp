@@ -1,6 +1,5 @@
 #include "Expression.h"
 
-#include "ExpressionException.h"
 
 
 void Expression::add(const Token& token) {
@@ -47,7 +46,7 @@ bool Expression::isValid() const {
 
 std::optional<float> Expression::evaluate(const float x) const {
     if (!this->isValid())
-        throw ExpressionException("Invalid expression");
+        return std::nullopt;
 
     std::stack<double> st;
 
@@ -121,3 +120,12 @@ std::optional<float> Expression::evaluate(const float x) const {
 bool Expression::isEqual(const Expression& lhs, const Expression& rhs) {
     return lhs.tokens == rhs.tokens;
 }
+Expression::Expression(const std::vector<Token> &tokens) {
+    for (const Token& token : tokens) {
+        add(token);
+    }
+}
+Expression::Expression(const Expression &expression) {
+    tokens = expression.tokens;
+}
+

@@ -4,7 +4,8 @@ project(GraphGame)
 set(CMAKE_CXX_STANDARD 23)
 
 file(GLOB source_files "src/*.cpp")
-add_executable(${PROJECT_NAME} ${source_files})
+add_executable(${PROJECT_NAME} ${source_files}
+        include/ExpressionErrors.h)
 
 file(COPY resources/ARIAL.TTF DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

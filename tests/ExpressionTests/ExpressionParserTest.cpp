@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
                 expected.add(token);
             }
 
-            BOOST_CHECK(Expression::isEqual(observed,expected));
+            BOOST_CHECK(Expression::isEqual(observed.value(),expected));
         }
 
         // No variable test
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
                 expected.add(token);
             }
 
-            BOOST_CHECK(Expression::isEqual(observed,expected));
+            BOOST_CHECK(Expression::isEqual(observed.value(),expected));
         }
         // Test with x variable
         {
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
             }
 
 
-            BOOST_CHECK(Expression::isEqual(observed,expected));
+            BOOST_CHECK(Expression::isEqual(observed.value(),expected));
         }
 
         // Test with x variable
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
             }
 
 
-            BOOST_CHECK(Expression::isEqual(observed,expected));
+            BOOST_CHECK(Expression::isEqual(observed.value(),expected));
         }
     }
 

@@ -1,11 +1,17 @@
 #include "ExpressionParser.h"
 
 
-Expression ExpressionParser::parse(const std::string &infix) {
+ParseResult<Expression> ExpressionParser::parse(const std::string &infix) {
     auto tokens = tokenize(infix);
-    if (!tokens.has_value()) return {};
-    if (auto res = shuntingYard(tokens.value()); res.has_value()) return res.value();
-    else return {};
+    if (!tokens) return std::unexpected(tokens.error());
+
+    auto expr = shuntingYard(tokens.value());
+    if (!expr) return std::unexpected(expr.error());
+
+    if (!expr->isValid()) return std::unexpected(ValidationError("Expression is not valid"));
+
+    return expr;
+
 }
 
 std::optional<int> ExpressionParser::getPrecedence(const Token& token) {
@@ -28,7 +34,7 @@ std::optional<int> ExpressionParser::getPrecedence(const Token& token) {
     return std::nullopt;
 }
 
-std::optional<std::vector<Token>> ExpressionParser::tokenize(const std::string& infix) {
+ParseResult<std::vector<Token>> ExpressionParser::tokenize(const std::string& infix) {
     std::vector<Token> tokens;
     int i = 0;
     while (i < infix.size()) {
@@ -51,7 +57,7 @@ std::optional<std::vector<Token>> ExpressionParser::tokenize(const std::string& 
             else if (s == "e") {
                 tokens.emplace_back(TokenType::Constant, std::to_string(Constants::E));
             }
-            else return std::nullopt;
+            else return std::unexpected(LexerError{"Invalid variable name or function"});
             continue;
         }
         if (std::isdigit(infix[i]) || infix[i] == '.') {
@@ -60,12 +66,12 @@ std::optional<std::vector<Token>> ExpressionParser::tokenize(const std::string& 
             i++;
             while (i < infix.size() && (std::isdigit(infix[i]) || infix[i] == '.')) {
                 if (infix[i] == '.') {
-                    if (dot) return std::nullopt;
+                    if (dot) return std::unexpected(LexerError{"Expected a number, but found 2 dots"});
                     dot = true;
                 }
                 i++;
             }
-            if (std::string num = infix.substr(start, i - start); num[0] == '.') return std::nullopt;
+            if (std::string num = infix.substr(start, i - start); num[0] == '.') return std::unexpected(LexerError{"Expected a number, but found dot"});
             tokens.emplace_back(TokenType::Constant,infix.substr(start, i - start));
             continue;
         }
@@ -101,13 +107,14 @@ std::optional<std::vector<Token>> ExpressionParser::tokenize(const std::string& 
             i++;
             continue;
         }
-        return std::nullopt;
+        return std::unexpected(LexerError{"Unknown character: " + infix[i] });
 
     }
     return tokens;
 }
 
-std::optional<Expression> ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
+ParseResult<Expression> ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
+    if (tokens.empty()) return std::unexpected(ParserError{"Expected at least one token"});
     Expression res;
     std::stack<Token> st;
 
@@ -143,7 +150,7 @@ std::optional<Expression> ExpressionParser::shuntingYard(const std::vector<Token
                     res.add(st.top());
                     st.pop();
                 }
-                if (st.empty()) return std::nullopt;
+                if (st.empty()) return std::unexpected(ParserError{"Mismatched parentheses"});
                 st.pop();
 
                 if (!st.empty() && st.top().type == TokenType::Function) {
@@ -157,7 +164,7 @@ std::optional<Expression> ExpressionParser::shuntingYard(const std::vector<Token
                     res.add(st.top());
                     st.pop();
                 }
-                if (st.empty()) return std::nullopt;
+                if (st.empty()) return std::unexpected(ParserError{"Mismatched parentheses"});
                 break;
 
             default:
@@ -167,11 +174,11 @@ std::optional<Expression> ExpressionParser::shuntingYard(const std::vector<Token
 
     while (!st.empty()) {
         if (st.top().type == TokenType::LeftParen) {
-            return std::nullopt;
+            return std::unexpected(ParserError{"Mismatched parentheses"});
         }
         res.add(st.top());
         st.pop();
     }
 
-    return {res};
+    return ParseResult<Expression>(res);
 }

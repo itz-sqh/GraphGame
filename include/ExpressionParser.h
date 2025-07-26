@@ -6,17 +6,16 @@
 #include <stdexcept>
 #include "constants.h"
 #include<stack>
-#include "ExpressionException.h"
+#include"ExpressionErrors.h"
 
 class ExpressionParser {
 public:
-    static Expression parse(const std::string& infix);
+    static ParseResult<Expression> parse(const std::string& infix);
 
-    static std::optional<std::vector<Token>> tokenize(const std::string& infix);
-
+    static ParseResult<std::vector<Token>> tokenize(const std::string& infix);
 
 private:
 
-    static std::optional<Expression> shuntingYard(const std::vector<Token>& tokens);
+    static ParseResult<Expression> shuntingYard(const std::vector<Token>& tokens);
     static std::optional<int> getPrecedence(const Token& token);
 };

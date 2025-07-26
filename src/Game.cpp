@@ -1,14 +1,10 @@
 #include "Game.h"
-#include"Rng.h"
-#include <iostream>
-#include "Geometry.h"
-#include "ExpressionException.h"
 
 
 Game::Game() : shotDisplayTime(GameConstants::SHOT_DISPLAY_TIME), inputTextFont("ARIAL.TTF") {
     initWindow();
     initMap();
-    plotter = std::make_unique<FunctionPlotter>(ExpressionParser::parse("0"), sf::Color::Red);
+    plotter = std::make_unique<FunctionPlotter>(ExpressionParser::parse("0").value(), sf::Color::Red);
 }
 
 void Game::initWindow() {
@@ -107,13 +103,9 @@ void Game::pollEvents() {
 
             if (!showingShot && !gameOver) {
                 if (keyEvent->code == sf::Keyboard::Key::Enter && !playerInput.empty()) {
-                    try {
-                        Expression expr = ExpressionParser::parse(playerInput);
-                        fireExpression(expr);
-                    } catch (const ExpressionException &exception) {
-                        std::cerr << exception.what() << std::endl;
-                        playerInput.clear();
-                    }
+                        auto expr = ExpressionParser::parse(playerInput);
+                        if (!expr) playerInput.clear();
+                        else fireExpression(expr.value());
                 } else if (keyEvent->code == sf::Keyboard::Key::Backspace) {
                     if (!playerInput.empty()) {
                         playerInput.pop_back();

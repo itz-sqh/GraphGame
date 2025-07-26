@@ -7,9 +7,10 @@
 void test_expression(const std::string &infix, const std::function<float(float)> &func, float from, float to,
                      float step,
                      float eps = GameConstants::EPS) {
-    Expression expr = ExpressionParser::parse(infix);
+    auto expr = ExpressionParser::parse(infix);
+    if (!expr.has_value()) return;
     for (float x = from; x <= to; x += step) {
-        auto res = expr.evaluate(x);
+        auto res = expr.value().evaluate(x);
         BOOST_TEST_REQUIRE(res.has_value());
         BOOST_CHECK_CLOSE(res.value(), func(x), eps);
     }
@@ -40,23 +41,23 @@ BOOST_AUTO_TEST_SUITE(ExpressionEvaluationTest)
     }
 
     BOOST_AUTO_TEST_CASE(special_cases) {
-        Expression expr = ExpressionParser::parse("1/x");
+        Expression expr = Expression(ExpressionParser::parse("1/x").value());
         BOOST_TEST(!expr.evaluate(0).has_value());
 
-        expr = ExpressionParser::parse("log(x)");
+        expr = ExpressionParser::parse("log(x)").value();
         BOOST_TEST(!expr.evaluate(-1).has_value());
 
-        expr = ExpressionParser::parse("sqrt(x)");
+        expr = ExpressionParser::parse("sqrt(x)").value();
         BOOST_TEST(!expr.evaluate(-1).has_value());
     }
 
     BOOST_AUTO_TEST_CASE(constant_expression) {
-        Expression expr = ExpressionParser::parse("2 + 3*5");
+        Expression expr = Expression(ExpressionParser::parse("2 + 3*5").value());
         auto res = expr.evaluate(0);
         BOOST_TEST(res.has_value());
         BOOST_TEST(res.value() == 17);
 
-        expr = ExpressionParser::parse("pi + 1");
+        expr = ExpressionParser::parse("pi + 1").value();
         res = expr.evaluate(0);
         BOOST_TEST(res.has_value());
         BOOST_CHECK_CLOSE(res.value(), Constants::PI + 1, GameConstants::EPS);

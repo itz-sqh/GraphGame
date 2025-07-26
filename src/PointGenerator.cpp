@@ -1,7 +1,9 @@
 #include "PointGenerator.h"
 
-PointGenerator::PointGenerator(const std::string &expression) {
-    this->expression = ExpressionParser::parse(expression);
+PointGenerator::PointGenerator(const std::string &infix) {
+    auto parseResult = ExpressionParser::parse(infix);
+    if (!parseResult) this->expression = Expression();
+    else this->expression = parseResult.value();
 }
 
 PointGenerator::PointGenerator(const Expression &expression) {

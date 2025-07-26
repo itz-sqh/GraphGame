@@ -8,6 +8,11 @@
 
 class Expression {
 public:
+    explicit Expression(const std::vector<Token> &tokens);
+
+    explicit Expression(const Expression& expression);
+
+    Expression() = default;
 
     void add(const Token& token);
 

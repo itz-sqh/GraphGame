@@ -10,7 +10,7 @@
 
 class PointGenerator {
 public:
-    explicit PointGenerator(const std::string &expression);
+    explicit PointGenerator(const std::string &infix);
 
     explicit PointGenerator(const Expression& expression);
 
