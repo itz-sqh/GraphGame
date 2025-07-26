@@ -30,13 +30,17 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
     if (isAnimating) {
         sf::VertexArray leftTmp;
         sf::VertexArray rightTmp;
+
         leftTmp.setPrimitiveType(sf::PrimitiveType::LineStrip);
         rightTmp.setPrimitiveType(sf::PrimitiveType::LineStrip);
-        float timePlotting = clock.getElapsedTime().asSeconds();
-        float alpha = timePlotting/GameConstants::TIME_TO_PLOT;
+
+        float elapsedTime = clock.getElapsedTime().asSeconds();
+
+        int pointsToDraw = static_cast<int>(elapsedTime * GameConstants::POINTS_PER_SECOND);
+
         int centerIndex = getCenterIndex(Geometry::mapToWindow(playerPosition,target.getSize(),GameConstants::MIN_X, GameConstants::MAX_X, GameConstants::MIN_Y, GameConstants::MAX_Y));
         int size = static_cast<int>(vertices.getVertexCount());
-        int pointsToDraw = static_cast<int>(static_cast<float>(size)*alpha);
+
         int left = std::max(centerIndex - pointsToDraw,0);
         for(int i = centerIndex; i >= left; i--) {
             leftTmp.append(vertices[i]);
@@ -45,9 +49,11 @@ void FunctionPlotter::draw(sf::RenderTarget &target,
         for(int i = centerIndex; i <= right; i++) {
             rightTmp.append(vertices[i]);
         }
+
         target.draw(leftTmp);
         target.draw(rightTmp);
-        if(alpha>=1.0f) {
+
+        if(pointsToDraw >= size) {
             isAnimating = false;
         }
     }

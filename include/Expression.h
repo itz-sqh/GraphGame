@@ -10,7 +10,7 @@ class Expression {
 public:
     explicit Expression(const std::vector<Token> &tokens);
 
-    explicit Expression(const Expression& expression);
+    Expression(const Expression& expression);
 
     Expression() = default;
 

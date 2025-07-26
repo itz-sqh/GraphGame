@@ -12,13 +12,13 @@ namespace GameConstants {
 
     constexpr float POINT_STEP = 0.025;
 
-    constexpr int PLAYER_COUNT = 2;
+    constexpr int PLAYER_COUNT = 4;
     constexpr int OBSTACLE_COUNT = 10;
 
     constexpr float EPS = 1e-3;
 
     constexpr float SHOT_DISPLAY_TIME = 5.0f;
-    constexpr float TIME_TO_PLOT = 3.0f;
+    constexpr int POINTS_PER_SECOND = 1000;
 
     constexpr float HIT_RADIUS = 0.5f;
     constexpr float PLAYER_RADIUS = 0.33f;

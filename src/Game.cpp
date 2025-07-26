@@ -48,7 +48,7 @@ void Game::generatePlayers() {
                 placed = false;
         }
         players.push_back(
-                std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+                std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % 2]));
         playersQueue.push(players.back());
     }
 }
