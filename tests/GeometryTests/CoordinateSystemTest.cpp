@@ -41,7 +41,7 @@ void test_scalar_mapping(float value, unsigned windowSize, float expected, float
 BOOST_AUTO_TEST_SUITE(CoordinateSystemTest)
 
 
-    BOOST_AUTO_TEST_CASE(point_mapping) {
+    BOOST_AUTO_TEST_CASE(point_mapping_test) {
         for (const auto &windowSize: windowSizes) {
             for (const auto &range: coordinateRanges) {
                 auto [minX, maxX, minY, maxY] = range;
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_SUITE(CoordinateSystemTest)
         }
     }
 
-    BOOST_AUTO_TEST_CASE(scalar_mapping) {
+    BOOST_AUTO_TEST_CASE(scalar_mapping_test) {
         for (const auto &windowSize: windowSizes) {
             for (const auto &range: coordinateRanges) {
                 auto [minX, maxX, minY, maxY] = range;

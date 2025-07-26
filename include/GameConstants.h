@@ -1,4 +1,5 @@
 #pragma once
+#include<SFML/Graphics.hpp>
 
 namespace GameConstants {
     constexpr float MAX_X = 25;

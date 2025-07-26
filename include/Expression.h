@@ -13,9 +13,11 @@ public:
 
     [[nodiscard]] std::string toString() const;
 
-    [[nodiscard]] static bool isValid(const Expression& expression);
+    [[nodiscard]] bool isValid() const;
 
-    [[nodiscard]] std::optional<double> evaluate(double x) const;
+    [[nodiscard]] static bool isEqual(const Expression& lhs, const Expression& rhs);
+
+    [[nodiscard]] std::optional<float> evaluate(float x) const;
 
 private:
     std::vector<Token> tokens;

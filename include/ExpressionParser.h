@@ -12,9 +12,11 @@ class ExpressionParser {
 public:
     static Expression parse(const std::string& infix);
 
+    static std::optional<std::vector<Token>> tokenize(const std::string& infix);
+
 
 private:
-    static std::vector<Token> tokenize(const std::string& infix);
-    static Expression shuntingYard(const std::vector<Token>& tokens);
-    static int getPrecedence(const Token& token);
+
+    static std::optional<Expression> shuntingYard(const std::vector<Token>& tokens);
+    static std::optional<int> getPrecedence(const Token& token);
 };

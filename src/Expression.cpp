@@ -15,9 +15,9 @@ std::string Expression::toString() const {
     return res;
 }
 
-bool Expression::isValid(const Expression& expression) {
+bool Expression::isValid() const {
     int size = 0;
-    for (const Token& token : expression.tokens) {
+    for (const Token& token : tokens) {
         switch (token.type) {
             case TokenType::Constant:
             case TokenType::Variable:
@@ -45,8 +45,8 @@ bool Expression::isValid(const Expression& expression) {
     return size == 1;
 }
 
-std::optional<double> Expression::evaluate(const double x) const {
-    if (!isValid(*this))
+std::optional<float> Expression::evaluate(const float x) const {
+    if (!this->isValid())
         throw ExpressionException("Invalid expression");
 
     std::stack<double> st;
@@ -69,7 +69,9 @@ std::optional<double> Expression::evaluate(const double x) const {
 
                     const double operand = st.top();
                     st.pop();
-                    st.push(op->second.operation(operand));
+                    auto res = op->second.operation(operand);
+                    if (std::isinf(res) || std::isnan(res)) return std::nullopt;
+                    st.push(res);
                     break;
                 }
 
@@ -82,7 +84,7 @@ std::optional<double> Expression::evaluate(const double x) const {
                     const double a = st.top(); st.pop();
 
                     const double res = op->second.operation(a,b);
-                    if (std::isinf(res)) return std::nullopt;
+                    if (std::isinf(res) || std::isnan(res)) return std::nullopt;
                     st.push(res);
                     break;
                 }
@@ -99,7 +101,7 @@ std::optional<double> Expression::evaluate(const double x) const {
                     }
 
                     const double res = func->second.operation(args);
-                    if (std::isinf(res)) return std::nullopt;
+                    if (std::isinf(res) || std::isnan(res)) return std::nullopt;
                     st.push(res);
                     break;
                 }
@@ -113,4 +115,9 @@ std::optional<double> Expression::evaluate(const double x) const {
     }
 
     return st.size() == 1 ? std::optional<double>(st.top()) : std::nullopt;
+}
+
+
+bool Expression::isEqual(const Expression& lhs, const Expression& rhs) {
+    return lhs.tokens == rhs.tokens;
 }

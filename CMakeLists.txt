@@ -11,28 +11,19 @@ file(COPY resources/ARIAL.TTF DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 
 
-if(WIN32)
-    find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
-            PATHS
-            ${SFML_DIR}
-            "$ENV{SFML_DIR}"
-            "C:/SFML"
-            "C:/Program Files/SFML"
-            PATH_SUFFIXES "lib/cmake/SFML"
-    )
+find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
+        PATHS
+        ${SFML_DIR}
+        "$ENV{SFML_DIR}"
+        "C:/SFML"
+        "C:/Program Files/SFML"
+        PATH_SUFFIXES "lib/cmake/SFML"
+)
 
-    if(NOT SFML_FOUND)
-        message(WARNING "SFML not found. Please install it to C:/SFML or C:/Program Files/SFML")
-    endif()
+if (NOT SFML_FOUND)
+    message(WARNING "SFML not found. Please install it to C:/SFML or C:/Program Files/SFML")
+endif ()
 
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${SFML_DIR}/../../../bin"
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    )
-else()
-    find_package(SFML 3.0.0 COMPONENTS System Window Graphics REQUIRED)
-endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         SFML::System
@@ -41,7 +32,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 find_package(Boost 1.74 QUIET COMPONENTS unit_test_framework)
-if(Boost_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
+if (Boost_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
     enable_testing()
     add_subdirectory(tests)
-endif()
+endif ()

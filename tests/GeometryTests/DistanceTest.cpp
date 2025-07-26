@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(DistanceTest)
 
 
     // dist between (3,4) and (0,0)
-    BOOST_AUTO_TEST_CASE(distane_between_points) {
+    BOOST_AUTO_TEST_CASE(distane_between_points_test) {
         {
             sf::Vector2f p1(3.f, 4.f);
 
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_SUITE(DistanceTest)
         }
 
     }
-    BOOST_AUTO_TEST_CASE(distance_between_points_squared) {
+    BOOST_AUTO_TEST_CASE(distance_between_points_squared_test) {
         {
             sf::Vector2f p1(3.f, 4.f);
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_SUITE(DistanceTest)
         }
     }
 
-    BOOST_AUTO_TEST_CASE(distane_between_point_and_segment) {
+    BOOST_AUTO_TEST_CASE(distane_between_point_and_segment_test) {
 
         //proj > 1.f
         {

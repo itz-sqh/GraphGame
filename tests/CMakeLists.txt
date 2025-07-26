@@ -1,12 +1,10 @@
-file(GLOB TEST_SOURCES "GeometryTests/*.cpp")
+file(GLOB TEST_SOURCES "**/*.cpp")
 
 file(GLOB LIB_SOURCES "../src/*.cpp")
-list(REMOVE_ITEM LIB_SOURCES "../src/main.cpp")
 
 add_library(${PROJECT_NAME}_lib STATIC ${LIB_SOURCES}
-        GeometryTests/IntersectionPointTest.cpp
-        GeometryTests/IntersectionPointTest.cpp
-)
+        ExpressionTests/ExpressionValidationTest.cpp)
+
 target_include_directories(${PROJECT_NAME}_lib PRIVATE
         ${CMAKE_SOURCE_DIR}/include
 )

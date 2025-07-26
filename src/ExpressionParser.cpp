@@ -1,24 +1,23 @@
 #include "ExpressionParser.h"
-#include "ExpressionException.h"
 
 
 Expression ExpressionParser::parse(const std::string &infix) {
-    std::vector<Token> tokens = tokenize(infix);
-    return shuntingYard(tokens);
+    auto tokens = tokenize(infix);
+    if (!tokens.has_value()) return {};
+    if (auto res = shuntingYard(tokens.value()); res.has_value()) return res.value();
+    else return {};
 }
 
-int ExpressionParser::getPrecedence(const Token& token) {
+std::optional<int> ExpressionParser::getPrecedence(const Token& token) {
     switch (token.type) {
         case TokenType::UnaryOperator: {
-            auto it = Constants::UNARY_OPERATORS.find(token.val);
-            if (it != Constants::UNARY_OPERATORS.end()) {
+            if (auto it = Constants::UNARY_OPERATORS.find(token.val); it != Constants::UNARY_OPERATORS.end()) {
                 return it->second.precedence;
             }
             break;
         }
         case TokenType::BinaryOperator: {
-            auto it = Constants::BINARY_OPERATORS.find(token.val);
-            if (it != Constants::BINARY_OPERATORS.end()) {
+            if (auto it = Constants::BINARY_OPERATORS.find(token.val); it != Constants::BINARY_OPERATORS.end()) {
                 return it->second.precedence;
             }
             break;
@@ -26,10 +25,10 @@ int ExpressionParser::getPrecedence(const Token& token) {
         default:
             break;
     }
-    throw ExpressionException("Invalid operator");
+    return std::nullopt;
 }
 
-std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
+std::optional<std::vector<Token>> ExpressionParser::tokenize(const std::string& infix) {
     std::vector<Token> tokens;
     int i = 0;
     while (i < infix.size()) {
@@ -45,9 +44,14 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             if (Constants::FUNCTIONS.contains(s)) {
                 tokens.emplace_back(TokenType::Function,s);
             } else if (s == "x" || s == "X") {
-                tokens.emplace_back(TokenType::Variable,s);
+                tokens.emplace_back(TokenType::Variable,"x");
+            } else if (s == "pi") {
+                tokens.emplace_back(TokenType::Constant, std::to_string(Constants::PI));
             }
-            else throw ExpressionException("Invalid variable name or function");
+            else if (s == "e") {
+                tokens.emplace_back(TokenType::Constant, std::to_string(Constants::E));
+            }
+            else return std::nullopt;
             continue;
         }
         if (std::isdigit(infix[i]) || infix[i] == '.') {
@@ -56,12 +60,12 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             i++;
             while (i < infix.size() && (std::isdigit(infix[i]) || infix[i] == '.')) {
                 if (infix[i] == '.') {
-                    if (dot) throw ExpressionException("Expected a number, but found 2 dots");
+                    if (dot) return std::nullopt;
                     dot = true;
                 }
                 i++;
             }
-            if (std::string num = infix.substr(start, i - start); num[0] == '.') throw ExpressionException("Expected a number, but found dot");
+            if (std::string num = infix.substr(start, i - start); num[0] == '.') return std::nullopt;
             tokens.emplace_back(TokenType::Constant,infix.substr(start, i - start));
             continue;
         }
@@ -97,13 +101,13 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& infix) {
             i++;
             continue;
         }
-        throw ExpressionException("Unknown character: "  + infix[i]);
+        return std::nullopt;
 
     }
     return tokens;
 }
 
-Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
+std::optional<Expression> ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
     Expression res;
     std::stack<Token> st;
 
@@ -139,7 +143,7 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
                     res.add(st.top());
                     st.pop();
                 }
-                if (st.empty()) throw ExpressionException("Mismatched parentheses");
+                if (st.empty()) return std::nullopt;
                 st.pop();
 
                 if (!st.empty() && st.top().type == TokenType::Function) {
@@ -153,7 +157,7 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
                     res.add(st.top());
                     st.pop();
                 }
-                if (st.empty()) throw ExpressionException("Mismatched parentheses");
+                if (st.empty()) return std::nullopt;
                 break;
 
             default:
@@ -163,11 +167,11 @@ Expression ExpressionParser::shuntingYard(const std::vector<Token>& tokens) {
 
     while (!st.empty()) {
         if (st.top().type == TokenType::LeftParen) {
-            throw ExpressionException("Mismatched parentheses");
+            return std::nullopt;
         }
         res.add(st.top());
         st.pop();
     }
 
-    return res;
+    return {res};
 }

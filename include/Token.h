@@ -18,4 +18,6 @@ public:
     std::string val;
 
     Token(TokenType type, std::string val);
+
+    bool operator==(const Token& other) const;
 };
