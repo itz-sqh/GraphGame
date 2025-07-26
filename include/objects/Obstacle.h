@@ -1,8 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Geometry.h"
+#include "math/Geometry.h"
 #include "CircleObject.h"
-#include "GameConstants.h"
+#include "core/GameConstants.h"
 
 class Obstacle : public CircleObject {
 public:

@@ -3,13 +3,14 @@ project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
 
-file(GLOB source_files "src/*.cpp")
-add_executable(${PROJECT_NAME} ${source_files}
-        include/ExpressionErrors.h)
+set(SOURCE_DIR src)
+set(INCLUDE_DIR include)
+set(RESOURCES_DIR resources)
 
-file(COPY resources/ARIAL.TTF DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-target_include_directories(${PROJECT_NAME} PRIVATE "include")
 
 
 find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
@@ -21,19 +22,16 @@ find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
         PATH_SUFFIXES "lib/cmake/SFML"
 )
 
-if (NOT SFML_FOUND)
-    message(WARNING "SFML not found. Please install it to C:/SFML or C:/Program Files/SFML")
-endif ()
+if(NOT SFML_FOUND)
+    message(FATAL_ERROR "SFML not found. Please install SFML 3.0+")
+endif()
+
+add_subdirectory(src)
 
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-        SFML::System
-        SFML::Window
-        SFML::Graphics
-)
-
-find_package(Boost 1.74 QUIET COMPONENTS unit_test_framework)
-if (Boost_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
+option(BUILD_TESTS "Build tests" ON)
+if(BUILD_TESTS)
+    find_package(Boost 1.74 REQUIRED COMPONENTS unit_test_framework)
     enable_testing()
     add_subdirectory(tests)
-endif ()
+endif()

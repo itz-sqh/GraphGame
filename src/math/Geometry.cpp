@@ -1,4 +1,4 @@
-#include "Geometry.h"
+#include "../../include/math/Geometry.h"
 
 #include <stdexcept>
 
@@ -115,5 +115,13 @@ namespace Geometry {
         const Line line(a, b, c);
 
         return circleLineIntersection(circle2, line);
+    }
+    int findCenterIndex(const sf::VertexArray& vertices, sf::Vector2f position) {
+        for (int i = 0; i < static_cast<int>(vertices.getVertexCount()); i++) {
+            if (vertices[i].position.x >= position.x) {
+                return i;
+            }
+        }
+        return static_cast<int>(vertices.getVertexCount()) - 1;
     }
 }

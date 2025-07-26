@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE ExpressionEvaluationTest
 #include<boost/test/unit_test.hpp>
-#include"ExpressionParser.h"
-#include "Game.h"
-#include "GameConstants.h"
+#include "../../include/expression/ExpressionParser.h"
+#include "../../include/core/Game.h"
+#include "../../include/core/GameConstants.h"
 
 void test_expression(const std::string &infix, const std::function<float(float)> &func, float from, float to,
                      float step,

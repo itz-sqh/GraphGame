@@ -1,5 +1,5 @@
 
-#include "Rng.h"
+#include "../../include/math/Rng.h"
 
 std::mt19937 Rng::gen;
 bool Rng::initiated = false;

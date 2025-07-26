@@ -5,21 +5,20 @@
 #include<cmath>
 
 
-
-struct BinaryOperator {
-    int precedence;
-    bool associative;
-    std::function<double(double,double)> operation;
-};
-struct UnaryOperator {
-    int precedence;
-    std::function<double(double)> operation;
-};
-struct Function {
-    int argCount;
-    std::function<double(const std::vector<double>&)> operation;
-};
 namespace Constants {
+    struct BinaryOperator {
+        int precedence;
+        bool associative;
+        std::function<double(double,double)> operation;
+    };
+    struct UnaryOperator {
+        int precedence;
+        std::function<double(double)> operation;
+    };
+    struct Function {
+        int argCount;
+        std::function<double(const std::vector<double>&)> operation;
+    };
     constexpr double PI = 3.141592653589793;
     constexpr double E 	= 2.71828182845903;
     const std::map<std::string, BinaryOperator> BINARY_OPERATORS = {

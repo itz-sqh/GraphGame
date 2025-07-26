@@ -2,8 +2,8 @@
 #include <SFML/System/Vector2.hpp>
 #include<cmath>
 #include<vector>
-#include"CircleObject.h"
-#include"GameConstants.h"
+#include "objects/CircleObject.h"
+#include "core/GameConstants.h"
 
 
 namespace Geometry {
@@ -23,5 +23,7 @@ namespace Geometry {
     float distToSegment(sf::Vector2f p1, sf::Vector2f seg1, sf::Vector2f seg2);
     std::vector<sf::Vector2f> circleLineIntersection(const CircleObject& circle, Line line);
     std::vector<sf::Vector2f> circleIntersection(const CircleObject& circle1, const CircleObject& circle2);
+    int findCenterIndex(const sf::VertexArray& vertices, sf::Vector2f position);
+
 
 }
