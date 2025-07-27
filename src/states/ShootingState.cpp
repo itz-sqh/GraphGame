@@ -1,7 +1,4 @@
-#include "../../include/states/ShootingState.h"
-
-#include "../../include/core/Game.h"
-#include "../../include/states/InputState.h"
+#include "states/ShootingState.h"
 
 void ShootingState::handleEvents(Game &game) {
     while (auto event = game.getWindow().pollEvent()) {
@@ -18,12 +15,16 @@ void ShootingState::update(Game &game) {
         game.changeState(std::make_unique<InputState>());
 }
 
-void ShootingState::render(Game &game) {
+void ShootingState::render(Game& game) {
     game.getWindow().clear(sf::Color::White);
     game.getWorld().draw(game.getWindow());
+
+    InputBox& box = game.getInputBox();
+    game.getInputManager().clear();
+    box.drawInactive(game.getWindow(), game.getInputManager().getCurrentInput());
+
     game.getWindow().display();
 }
-
 
 
 

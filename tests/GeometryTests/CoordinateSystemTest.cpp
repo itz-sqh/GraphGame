@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE CoordinateSystemTest
 #include<boost/test/unit_test.hpp>
-#include "../../include/math/Geometry.h"
+#include "math/Geometry.h"
 #include<SFML/System/Vector2.hpp>
 
 

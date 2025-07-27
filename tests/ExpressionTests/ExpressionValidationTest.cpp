@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE ExpressionValidationTest
 #include <boost/test/unit_test.hpp>
-#include "../../include/expression/ExpressionParser.h"
+#include "expression/ExpressionParser.h"
 
 BOOST_AUTO_TEST_SUITE(ExpressionValidationTest)
 

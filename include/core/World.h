@@ -6,8 +6,9 @@
 #include "math/Rng.h"
 #include "objects/Obstacle.h"
 #include "objects/Player.h"
+#include"objects/Projectile.h"
+#include"math/CollisionManager.h"
 
-class Projectile;
 
 class World {
 public:
@@ -25,7 +26,7 @@ public:
 
     void draw(sf::RenderTarget &target) const;
 
-    bool isProjectileActive() const;
+    [[nodiscard]] bool isProjectileActive() const;
 
     [[nodiscard]] bool isGameOver() const;
 

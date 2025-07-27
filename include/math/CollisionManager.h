@@ -1,26 +1,65 @@
 #pragma once
-#include "Geometry.h"
-#include "core/World.h"
+
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>
+#include <optional>
+#include <tuple>
+#include "objects/Obstacle.h"
+#include "objects/Player.h"
+#include "math/Geometry.h"
+#include "core/GameConstants.h"
 
 class CollisionManager {
 public:
-    struct CollisionResult {
-        sf::VertexArray vertices;
-        std::vector<std::shared_ptr<Player>> hitPlayers;
-        std::vector<std::shared_ptr<Obstacle>> hitObstacles;
+    struct ObstacleHit {
+        std::shared_ptr<Obstacle> obstacle;
+        sf::Vector2f point;
     };
 
-    static CollisionResult checkCollisions(const Projectile& projectile, const World& world);
-    
-private:
-    static std::optional<std::tuple<size_t, sf::Vector2f, std::shared_ptr<Obstacle>>> findObstacleIntersection(
+    struct CollisionResult {
+        sf::VertexArray vertices;
+        int centerIndex = 0;
+        sf::Color color;
+        std::vector<ObstacleHit> hitObstacles;
+        std::vector<std::shared_ptr<Player>> hitPlayers;
+    };
+
+    static CollisionResult checkCollisions(
         const sf::VertexArray& vertices,
+        sf::Vector2f origin,
+        sf::Color color,
         const std::vector<std::shared_ptr<Obstacle>>& obstacles,
-        size_t startIdx,
-        int direction // 1 for right and -1 for left
+        const std::vector<std::shared_ptr<Player>>& players
     );
 
-    static std::vector<std::shared_ptr<Player>> findPlayerHits(
+private:
+    static std::tuple<int, std::optional<sf::Vector2f>, std::optional<std::shared_ptr<Obstacle>>>
+    findLeftIntersection(
+        const sf::VertexArray& vertices,
+        const std::vector<std::shared_ptr<Obstacle>>& obstacles,
+        int centerIndex,
+        sf::Vector2f origin
+    );
+
+    static std::tuple<int, std::optional<sf::Vector2f>, std::optional<std::shared_ptr<Obstacle>>>
+    findRightIntersection(
+        const sf::VertexArray& vertices,
+        const std::vector<std::shared_ptr<Obstacle>>& obstacles,
+        int centerIndex,
+        sf::Vector2f origin
+    );
+
+    static std::optional<std::tuple<sf::Vector2f, std::shared_ptr<Obstacle>>>
+    findClosestIntersection(
+        const std::vector<std::shared_ptr<Obstacle>>& obstacles,
+        sf::Vector2f p1,
+        sf::Vector2f p2,
+        sf::Vector2f origin
+    );
+
+    static std::vector<std::shared_ptr<Player>>
+    findPlayerHits(
         const sf::VertexArray& vertices,
         const std::vector<std::shared_ptr<Player>>& players,
         const sf::Vector2f& origin

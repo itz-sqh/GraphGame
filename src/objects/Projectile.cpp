@@ -9,39 +9,44 @@ Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f ori
     for (const auto &point: points) {
         vertices.append({origin + point, color});
     }
+    collidedVertices = vertices;
+    centerIndex = Geometry::findCenterIndex(collidedVertices, origin);
+    clock.restart();
 }
 
-
-void Projectile::update(float dt,
-                        std::vector<std::shared_ptr<Obstacle> > obstacles,
-                        std::vector<std::shared_ptr<Player> > players) {
+void Projectile::update(float dt) {
     if (!active) return;
-
-    progress += dt / GameConstants::SHOT_DISPLAY_TIME;
-    if (progress >= 1.f) {
+    progress += dt;
+    pointsShown += dt * GameConstants::POINTS_PER_SECOND;
+    if (progress >= GameConstants::SHOT_DISPLAY_TIME) {
         active = false;
     }
 }
 
-void Projectile::draw(sf::RenderTarget &target) const {
+void Projectile::draw(sf::RenderTarget &target) {
     if (!active) return;
 
-    float elapsedTime = clock.getElapsedTime().asSeconds();
-    int pointsToDraw = static_cast<int>(elapsedTime * GameConstants::POINTS_PER_SECOND);
-    int centerIndex = Geometry::findCenterIndex(vertices, origin);
+    int totalPoints = collidedVertices.getVertexCount();
+    int pointsToShow = static_cast<int>(pointsShown);
 
-    int size = static_cast<int>(vertices.getVertexCount());
+    int startIdx = std::max(0, centerIndex - pointsToShow);
+    int endIdx = std::min(totalPoints - 1, centerIndex + pointsToShow);
 
-    sf::VertexArray visible(sf::PrimitiveType::LineStrip);
+    sf::VertexArray leftVisible(sf::PrimitiveType::LineStrip);
+    sf::VertexArray rightVisible(sf::PrimitiveType::LineStrip);
 
-    int left = std::max(centerIndex - pointsToDraw, 0);
-    int right = std::min(centerIndex + pointsToDraw, size - 1);
-    for (int i = left; i <= right; i++) {
-        visible.append(vertices[i]);
+    for (int i = centerIndex; i > startIdx; --i) {
+        auto pos = Geometry::mapToWindow(collidedVertices[i].position, target.getSize());
+        leftVisible.append({pos, collidedVertices[i].color});
     }
 
+    for (int i = centerIndex + 1; i <= endIdx; ++i) {
+        auto pos = Geometry::mapToWindow(collidedVertices[i].position, target.getSize());
+        rightVisible.append({pos, collidedVertices[i].color});
+    }
 
-    target.draw(visible);
+    target.draw(leftVisible);
+    target.draw(rightVisible);
 }
 
 
@@ -56,3 +61,12 @@ const sf::VertexArray &Projectile::getVertices() const {
 const sf::Vector2f &Projectile::getOrigin() const {
     return origin;
 }
+
+void Projectile::setCenterIndex(int index) {
+    centerIndex = index;
+}
+void Projectile::setCollidedVertices(const sf::VertexArray &vertices) {
+    collidedVertices = vertices;
+}
+
+

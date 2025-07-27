@@ -27,6 +27,7 @@ foreach(TEST_FILE ${TEST_SOURCES})
             ${PROJECT_NAME}_test_lib
             ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
             SFML::System
+            SFML::Graphics
     )
 
     add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})

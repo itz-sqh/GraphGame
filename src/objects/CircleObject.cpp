@@ -1,4 +1,4 @@
-#include "../../include/objects/CircleObject.h"
+#include "objects/CircleObject.h"
 
 
 CircleObject::CircleObject(sf::Vector2f position, float radius) : position(position), radius(radius) {

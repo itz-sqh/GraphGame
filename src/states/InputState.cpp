@@ -1,9 +1,5 @@
-#include "../../include/states/InputState.h"
+#include "states/InputState.h"
 
-#include <SFML/Window/Event.hpp>
-
-#include "../../include/core/Game.h"
-#include "../../include/states/ShootingState.h"
 
 void InputState::handleEvents(Game &game) {
     while (auto event = game.getWindow().pollEvent()) {
@@ -21,7 +17,7 @@ void InputState::handleEvents(Game &game) {
                 }
                 else {
                     auto expression = game.getInputManager().getExpression();
-                    game.getWorld().fireProjectile(*expression, game.getWorld().getCurrentPlayer().getColor());
+                    game.getWorld().fireProjectile(*expression, game.getWorld().getCurrentPlayer()->getColor());
                     game.changeState(std::make_unique<ShootingState>());
                 }
             }
@@ -39,7 +35,7 @@ void InputState::render(Game &game) {
 
     inputBox.draw(game.getWindow(),
                   game.getInputManager().getCurrentInput(),
-                  game.getWorld().getCurrentPlayer().getColor());
+                  game.getWorld().getCurrentPlayer()->getColor());
 
     game.getWindow().display();
 }

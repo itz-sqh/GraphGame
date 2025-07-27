@@ -4,6 +4,7 @@
 #include<vector>
 #include "objects/CircleObject.h"
 #include "core/GameConstants.h"
+#include<SFML/Graphics/VertexArray.hpp>
 
 
 namespace Geometry {

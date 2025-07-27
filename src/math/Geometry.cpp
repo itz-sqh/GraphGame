@@ -1,6 +1,5 @@
-#include "../../include/math/Geometry.h"
+#include "math/Geometry.h"
 
-#include <stdexcept>
 
 namespace Geometry {
     Line::Line(const sf::Vector2f p1, const sf::Vector2f p2) {
@@ -13,7 +12,6 @@ namespace Geometry {
         a /= m;
         b /= m;
         c /= m;
-
     }
 
     Line::Line(const float a, const float b, const float c) : a(a), b(b), c(c) {
@@ -22,21 +20,21 @@ namespace Geometry {
         this->a /= m;
         this->b /= m;
         this->c /= m;
-
     }
 
-    bool Line::equals(const Line &l1, const Line& l2) {
+    bool Line::equals(const Line &l1, const Line &l2) {
         return (std::abs(l1.a - l2.a) < GameConstants::EPS &&
                 std::abs(l1.b - l2.b) < GameConstants::EPS &&
                 std::abs(l1.c - l2.c) < GameConstants::EPS)
-            ||
+               ||
                (std::abs(l1.a + l2.a) < GameConstants::EPS &&
                 std::abs(l1.b + l2.b) < GameConstants::EPS &&
                 std::abs(l1.c + l2.c) < GameConstants::EPS);
     }
 
 
-    sf::Vector2f mapToWindow(const sf::Vector2f pos, const sf::Vector2u size, float minX, float maxX, float minY, float maxY) {
+    sf::Vector2f mapToWindow(const sf::Vector2f pos, const sf::Vector2u size, float minX, float maxX, float minY,
+                             float maxY) {
         const float x = (pos.x - minX) / (maxX - minX);
         const float y = (pos.y - minY) / (maxY - minY);
 
@@ -47,8 +45,8 @@ namespace Geometry {
     }
 
     float mapToWindow(const float value, unsigned sizeX, float minX, float maxX) {
-         const float s1 = (value - minX) / (maxX - minX);
-         return static_cast<float>(sizeX) * s1;
+        const float s1 = (value - minX) / (maxX - minX);
+        return static_cast<float>(sizeX) * s1;
     }
 
     float dist(const sf::Vector2f p1, const sf::Vector2f p2) {
@@ -116,7 +114,8 @@ namespace Geometry {
 
         return circleLineIntersection(circle2, line);
     }
-    int findCenterIndex(const sf::VertexArray& vertices, sf::Vector2f position) {
+
+    int findCenterIndex(const sf::VertexArray &vertices, sf::Vector2f position) {
         for (int i = 0; i < static_cast<int>(vertices.getVertexCount()); i++) {
             if (vertices[i].position.x >= position.x) {
                 return i;

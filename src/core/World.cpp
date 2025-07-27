@@ -3,6 +3,7 @@
 World::World() {
     generatePlayers();
     generateObstacles();
+    playersQueue.front()->switchCurrent();
 }
 
 void World::generatePlayers() {
@@ -66,19 +67,32 @@ void World::generateObstacles() {
 
 }
 
-void nextTurn() {
-
-}
 
 void World::fireProjectile(const Expression &expr, sf::Color color) {
-    activeProjectile = std::make_unique<Projectile>(
-        expr,color,getCurrentPlayer()->getPosition()
-        );
-}
+    if (playersQueue.empty()) return;
+    auto currentPlayer = playersQueue.front();
+    sf::Vector2f origin = currentPlayer->getPosition();
 
+    activeProjectile = std::make_unique<Projectile>(expr, color, origin);
+
+    auto collisionResult = CollisionManager::checkCollisions(
+        activeProjectile->getVertices(),
+        origin,
+        color,
+        obstacles,
+        players
+    );
+
+    activeProjectile->setCollidedVertices(collisionResult.vertices);
+    activeProjectile->setCenterIndex(collisionResult.centerIndex);
+
+    for (auto& player : collisionResult.hitPlayers) {
+        player->kill();
+    }
+}
 void World::update(float dt) {
     if (!activeProjectile) return;
-    activeProjectile->update(dt,obstacles,players);
+    activeProjectile->update(dt);
 
     if (!activeProjectile->isActive()) {
         activeProjectile.reset();
@@ -115,22 +129,29 @@ const std::shared_ptr<Player> &World::getCurrentPlayer() const {
 }
 
 void World::nextTurn() {
-
     const auto prevPlayer = playersQueue.front();
     prevPlayer->switchCurrent();
+
     playersQueue.pop();
     playersQueue.push(prevPlayer);
 
     while (!playersQueue.empty() && !playersQueue.front()->isAlive()) {
         playersQueue.pop();
     }
+
+    if (playersQueue.empty()) {
+        gameOver = true;
+        return;
+    }
+
     const auto newPlayer = playersQueue.front();
     if (newPlayer == prevPlayer) {
+        prevPlayer->switchCurrent();
         gameOver = true;
+        return;
     }
     newPlayer->switchCurrent();
 }
-
 const std::vector<std::shared_ptr<Obstacle> >& World::getObstacles() const {
     return obstacles;
 }

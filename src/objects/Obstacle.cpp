@@ -1,4 +1,4 @@
-#include "../../include/objects/Obstacle.h"
+#include "objects/Obstacle.h"
 
 
 Obstacle::Obstacle(sf::Vector2f position, float radius) : CircleObject(position, radius) {}

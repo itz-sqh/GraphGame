@@ -1,7 +1,5 @@
-#include "../../include/ui/InputBox.h"
+#include "ui/InputBox.h"
 
-#include "../../include/core/GameConstants.h"
-#include "../../include/objects/Projectile.h"
 
 InputBox::InputBox() {
     rect.setSize({400,40});

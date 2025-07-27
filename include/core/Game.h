@@ -18,10 +18,12 @@ public:
     [[nodiscard]] sf::RenderWindow& getWindow() const { return *window; }
     World& getWorld() { return world; }
     InputManager& getInputManager() { return inputManager; }
+    InputBox& getInputBox() { return inputBox; }
 
 private:
     std::unique_ptr<sf::RenderWindow> window;
     World world;
     InputManager inputManager;
+    InputBox inputBox;
     std::stack<std::unique_ptr<GameState>> states;
 };
