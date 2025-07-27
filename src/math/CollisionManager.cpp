@@ -43,7 +43,11 @@ CollisionManager::CollisionResult CollisionManager::checkCollisions(
 
     res.centerIndex = centerIndex - leftEnd + (leftIntersection ? 1 : 0);
 
-    res.hitPlayers = findPlayerHits(res.vertices, players, origin);
+    auto playerHits = findPlayerHits(res.vertices, players, origin);
+    for (const auto& [point, player] : playerHits) {
+        res.hitPlayers.push_back({player,point});
+    }
+
 
     return res;
 }
@@ -68,10 +72,10 @@ CollisionManager::findLeftIntersection(
             break;
         }
 
-        auto result = findClosestIntersection(obstacles, p1, p2, origin);
-        if (result) {
-            intersection = std::get<0>(*result);
-            obstacle = std::get<1>(*result);
+        auto res = findClosestIntersection(obstacles, p1, p2, origin);
+        if (res) {
+            intersection = std::get<0>(*res);
+            obstacle = std::get<1>(*res);
             leftEnd = i;
             break;
         }
@@ -100,10 +104,10 @@ CollisionManager::findRightIntersection(
             break;
         }
 
-        auto result = findClosestIntersection(obstacles, p1, p2, origin);
-        if (result) {
-            intersection = std::get<0>(*result);
-            obstacle = std::get<1>(*result);
+        auto res = findClosestIntersection(obstacles, p1, p2, origin);
+        if (res) {
+            intersection = std::get<0>(*res);
+            obstacle = std::get<1>(*res);
             rightEnd = i;
             break;
         }
@@ -156,19 +160,18 @@ CollisionManager::findClosestIntersection(
     }
 
     if (closestIntersection && closestObstacle) {
-        closestObstacle->addOverlap(*closestIntersection);
         return std::make_tuple(*closestIntersection, closestObstacle);
     }
 
     return std::nullopt;
 }
 
-std::vector<std::shared_ptr<Player>> CollisionManager::findPlayerHits(
+std::vector<std::tuple<sf::Vector2f, std::shared_ptr<Player>>> CollisionManager::findPlayerHits(
     const sf::VertexArray& vertices,
     const std::vector<std::shared_ptr<Player>>& players,
     const sf::Vector2f& origin
 ) {
-    std::vector<std::shared_ptr<Player>> hits;
+    std::vector<std::tuple<sf::Vector2f, std::shared_ptr<Player>>> hits;
 
     for (size_t i = 0; i < vertices.getVertexCount() - 1; ++i) {
         const auto& p1 = vertices[i].position;
@@ -181,8 +184,7 @@ std::vector<std::shared_ptr<Player>> CollisionManager::findPlayerHits(
             auto intersections = Geometry::circleLineIntersection(*player, line);
             for (const auto& point : intersections) {
                 if (Geometry::distToSegment(point, p1, p2) <= GameConstants::EPS) {
-                    player->kill();
-                    hits.push_back(player);
+                    hits.emplace_back(point, player);
                     break;
                 }
             }

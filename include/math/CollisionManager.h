@@ -16,13 +16,17 @@ public:
         std::shared_ptr<Obstacle> obstacle;
         sf::Vector2f point;
     };
+    struct PlayerHit {
+        std::shared_ptr<Player> player;
+        sf::Vector2f point;
+    };
 
     struct CollisionResult {
         sf::VertexArray vertices;
         int centerIndex = 0;
         sf::Color color;
         std::vector<ObstacleHit> hitObstacles;
-        std::vector<std::shared_ptr<Player>> hitPlayers;
+        std::vector<PlayerHit> hitPlayers;
     };
 
     static CollisionResult checkCollisions(
@@ -58,7 +62,7 @@ private:
         sf::Vector2f origin
     );
 
-    static std::vector<std::shared_ptr<Player>>
+    static std::vector<std::tuple<sf::Vector2f, std::shared_ptr<Player>>>
     findPlayerHits(
         const sf::VertexArray& vertices,
         const std::vector<std::shared_ptr<Player>>& players,

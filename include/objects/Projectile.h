@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "math/Function.h"
+#include"math/CollisionManager.h"
 
 
 class Projectile {
@@ -21,7 +22,18 @@ public:
     [[nodiscard]] bool isActive() const;
 
     void setCollidedVertices(const sf::VertexArray &vertices);
+
     void setCenterIndex(int index);
+
+    void triggerEvents(int pointsShown);
+
+    void storeCollisionEvents(
+          const std::vector<CollisionManager::PlayerHit>& players,
+          const std::vector<CollisionManager::ObstacleHit>& obstacles,
+          int centerIndex
+      );
+
+    int findClosestVertexIndex(sf::Vector2f point) const;
 
 private:
     Function function;
@@ -36,4 +48,12 @@ private:
     int centerIndex = -1;
 
     float pointsShown = 0.f;
+
+    struct HitEvent {
+        int index;
+        bool triggered = false;
+        std::function<void()> action;
+    };
+
+    std::vector<HitEvent> hitEvents;
 };

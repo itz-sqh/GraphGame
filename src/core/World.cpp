@@ -8,7 +8,7 @@ World::World() {
 
 void World::generatePlayers() {
     players.clear();
-    playersQueue = std::queue<std::shared_ptr<Player>>();
+    playersQueue = std::queue<std::shared_ptr<Player> >();
     constexpr sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
     for (int i = 0; i < GameConstants::PLAYER_COUNT; i++) {
         bool placed = false;
@@ -17,7 +17,7 @@ void World::generatePlayers() {
             point = {
                 Rng::getFloat(GameConstants::MIN_X, GameConstants::MAX_X),
                 Rng::getFloat(GameConstants::MIN_Y, GameConstants::MAX_Y)
-        };
+            };
             placed = true;
             for (const auto &p: players) {
                 if (Geometry::dist(point, p->getPosition()) <
@@ -34,7 +34,7 @@ void World::generatePlayers() {
                 placed = false;
         }
         players.push_back(
-                std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+            std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
         playersQueue.push(players.back());
     }
 }
@@ -49,7 +49,7 @@ void World::generateObstacles() {
             point = {
                 Rng::getFloat(GameConstants::MIN_X, GameConstants::MAX_X),
                 Rng::getFloat(GameConstants::MIN_Y, GameConstants::MAX_Y)
-        };
+            };
             placed = true;
             for (const auto &p: players) {
                 if (Geometry::dist(point, p->getPosition()) <
@@ -64,7 +64,6 @@ void World::generateObstacles() {
         }
         obstacles.push_back(std::make_unique<Obstacle>(sf::Vector2f(point)));
     }
-
 }
 
 
@@ -86,10 +85,13 @@ void World::fireProjectile(const Expression &expr, sf::Color color) {
     activeProjectile->setCollidedVertices(collisionResult.vertices);
     activeProjectile->setCenterIndex(collisionResult.centerIndex);
 
-    for (auto& player : collisionResult.hitPlayers) {
-        player->kill();
-    }
+    activeProjectile->storeCollisionEvents(
+        collisionResult.hitPlayers,
+        collisionResult.hitObstacles,
+        collisionResult.centerIndex
+    );
 }
+
 void World::update(float dt) {
     if (!activeProjectile) return;
     activeProjectile->update(dt);
@@ -98,15 +100,14 @@ void World::update(float dt) {
         activeProjectile.reset();
         nextTurn();
     }
-
 }
 
 void World::draw(sf::RenderTarget &target) const {
-    for (const auto& obstacle : obstacles) {
+    for (const auto &obstacle: obstacles) {
         obstacle->draw(target);
     }
 
-    for (const auto& player : players) {
+    for (const auto &player: players) {
         player->draw(target);
     }
 
@@ -152,11 +153,11 @@ void World::nextTurn() {
     }
     newPlayer->switchCurrent();
 }
-const std::vector<std::shared_ptr<Obstacle> >& World::getObstacles() const {
+
+const std::vector<std::shared_ptr<Obstacle> > &World::getObstacles() const {
     return obstacles;
 }
 
 const std::vector<std::shared_ptr<Player> > &World::getPlayers() const {
     return players;
 }
-

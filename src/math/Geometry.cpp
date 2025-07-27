@@ -123,4 +123,12 @@ namespace Geometry {
         }
         return static_cast<int>(vertices.getVertexCount()) - 1;
     }
+    int findCenterIndex(const std::vector<sf::Vector2f> &vertices, sf::Vector2f position) {
+        for (int i = 0; i < static_cast<int>(vertices.size()); i++) {
+            if (vertices[i].x >= position.x) {
+                return i;
+            }
+        }
+        return static_cast<int>(vertices.size()) - 1;
+    }
 }

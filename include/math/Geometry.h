@@ -25,6 +25,7 @@ namespace Geometry {
     std::vector<sf::Vector2f> circleLineIntersection(const CircleObject& circle, Line line);
     std::vector<sf::Vector2f> circleIntersection(const CircleObject& circle1, const CircleObject& circle2);
     int findCenterIndex(const sf::VertexArray& vertices, sf::Vector2f position);
+    int findCenterIndex(const std::vector<sf::Vector2f>& vertices, sf::Vector2f position);
 
 
 }

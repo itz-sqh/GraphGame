@@ -15,6 +15,7 @@ public:
 
     [[nodiscard]] std::vector<sf::Vector2f> generatePoints(float minX = GameConstants::MIN_X, float maxX = GameConstants::MAX_X) const;
 
+
 private:
 
     Expression expression;

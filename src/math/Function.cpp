@@ -22,3 +22,4 @@ std::vector<sf::Vector2f> Function::generatePoints(float minX, float maxX) const
     return points;
 }
 
+

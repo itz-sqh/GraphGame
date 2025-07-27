@@ -1,7 +1,8 @@
 #include "objects/Projectile.h"
 
+
 Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f origin) : function(expr), color(color),
-    origin(origin) {
+                                                                                       origin(origin) {
     vertices.setPrimitiveType(sf::PrimitiveType::LineStrip);
 
     auto points = function.generatePoints(3 * GameConstants::MIN_X, 3 * GameConstants::MAX_X);
@@ -9,15 +10,19 @@ Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f ori
     for (const auto &point: points) {
         vertices.append({origin + point, color});
     }
+
     collidedVertices = vertices;
-    centerIndex = Geometry::findCenterIndex(collidedVertices, origin);
     clock.restart();
 }
 
 void Projectile::update(float dt) {
     if (!active) return;
-    progress += dt;
+
     pointsShown += dt * GameConstants::POINTS_PER_SECOND;
+    progress += dt;
+
+    triggerEvents(static_cast<int>(pointsShown));
+
     if (progress >= GameConstants::SHOT_DISPLAY_TIME) {
         active = false;
     }
@@ -47,6 +52,61 @@ void Projectile::draw(sf::RenderTarget &target) {
 
     target.draw(leftVisible);
     target.draw(rightVisible);
+}
+
+void Projectile::storeCollisionEvents(
+      const std::vector<CollisionManager::PlayerHit>& players,
+      const std::vector<CollisionManager::ObstacleHit>& obstacles,
+      int centerIndex
+  ) {
+    hitEvents.clear();
+    this->centerIndex = centerIndex;
+
+    auto addEvent = [&](const sf::Vector2f& point, auto action) {
+        int vertexIndex = findClosestVertexIndex(point);
+        int distance = std::abs(vertexIndex - centerIndex);
+
+        hitEvents.push_back({
+            distance,
+            false,
+            action
+        });
+    };
+
+    for (const auto& hit : players) {
+        addEvent(hit.point, [player = hit.player] { player->kill(); });
+    }
+
+    for (const auto& hit : obstacles) {
+        addEvent(hit.point, [obstacle = hit.obstacle, point = hit.point] {
+            obstacle->addOverlap(point);
+        });
+    }
+
+}
+
+void Projectile::triggerEvents(int pointsShown) {
+    for (auto& event : hitEvents) {
+        if (!event.triggered && pointsShown >= event.index) {
+            event.action();
+            event.triggered = true;
+        }
+    }
+}
+
+int Projectile::findClosestVertexIndex(sf::Vector2f point) const {
+    int res = 0;
+    float minDistance = std::numeric_limits<float>::max();
+
+    for (int i = 0; i < collidedVertices.getVertexCount(); ++i) {
+        float dist = Geometry::dist(collidedVertices[i].position, point);
+        if (dist < minDistance) {
+            minDistance = dist;
+            res = i;
+        }
+    }
+
+    return res;
 }
 
 
