@@ -2,10 +2,9 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include <stdexcept>
 #include <SFML/Graphics.hpp>
-#include "Expression.h"
-#include "ExpressionParser.h"
+#include "expression/Expression.h"
+#include "expression/ExpressionParser.h"
 #include "core/GameConstants.h"
 
 class Function {

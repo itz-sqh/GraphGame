@@ -1,6 +1,4 @@
-#include <iostream>
-
-#include "../include/core/Game.h"
+#include "core/Game.h"
 
 int main() {
     const auto game = new Game();

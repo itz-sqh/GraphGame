@@ -3,7 +3,7 @@
 #include"SFML/Graphics.hpp"
 #include "Player.h"
 #include "Obstacle.h"
-#include "expression/Function.h"
+#include "math/Function.h"
 
 
 class Projectile {

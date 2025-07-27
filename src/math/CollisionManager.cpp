@@ -13,7 +13,6 @@ CollisionManager::CollisionResult CollisionManager::checkCollisions(
     int centerIndex = Geometry::findCenterIndex(vertices, origin);
     if (centerIndex < 0) centerIndex = 0;
 
-    // Find left and right intersections
     auto leftResult = findLeftIntersection(vertices, obstacles, centerIndex, origin);
     auto rightResult = findRightIntersection(vertices, obstacles, centerIndex, origin);
 
@@ -24,7 +23,6 @@ CollisionManager::CollisionResult CollisionManager::checkCollisions(
     auto leftObstacle = std::get<2>(leftResult);
     auto rightObstacle = std::get<2>(rightResult);
 
-    // Add intersection points if found
     if (leftIntersection) {
         res.vertices.append(sf::Vertex(*leftIntersection, color));
         if (leftObstacle) {
@@ -32,7 +30,6 @@ CollisionManager::CollisionResult CollisionManager::checkCollisions(
         }
     }
 
-    // Add vertices between intersections
     for (int i = leftEnd; i <= rightEnd; ++i) {
         res.vertices.append(vertices[i]);
     }
@@ -44,10 +41,8 @@ CollisionManager::CollisionResult CollisionManager::checkCollisions(
         }
     }
 
-    // Calculate new center index
     res.centerIndex = centerIndex - leftEnd + (leftIntersection ? 1 : 0);
 
-    // Find player hits
     res.hitPlayers = findPlayerHits(res.vertices, players, origin);
 
     return res;
@@ -68,13 +63,11 @@ CollisionManager::findLeftIntersection(
         sf::Vector2f p1 = vertices[i].position;
         sf::Vector2f p2 = vertices[i - 1].position;
 
-        // Check screen bounds
         if (std::abs(p1.y) >= GameConstants::MAX_Y) {
             leftEnd = i;
             break;
         }
 
-        // Check obstacle collisions
         auto result = findClosestIntersection(obstacles, p1, p2, origin);
         if (result) {
             intersection = std::get<0>(*result);
@@ -102,13 +95,11 @@ CollisionManager::findRightIntersection(
         sf::Vector2f p1 = vertices[i].position;
         sf::Vector2f p2 = vertices[i + 1].position;
 
-        // Check screen bounds
         if (std::abs(p2.y) >= GameConstants::MAX_Y) {
             rightEnd = i;
             break;
         }
 
-        // Check obstacle collisions
         auto result = findClosestIntersection(obstacles, p1, p2, origin);
         if (result) {
             intersection = std::get<0>(*result);
@@ -133,7 +124,6 @@ CollisionManager::findClosestIntersection(
     Geometry::Line line(p1, p2);
 
     for (auto& obstacle : obstacles) {
-        // Check main obstacle
         auto intersections = Geometry::circleLineIntersection(*obstacle, line);
         for (auto& point : intersections) {
             if (point.x >= std::min(p1.x, p2.x) &&
@@ -148,7 +138,6 @@ CollisionManager::findClosestIntersection(
             }
         }
 
-        // Check overlaps
         for (auto& overlap : obstacle->getOverlaps()) {
             auto overlapIntersections = Geometry::circleLineIntersection(overlap, line);
             for (auto& point : overlapIntersections) {

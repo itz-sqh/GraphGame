@@ -1,4 +1,4 @@
-#include "expression/Function.h"
+#include "math/Function.h"
 
 Function::Function(const std::string &infix) {
     auto parseResult = ExpressionParser::parse(infix);

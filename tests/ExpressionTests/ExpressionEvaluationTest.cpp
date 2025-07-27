@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionEvaluationTest)
         test_expression("(x + 1)*(x - 1)", [](float x) { return (x + 1) * (x - 1); }, -3, 3, 0.3);
         test_expression("x^2 + 2*x + 1", [](float x) { return x * x + 2 * x + 1; }, -5, 5, 0.5);
         test_expression("(x + 5)/(x - 2)", [](float x) { return (x + 5) / (x - 2); }, -4, 4, 0.8);
-        test_expression("e^-x^2 * sin(x) + x * cos(x)",
+        test_expression("e^(-x^2) * sin(x) + x * cos(x)",
                         [](float x) { return std::exp(-x * x) * std::sin(x) + x * std::cos(x); }, -5, 5, 0.1);
     }
 
