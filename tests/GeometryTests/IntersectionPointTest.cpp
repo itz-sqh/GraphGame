@@ -1,13 +1,13 @@
 #define BOOST_TEST_MODULE IntersectionPointTest
 #include<boost/test/unit_test.hpp>
-#include"Geometry.h"
+#include "math/Geometry.h"
 
 
 BOOST_AUTO_TEST_SUITE(IntersectionPointTest)
 
     constexpr float eps = GameConstants::EPS;
 
-    BOOST_AUTO_TEST_CASE(circle_line_intersection) { {
+    BOOST_AUTO_TEST_CASE(circle_line_intersection_test) { {
             CircleObject circle({3.f, 4.f}, 5.f);
             Geometry::Line line(7.f, 8.f, 9.f);
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_SUITE(IntersectionPointTest)
         }
     }
 
-    BOOST_AUTO_TEST_CASE(circle_intersection) { {
+    BOOST_AUTO_TEST_CASE(circle_intersection_test) { {
             CircleObject circle1({3.f, 4.f}, 5.f);
             CircleObject circle2({-3.f, -4.f}, 3.f);
 
