@@ -1,5 +1,7 @@
 #include "objects/Projectile.h"
 
+#include <iostream>
+
 
 Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f origin) : function(expr), color(color),
                                                                                        origin(origin) {
@@ -7,8 +9,12 @@ Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f ori
 
     auto points = function.generatePoints(3 * GameConstants::MIN_X, 3 * GameConstants::MAX_X);
 
+    int centerIndex = Geometry::findCenterIndex(points, {GameConstants::POINT_STEP,GameConstants::POINT_STEP});
+
+    auto offset = points[centerIndex];
+
     for (const auto &point: points) {
-        vertices.append({origin + point, color});
+        vertices.append({origin + point - offset, color});
     }
 
     collidedVertices = vertices;
