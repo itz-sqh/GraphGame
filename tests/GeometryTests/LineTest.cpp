@@ -1,12 +1,12 @@
 #define BOOST_TEST_MODULE LineTest
 #include<boost/test/unit_test.hpp>
-#include"Geometry.h"
+#include "math/Geometry.h"
 
 
 BOOST_AUTO_TEST_SUITE(LineTest)
 
 
-    BOOST_AUTO_TEST_CASE(constructor_from_coefficients) {
+    BOOST_AUTO_TEST_CASE(constructor_from_coefficients_test) {
         // Test horizontal line (y - 3 = 0)
         {
             constexpr float a = 0.f;
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_SUITE(LineTest)
         }
     }
 
-    BOOST_AUTO_TEST_CASE(constructor_from_two_points) {
+    BOOST_AUTO_TEST_CASE(constructor_from_two_points_test) {
         // Test horizontal line (y - 3 = 0)
         {
             constexpr sf::Vector2f p1(0, 3);

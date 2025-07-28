@@ -3,45 +3,35 @@ project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
 
-file(GLOB source_files "src/*.cpp")
-add_executable(${PROJECT_NAME} ${source_files})
+set(SOURCE_DIR src)
+set(INCLUDE_DIR include)
+set(RESOURCES_DIR resources)
 
-file(COPY resources/ARIAL.TTF DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-target_include_directories(${PROJECT_NAME} PRIVATE "include")
 
 
-if(WIN32)
-    find_package(SFML 3.0 COMPONENTS System Window Graphics Audio REQUIRED
-            PATHS
-            ${SFML_DIR}
-            "$ENV{SFML_DIR}"
-            "C:/SFML"
-            "C:/Program Files/SFML"
-            PATH_SUFFIXES "lib/cmake/SFML"
-    )
-
-    if(NOT SFML_FOUND)
-        message(WARNING "SFML not found. Please install it to C:/SFML or C:/Program Files/SFML")
-    endif()
-
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${SFML_DIR}/../../../bin"
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    )
-else()
-    find_package(SFML 3.0.0 COMPONENTS System Window Graphics REQUIRED)
-endif()
-
-target_link_libraries(${PROJECT_NAME} PRIVATE
-        SFML::System
-        SFML::Window
-        SFML::Graphics
+find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
+        PATHS
+        ${SFML_DIR}
+        "$ENV{SFML_DIR}"
+        "C:/SFML"
+        "C:/Program Files/SFML"
+        PATH_SUFFIXES "lib/cmake/SFML"
 )
 
-find_package(Boost 1.74 QUIET COMPONENTS unit_test_framework)
-if(Boost_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
+if(NOT SFML_FOUND)
+    message(FATAL_ERROR "SFML not found. Please install SFML 3.0+")
+endif()
+
+add_subdirectory(src)
+
+
+option(BUILD_TESTS "Build tests" ON)
+if(BUILD_TESTS)
+    find_package(Boost 1.74 REQUIRED COMPONENTS unit_test_framework)
     enable_testing()
     add_subdirectory(tests)
 endif()
