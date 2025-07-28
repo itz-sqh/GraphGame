@@ -131,4 +131,11 @@ namespace Geometry {
         }
         return static_cast<int>(vertices.size()) - 1;
     }
+    bool isPointInSegmentBounds(const sf::Vector2f& p,
+                               const sf::Vector2f& seg1,
+                               const sf::Vector2f& seg2) {
+        const float minX = std::min(seg1.x, seg2.x);
+        const float maxX = std::max(seg1.x, seg2.x);
+        return (p.x >= minX && p.x <= maxX);
+    }
 }
