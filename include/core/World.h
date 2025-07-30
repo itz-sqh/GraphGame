@@ -36,7 +36,9 @@ public:
 
     [[nodiscard]] const std::vector<std::shared_ptr<Player> >& getPlayers() const;
 
-private:
+    [[nodiscard]] bool allPlayersHaveSameColor() const;
+
+public:
     std::vector<std::shared_ptr<Player> > players;
     std::vector<std::shared_ptr<Obstacle> > obstacles;
     std::queue<std::shared_ptr<Player> > playersQueue;

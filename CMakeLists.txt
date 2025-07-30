@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(GraphGame)
+    project(GraphGame)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -21,17 +21,13 @@ find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
         "C:/Program Files/SFML"
         PATH_SUFFIXES "lib/cmake/SFML"
 )
+find_package(Boost 1.74 REQUIRED COMPONENTS unit_test_framework)
 
 if(NOT SFML_FOUND)
     message(FATAL_ERROR "SFML not found. Please install SFML 3.0+")
 endif()
 
+
+enable_testing()
 add_subdirectory(src)
-
-
-option(BUILD_TESTS "Build tests" ON)
-if(BUILD_TESTS)
-    find_package(Boost 1.74 REQUIRED COMPONENTS unit_test_framework)
-    enable_testing()
-    add_subdirectory(tests)
-endif()
+add_subdirectory(tests)

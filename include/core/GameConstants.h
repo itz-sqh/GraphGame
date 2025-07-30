@@ -13,8 +13,8 @@ namespace GameConstants {
 
     constexpr float POINT_STEP = 0.025f;
 
-    constexpr int PLAYER_COUNT = 2;
-    constexpr int OBSTACLE_COUNT = 20;
+    constexpr int PLAYER_COUNT = 3;
+    constexpr int OBSTACLE_COUNT = 10;
 
     constexpr float EPS = 1e-3f;
 

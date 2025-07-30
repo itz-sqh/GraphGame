@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <boost/serialization/access.hpp>
 #include <SFML/Graphics.hpp>
 #include "expression/Expression.h"
 #include "expression/ExpressionParser.h"
@@ -19,5 +20,12 @@ public:
 private:
 
     Expression expression;
+
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int) {
+        ar & expression;
+    }
 };
 

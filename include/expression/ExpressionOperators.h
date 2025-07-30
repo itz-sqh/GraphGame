@@ -41,8 +41,8 @@ namespace ExprOps {
         {"sqrt", {1, [](const std::vector<float>& args) { return std::sqrt(args[0]); }}},
         {"max", {2, [](const std::vector<float>& args) { return std::max(args[0], args[1]); }}},
         {"min", {2, [](const std::vector<float>& args) { return std::min(args[0], args[1]); }}},
-        {"abs", {2, [](const std::vector<float>& args) { return std::abs(args[0]); }}},
-        {"sign", {2, [](const std::vector<float>& args) { return (args[0]==0 ? 0:args[0]/std::abs(args[0])); }}}
+        {"abs", {1, [](const std::vector<float>& args) { return std::abs(args[0]); }}},
+        {"sign", {1, [](const std::vector<float>& args) { return (args[0]==0 ? 0:args[0]/std::abs(args[0])); }}}
     };
 
 }

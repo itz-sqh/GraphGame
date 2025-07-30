@@ -17,6 +17,7 @@ file(GLOB_RECURSE HEADERS
         "../${INCLUDE_DIR}/states/*.h"
         "../${INCLUDE_DIR}/ui/*.h"
 )
+find_package(Boost 1.74 REQUIRED COMPONENTS serialization system)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
@@ -36,6 +37,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         SFML::System
         SFML::Window
         SFML::Graphics
+        Boost::system
+        Boost::serialization
+
 )
 
 

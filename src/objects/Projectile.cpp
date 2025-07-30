@@ -3,8 +3,11 @@
 #include <iostream>
 
 
-Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f origin) : function(expr), color(color),
-                                                                                       origin(origin) {
+Projectile::Projectile(): function("0") {
+    const auto expr = ExpressionParser::parse("0").value();
+    sf::Color color = sf::Color::White;
+    sf::Vector2f origin = {0, 0};
+
     vertices.setPrimitiveType(sf::PrimitiveType::LineStrip);
 
     auto points = function.generatePoints(3 * GameConstants::MIN_X, 3 * GameConstants::MAX_X);
@@ -12,6 +15,27 @@ Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f ori
     int centerIndex = Geometry::findCenterIndex(points, {GameConstants::POINT_STEP,GameConstants::POINT_STEP});
 
     auto offset = points[centerIndex];
+
+    for (const auto &point: points) {
+        vertices.append({origin + point - offset, color});
+    }
+
+    collidedVertices = vertices;
+    clock.restart();
+
+}
+
+
+Projectile::Projectile(const Expression &expr, sf::Color color, sf::Vector2f origin) : function(expr), color(color),
+                                                                                       origin(origin) {
+    vertices.setPrimitiveType(sf::PrimitiveType::LineStrip);
+
+    auto points = function.generatePoints(3 * GameConstants::MIN_X, 3 * GameConstants::MAX_X);
+
+    int centerIndex = Geometry::findCenterIndex(points, {GameConstants::POINT_STEP,GameConstants::POINT_STEP});
+    sf::Vector2f offset = {0,0};
+    if (points.size() != 0)
+        offset = points[centerIndex];
 
     for (const auto &point: points) {
         vertices.append({origin + point - offset, color});

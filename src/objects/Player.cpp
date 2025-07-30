@@ -1,15 +1,15 @@
 #include "objects/Player.h"
 
 
-
 Player::Player(sf::Vector2f position, sf::Color color, float radius)
-        : CircleObject(position,radius), color(color) {}
+    : CircleObject(position, radius), color(color) {
+}
 
 
 void Player::draw(sf::RenderTarget &target) const {
     if (gotHit) return;
     const sf::Vector2u size = target.getSize();
-    const float windowRadius = Geometry::mapToWindow(radius+GameConstants::MIN_X,size.x);
+    const float windowRadius = Geometry::mapToWindow(radius + GameConstants::MIN_X, size.x);
     if (isCurrentPlayer) {
         sf::CircleShape outerRing(2 * windowRadius);
         outerRing.setFillColor(sf::Color::White);
@@ -31,6 +31,7 @@ void Player::draw(sf::RenderTarget &target) const {
 sf::Color Player::getColor() const {
     return color;
 }
+
 void Player::switchCurrent() {
     isCurrentPlayer = !isCurrentPlayer;
 }
@@ -42,12 +43,7 @@ bool Player::isAlive() const {
 bool Player::isCurrent() const {
     return isCurrentPlayer;
 }
+
 void Player::kill() {
     gotHit = true;
 }
-
-
-
-
-
-

@@ -8,8 +8,8 @@ public:
     static float getFloat(float min, float max);
 
 private:
-    static std::mt19937 gen;
-    static bool initiated;
+    static std::mt19937 gen_;
+    static bool initiated_;
     static void init();
 
 };

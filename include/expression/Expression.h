@@ -5,6 +5,7 @@
 #include "ExpressionOperators.h"
 #include <stack>
 #include <charconv>
+#include <boost/serialization/access.hpp>
 
 
 class Expression {
@@ -27,5 +28,12 @@ public:
 
 private:
     std::vector<Token> tokens;
+
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int) {
+        ar & tokens;
+    }
 
 };

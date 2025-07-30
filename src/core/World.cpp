@@ -34,7 +34,7 @@ void World::generatePlayers() {
                 placed = false;
         }
         players.push_back(
-            std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % GameConstants::PLAYER_COUNT]));
+            std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % 2]));
         playersQueue.push(players.back());
     }
 }
@@ -140,18 +140,27 @@ void World::nextTurn() {
         playersQueue.pop();
     }
 
-    if (playersQueue.empty()) {
+    if (playersQueue.empty() || allPlayersHaveSameColor()) {
         gameOver = true;
         return;
     }
 
-    const auto newPlayer = playersQueue.front();
-    if (newPlayer == prevPlayer) {
-        prevPlayer->switchCurrent();
-        gameOver = true;
-        return;
+    playersQueue.front()->switchCurrent();
+}
+
+bool World::allPlayersHaveSameColor() const {
+    if (playersQueue.empty()) return true;
+
+    const sf::Color firstColor = playersQueue.front()->getColor();
+
+    auto tmp = playersQueue;
+    while (!tmp.empty()) {
+        if (tmp.front()->getColor() != firstColor) {
+            return false;
+        }
+        tmp.pop();
     }
-    newPlayer->switchCurrent();
+    return true;
 }
 
 const std::vector<std::shared_ptr<Obstacle> > &World::getObstacles() const {

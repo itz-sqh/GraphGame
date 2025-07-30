@@ -11,6 +11,9 @@ class Projectile {
 public:
     Projectile(const Expression &expr, sf::Color color, sf::Vector2f origin);
 
+    Projectile();
+
+
     void update(float dt);
 
     void draw(sf::RenderTarget &target);
@@ -28,10 +31,10 @@ public:
     void triggerEvents(int pointsShown);
 
     void storeCollisionEvents(
-          const std::vector<CollisionManager::PlayerHit>& players,
-          const std::vector<CollisionManager::ObstacleHit>& obstacles,
-          int centerIndex
-      );
+        const std::vector<CollisionManager::PlayerHit> &players,
+        const std::vector<CollisionManager::ObstacleHit> &obstacles,
+        int centerIndex
+    );
 
     int findClosestVertexIndex(sf::Vector2f point) const;
 
@@ -56,4 +59,13 @@ private:
     };
 
     std::vector<HitEvent> hitEvents;
+
+
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int) {
+        ar & function & color & origin & progress & active;
+        ar & vertices & collidedVertices & centerIndex & pointsShown;
+    }
 };
