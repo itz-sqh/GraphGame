@@ -21,7 +21,7 @@ find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
         "C:/Program Files/SFML"
         PATH_SUFFIXES "lib/cmake/SFML"
 )
-find_package(Boost 1.74 REQUIRED COMPONENTS unit_test_framework)
+find_package(Boost 1.81 REQUIRED COMPONENTS unit_test_framework serialization)
 
 if(NOT SFML_FOUND)
     message(FATAL_ERROR "SFML not found. Please install SFML 3.0+")

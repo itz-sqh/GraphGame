@@ -8,7 +8,7 @@
 #include "objects/Projectile.h"
 #include <boost/archive/text_oarchive.hpp>
 #include<boost/archive/text_iarchive.hpp>
-#include"Serialization.h"
+#include "Serialization.h"
 #include<boost/serialization/vector.hpp>
 #include<boost/serialization/string.hpp>
 
@@ -29,7 +29,10 @@ void serialize(Archive &ar, sf::Color &color, const unsigned int version) {
 struct WorldSnapshot {
     WorldSnapshot();
 
-    WorldSnapshot(std::vector<Player> players, std::vector<Obstacle> obstacles, bool gameOver, std::string playerInput, Projectile projectile);
+    WorldSnapshot(const std::vector<std::shared_ptr<Player> > &players,
+                  const std::vector<std::shared_ptr<Obstacle> > &obstacles,
+                  bool gameOver, const std::string &playerInput,
+                  const std::unique_ptr<Projectile> &projectile);
 
     bool gameOver{};
 

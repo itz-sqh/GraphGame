@@ -13,8 +13,11 @@ namespace GameConstants {
 
     constexpr float POINT_STEP = 0.025f;
 
-    constexpr int PLAYER_COUNT = 3;
+    constexpr int PLAYER_COUNT = 2;
+    constexpr int UNITS_PER_PLAYER = 3;
     constexpr int OBSTACLE_COUNT = 10;
+
+    constexpr float dt = 1.f / 60.f;
 
     constexpr float EPS = 1e-3f;
 
@@ -36,7 +39,3 @@ namespace GameConstants {
     constexpr float PLAYER_WIDTH_OFFSET = 20.f;
     constexpr float PLAYER_HEIGHT_OFFSET = 50.f;
 }
-
-
-
-

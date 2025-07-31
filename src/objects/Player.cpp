@@ -47,3 +47,8 @@ bool Player::isCurrent() const {
 void Player::kill() {
     gotHit = true;
 }
+
+bool Player::operator==(const Player &other) const {
+    return static_cast<CircleObject>(*this) == static_cast<CircleObject>(other);
+}
+

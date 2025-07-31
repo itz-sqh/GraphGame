@@ -20,6 +20,8 @@ public:
 
     std::vector<CircleObject> getOverlaps();
 
+    bool operator==(const Obstacle &other) const;
+
 private:
     std::vector<CircleObject> overlaps;
 };

@@ -8,7 +8,7 @@ void ShootingState::handleEvents(Game &game) {
 }
 
 void ShootingState::update(Game &game) {
-    float dt = 1.0f/60.0f;
+    float dt = GameConstants::dt;
     game.getWorld().update(dt);
 
     if (!game.getWorld().isProjectileActive())

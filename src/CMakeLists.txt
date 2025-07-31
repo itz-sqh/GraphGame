@@ -17,7 +17,7 @@ file(GLOB_RECURSE HEADERS
         "../${INCLUDE_DIR}/states/*.h"
         "../${INCLUDE_DIR}/ui/*.h"
 )
-find_package(Boost 1.74 REQUIRED COMPONENTS serialization system)
+find_package(Boost 1.81 REQUIRED COMPONENTS serialization system)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 

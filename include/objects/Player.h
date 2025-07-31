@@ -26,6 +26,8 @@ public:
 
     [[nodiscard]] bool isCurrent() const;
 
+    bool operator==(const Player &other) const;
+
 private:
     bool gotHit = false;
     bool isCurrentPlayer = false;

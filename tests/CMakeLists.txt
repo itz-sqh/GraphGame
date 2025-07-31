@@ -5,6 +5,7 @@ file(GLOB_RECURSE LIB_SOURCES
         "../${SOURCE_DIR}/expression/*.cpp"
         "../${SOURCE_DIR}/math/*.cpp"
         "../${SOURCE_DIR}/objects/*.cpp"
+        "../${SOURCE_DIR}/*.cpp"
 )
 
 add_library(${PROJECT_NAME}_test_lib STATIC ${LIB_SOURCES})
@@ -26,8 +27,10 @@ foreach(TEST_FILE ${TEST_SOURCES})
     target_link_libraries(${TEST_NAME} PRIVATE
             ${PROJECT_NAME}_test_lib
             ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+            Boost::serialization
             SFML::System
             SFML::Graphics
+
     )
 
     add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})

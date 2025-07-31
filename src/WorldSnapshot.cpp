@@ -2,8 +2,18 @@
 
 WorldSnapshot::WorldSnapshot() : projectile({}, sf::Color::White, {0, 0}) {}
 
-WorldSnapshot::WorldSnapshot(std::vector<Player> players, std::vector<Obstacle> obstacles, bool gameOver, std::string playerInput, Projectile projectile) :
-players(players), obstacles(obstacles), gameOver(gameOver), playerInput(playerInput), projectile(projectile) {}
+WorldSnapshot::WorldSnapshot(const std::vector<std::shared_ptr<Player> > &players,
+              const std::vector<std::shared_ptr<Obstacle> > &obstacles,
+              bool gameOver, const std::string &playerInput,
+              const std::unique_ptr<Projectile> &projectile) : gameOver(gameOver), playerInput(playerInput) {
+    for (const auto& player : players) {
+        this->players.emplace_back(*player);
+    }
+    for (const auto& obstacle : obstacles) {
+        this->obstacles.emplace_back(*obstacle);
+    }
+    this->projectile = *projectile;
+}
 
 
 

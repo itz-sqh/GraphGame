@@ -40,6 +40,10 @@ std::vector<CircleObject> Obstacle::getOverlaps() {
     return overlaps;
 }
 
+bool Obstacle::operator==(const Obstacle &other) const {
+    return static_cast<CircleObject>(*this) == static_cast<CircleObject>(other);
+}
+
 
 
 

@@ -4,6 +4,7 @@
 #include "core/GameConstants.h"
 #include <cmath>
 #include <boost/serialization/access.hpp>
+#include<ostream>
 
 
 class CircleObject {
@@ -29,6 +30,8 @@ public:
 
     [[nodiscard]] sf::Vector2f getPosition() const;
 
+    friend std::ostream& operator<<(std::ostream& os, const CircleObject& obj);
+
 protected:
     sf::Vector2f position;
     float radius;
@@ -39,3 +42,5 @@ private:
         ar & position & radius;
     }
 };
+
+

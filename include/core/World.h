@@ -12,7 +12,7 @@
 
 class World {
 public:
-    World();
+    explicit World(int playerCount = GameConstants::PLAYER_COUNT, int unitsPerPlayer = GameConstants::UNITS_PER_PLAYER, int obstacleCount = GameConstants::OBSTACLE_COUNT);
 
     void generatePlayers();
 
@@ -36,9 +36,17 @@ public:
 
     [[nodiscard]] const std::vector<std::shared_ptr<Player> >& getPlayers() const;
 
+    [[nodiscard]] const std::unique_ptr<Projectile>& getProjectile() const;
+
     [[nodiscard]] bool allPlayersHaveSameColor() const;
 
-public:
+    void setProjectile(const Expression& expression, sf::Color color, sf::Vector2f origin);
+
+private:
+    int playerCount = GameConstants::PLAYER_COUNT;
+    int unitsPerPlayer = GameConstants::UNITS_PER_PLAYER;
+    int obstacleCount = GameConstants::OBSTACLE_COUNT;
+
     std::vector<std::shared_ptr<Player> > players;
     std::vector<std::shared_ptr<Obstacle> > obstacles;
     std::queue<std::shared_ptr<Player> > playersQueue;

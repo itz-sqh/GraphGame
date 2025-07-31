@@ -12,6 +12,11 @@ void Rng::init() {
     }
 }
 
+void Rng::setSeed(uint32_t seed) {
+    gen_.seed(seed);
+}
+
+
 int Rng::getInt(int min, int max) {
     init();
     std::uniform_int_distribution dist(min, max);

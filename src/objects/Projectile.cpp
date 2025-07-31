@@ -160,3 +160,4 @@ void Projectile::setCollidedVertices(const sf::VertexArray &vertices) {
 }
 
 
+

@@ -1,16 +1,21 @@
 #include "core/World.h"
 
-World::World() {
+World::World(int playerCount, int unitsPerPlayer, int obstacleCount) {
+    this->playerCount = playerCount;
+    this->unitsPerPlayer = unitsPerPlayer;
+    this->obstacleCount = obstacleCount;
+
     generatePlayers();
     generateObstacles();
     playersQueue.front()->switchCurrent();
 }
 
 void World::generatePlayers() {
+    const int totalUnitsCount = playerCount * unitsPerPlayer;
     players.clear();
     playersQueue = std::queue<std::shared_ptr<Player> >();
     constexpr sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
-    for (int i = 0; i < GameConstants::PLAYER_COUNT; i++) {
+    for (int i = 0; i < totalUnitsCount; i++) {
         bool placed = false;
         sf::Vector2f point;
         while (!placed) {
@@ -34,15 +39,14 @@ void World::generatePlayers() {
                 placed = false;
         }
         players.push_back(
-            std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % 2]));
+            std::make_shared<Player>(point, GameConstants::PLAYER_COLOR[i % playerCount]));
         playersQueue.push(players.back());
     }
 }
 
 void World::generateObstacles() {
     obstacles.clear();
-    constexpr sf::Vector2u size = {GameConstants::WIDTH, GameConstants::HEIGHT};
-    for (int i = 0; i < GameConstants::OBSTACLE_COUNT; ++i) {
+    for (int i = 0; i < obstacleCount; ++i) {
         bool placed = false;
         sf::Vector2f point;
         while (!placed) {
@@ -69,10 +73,12 @@ void World::generateObstacles() {
 
 void World::fireProjectile(const Expression &expr, sf::Color color) {
     if (playersQueue.empty()) return;
+
     auto currentPlayer = playersQueue.front();
+
     sf::Vector2f origin = currentPlayer->getPosition();
 
-    activeProjectile = std::make_unique<Projectile>(expr, color, origin);
+    setProjectile(expr, color, origin);
 
     auto collisionResult = CollisionManager::checkCollisions(
         activeProjectile->getVertices(),
@@ -169,4 +175,12 @@ const std::vector<std::shared_ptr<Obstacle> > &World::getObstacles() const {
 
 const std::vector<std::shared_ptr<Player> > &World::getPlayers() const {
     return players;
+}
+
+const std::unique_ptr<Projectile> &World::getProjectile() const {
+    return activeProjectile;
+}
+
+void World::setProjectile(const Expression &expression, sf::Color color, sf::Vector2f origin) {
+    activeProjectile = std::make_unique<Projectile>(expression, color, origin);
 }

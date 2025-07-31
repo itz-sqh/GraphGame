@@ -28,3 +28,10 @@ bool CircleObject::inside(const sf::Vector2f point) const {
     const float y = point.y - position.y;
     return x * x + y * y - radius * radius < +GameConstants::EPS;
 }
+
+std::ostream& operator<<(std::ostream& os, const CircleObject& obj) {
+    os << "CircleObject{x: " << obj.position.x
+       << ", y: " << obj.position.y
+       << ", r: " << obj.radius << "}";
+    return os;
+}
