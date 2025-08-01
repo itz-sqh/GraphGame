@@ -1,6 +1,5 @@
 #include "objects/Projectile.h"
 
-#include <iostream>
 
 
 Projectile::Projectile(): function("0") {

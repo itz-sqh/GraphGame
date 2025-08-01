@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE SerializationTest
 #include <boost/test/unit_test.hpp>
-#include "Message.h"
+#include "MessageSerializer.h"
 #include "core/World.h"
 
 
@@ -11,9 +11,9 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
         std::string playerInput = "sin(x)";
         auto msg = GameMessage::create_player_input(playerInput);
 
-        std::string serialized = Message::serialize(msg);
+        std::string serialized = MessageSerializer::serialize(msg);
 
-        auto observed = Message::deserialize(serialized);
+        auto observed = MessageSerializer::deserialize(serialized);
 
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
@@ -24,9 +24,9 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
         std::string playerInput = "(x)+(sin(x)+cos(x))*e^(-x^2)";
         auto msg = GameMessage::create_player_input(playerInput);
 
-        std::string serialized = Message::serialize(msg);
+        std::string serialized = MessageSerializer::serialize(msg);
 
-        auto observed = Message::deserialize(serialized);
+        auto observed = MessageSerializer::deserialize(serialized);
 
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
@@ -37,9 +37,9 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
         std::string playerInput = "e^-x^2*sin(x)+x*cos(x)+1-1+1-1";
         auto msg = GameMessage::create_player_input(playerInput);
 
-        std::string serialized = Message::serialize(msg);
+        std::string serialized = MessageSerializer::serialize(msg);
 
-        auto observed = Message::deserialize(serialized);
+        auto observed = MessageSerializer::deserialize(serialized);
 
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
@@ -50,9 +50,9 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
         std::string playerInput = "x";
         auto msg = GameMessage::create_player_input(playerInput);
 
-        std::string serialized = Message::serialize(msg);
+        std::string serialized = MessageSerializer::serialize(msg);
 
-        auto observed = Message::deserialize(serialized);
+        auto observed = MessageSerializer::deserialize(serialized);
 
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
@@ -63,9 +63,9 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
         std::string playerInput = "0";
         auto msg = GameMessage::create_player_input(playerInput);
 
-        std::string serialized = Message::serialize(msg);
+        std::string serialized = MessageSerializer::serialize(msg);
 
-        auto observed = Message::deserialize(serialized);
+        auto observed = MessageSerializer::deserialize(serialized);
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
 
@@ -97,9 +97,9 @@ BOOST_AUTO_TEST_CASE(world_snapshot_test) {
 
         auto msg = GameMessage::create_world_snapshot(snapshot);
 
-        std::string serialized = Message::serialize(msg);
+        std::string serialized = MessageSerializer::serialize(msg);
 
-        auto deserialized = Message::deserialize(serialized);
+        auto deserialized = MessageSerializer::deserialize(serialized);
 
         BOOST_CHECK_EQUAL(deserialized.type, MessageType::WORLD_SNAPSHOT);
 
