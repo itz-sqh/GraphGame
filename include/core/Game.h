@@ -19,6 +19,8 @@ public:
 
     void popState();
 
+    void applySnapshot(const WorldSnapshot& snapshot);
+
     [[nodiscard]] sf::RenderWindow &getWindow() const { return *window; }
     World &getWorld() { return world; }
     InputManager &getInputManager() { return inputManager; }

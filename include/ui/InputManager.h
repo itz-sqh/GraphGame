@@ -13,6 +13,8 @@ public:
     [[nodiscard]] bool isValidExpression() const { return expr.has_value(); }
     [[nodiscard]] std::optional<Expression> getExpression() const { return expr; }
 
+    void setInput(const std::string& input);
+
 
 private:
     std::string buffer;

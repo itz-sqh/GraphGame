@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE SerializationTest
 #include <boost/test/unit_test.hpp>
-#include "MessageSerializer.h"
+#include "common/NetworkMessage.h"
 #include "core/World.h"
 
 
@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
     BOOST_AUTO_TEST_CASE(player_input_test) {
     {
         std::string playerInput = "sin(x)";
-        auto msg = GameMessage::create_player_input(playerInput);
+        auto msg = NetworkMessage::CreatePlayerInput(playerInput);
 
         std::string serialized = MessageSerializer::serialize(msg);
 
@@ -18,11 +18,11 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
 
-        BOOST_CHECK_EQUAL(*observed.get<std::string>(), playerInput);
+        BOOST_CHECK_EQUAL(observed.get<std::string>(), playerInput);
     }
     {
         std::string playerInput = "(x)+(sin(x)+cos(x))*e^(-x^2)";
-        auto msg = GameMessage::create_player_input(playerInput);
+        auto msg = NetworkMessage::CreatePlayerInput(playerInput);
 
         std::string serialized = MessageSerializer::serialize(msg);
 
@@ -31,11 +31,11 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
 
-        BOOST_CHECK_EQUAL(*observed.get<std::string>(), playerInput);
+        BOOST_CHECK_EQUAL(observed.get<std::string>(), playerInput);
     }
     {
         std::string playerInput = "e^-x^2*sin(x)+x*cos(x)+1-1+1-1";
-        auto msg = GameMessage::create_player_input(playerInput);
+        auto msg = NetworkMessage::CreatePlayerInput(playerInput);
 
         std::string serialized = MessageSerializer::serialize(msg);
 
@@ -44,11 +44,11 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
 
-        BOOST_CHECK_EQUAL(*observed.get<std::string>(), playerInput);
+        BOOST_CHECK_EQUAL(observed.get<std::string>(), playerInput);
     }
     {
         std::string playerInput = "x";
-        auto msg = GameMessage::create_player_input(playerInput);
+        auto msg = NetworkMessage::CreatePlayerInput(playerInput);
 
         std::string serialized = MessageSerializer::serialize(msg);
 
@@ -57,11 +57,11 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
 
-        BOOST_CHECK_EQUAL(*observed.get<std::string>(), playerInput);
+        BOOST_CHECK_EQUAL(observed.get<std::string>(), playerInput);
     }
     {
         std::string playerInput = "0";
-        auto msg = GameMessage::create_player_input(playerInput);
+        auto msg = NetworkMessage::CreatePlayerInput(playerInput);
 
         std::string serialized = MessageSerializer::serialize(msg);
 
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_SUITE(SerializationTest)
 
         BOOST_CHECK_EQUAL(observed.type, MessageType::PLAYER_INPUT);
 
-        BOOST_CHECK_EQUAL(*observed.get<std::string>(), playerInput);
+        BOOST_CHECK_EQUAL(observed.get<std::string>(), playerInput);
     }
 }
 
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(world_snapshot_test) {
 
         WorldSnapshot snapshot(players,obstacles,gameOver,playerInput,projectile);
 
-        auto msg = GameMessage::create_world_snapshot(snapshot);
+        auto msg = NetworkMessage::CreateWorldSnapshot(snapshot);
 
         std::string serialized = MessageSerializer::serialize(msg);
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(world_snapshot_test) {
 
         BOOST_CHECK_EQUAL(deserialized.type, MessageType::WORLD_SNAPSHOT);
 
-        auto* observed = deserialized.get<WorldSnapshot>();
+        auto* observed = deserialized.getIf<WorldSnapshot>();
 
         BOOST_REQUIRE(observed != nullptr);
 

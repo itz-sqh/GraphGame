@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE ServerTest
 #include <boost/test/unit_test.hpp>
 #include <boost/asio.hpp>
-#include "../../include/networking/GameServer.h"
+#include "../../include/server/GameServer.h"
 #include"Session.h"
 
 

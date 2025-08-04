@@ -10,6 +10,20 @@ World::World(int playerCount, int unitsPerPlayer, int obstacleCount) {
     playersQueue.front()->switchCurrent();
 }
 
+World::World(const std::vector<Player> &players, const std::vector<Obstacle> &obstacles, const bool gameOver, const Projectile& projectile) {
+    for (const auto& player : players) {
+        auto ptr = std::make_shared<Player>(player);
+        this->players.push_back(ptr);
+        this->playersQueue.push(ptr);
+    }
+    for (const auto& obstacle : obstacles) {
+        this->obstacles.push_back(std::make_shared<Obstacle>(obstacle));
+    }
+    this->gameOver = gameOver;
+    this->activeProjectile = std::make_unique<Projectile>(projectile);
+}
+
+
 void World::generatePlayers() {
     const int totalUnitsCount = playerCount * unitsPerPlayer;
     players.clear();
@@ -184,3 +198,15 @@ const std::unique_ptr<Projectile> &World::getProjectile() const {
 void World::setProjectile(const Expression &expression, sf::Color color, sf::Vector2f origin) {
     activeProjectile = std::make_unique<Projectile>(expression, color, origin);
 }
+
+
+size_t World::getCurrentPlayerId() const {
+    for (size_t i = 0; i < players.size(); ++i) {
+        if (players[i]->isCurrent())
+            return i;
+    }
+    return 0;
+}
+
+
+

@@ -1,6 +1,9 @@
 file(GLOB_RECURSE SOURCES
         *.cpp
         "core/*.cpp"
+        "server/*.cpp"
+        "client/*.cpp"
+        "common/*.cpp"
         "expression/*.cpp"
         "math/*.cpp"
         "objects/*.cpp"
@@ -11,6 +14,9 @@ file(GLOB_RECURSE SOURCES
 
 file(GLOB_RECURSE HEADERS
         "../${INCLUDE_DIR}/core/*.h"
+        "../${INCLUDE_DIR}client/*.cpp"
+        "../${INCLUDE_DIR}common/*.cpp"
+        "../${INCLUDE_DIR}expression/*.cpp"
         "../${INCLUDE_DIR}/expression/*.h"
         "../${INCLUDE_DIR}/math/*.h"
         "../${INCLUDE_DIR}/objects/*.h"
@@ -20,9 +26,9 @@ file(GLOB_RECURSE HEADERS
 find_package(Boost 1.81 REQUIRED COMPONENTS serialization system)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS}
-        networking/NetworkMessage.cpp
-        networking/Session.cpp
-        networking/TcpNetworkService.cpp)
+        ../include/server/ServerSession.h
+        ../include/client/ClientSession.h
+        ../include/client/ClientGame.h)
 
 if(TARGET ${PROJECT_NAME})
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

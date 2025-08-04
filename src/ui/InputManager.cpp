@@ -23,3 +23,8 @@ void InputManager::validateInput() {
     else expr.reset();
 }
 
+
+void InputManager::setInput(const std::string &input) {
+    buffer = input;
+}
+

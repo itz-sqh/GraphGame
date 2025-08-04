@@ -35,4 +35,10 @@ void Game::popState() {
     }
 }
 
+void Game::applySnapshot(const WorldSnapshot &snapshot) {
+    world = World(snapshot.players, snapshot.obstacles, snapshot.gameOver, snapshot.projectile);
+    inputManager.setInput(snapshot.playerInput);
+}
+
+
 

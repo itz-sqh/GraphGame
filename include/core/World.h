@@ -3,6 +3,8 @@
 #include <queue>
 #include <vector>
 #include <SFML/Graphics/RenderTarget.hpp>
+
+#include "WorldSnapshot.h"
 #include "math/Rng.h"
 #include "objects/Obstacle.h"
 #include "objects/Player.h"
@@ -13,6 +15,8 @@
 class World {
 public:
     explicit World(int playerCount = GameConstants::PLAYER_COUNT, int unitsPerPlayer = GameConstants::UNITS_PER_PLAYER, int obstacleCount = GameConstants::OBSTACLE_COUNT);
+
+    World(const std::vector<Player> &players, const std::vector<Obstacle> &obstacles, bool gameOver, const Projectile& projectile);
 
     void generatePlayers();
 
@@ -25,6 +29,8 @@ public:
     void update(float dt);
 
     void draw(sf::RenderTarget &target) const;
+
+    [[nodiscard]] size_t getCurrentPlayerId() const;
 
     [[nodiscard]] bool isProjectileActive() const;
 
