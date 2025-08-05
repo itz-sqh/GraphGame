@@ -6,13 +6,15 @@
 
 class InputManager {
 public:
-    void handleEvent(const sf::Event& event);
+    void handleEvent(const sf::Event &event);
+
     void clear();
 
-    [[nodiscard]] const std::string& getCurrentInput() const { return buffer; }
+    [[nodiscard]] const std::string &getCurrentInput() const { return buffer; }
     [[nodiscard]] bool isValidExpression() const { return expr.has_value(); }
     [[nodiscard]] std::optional<Expression> getExpression() const { return expr; }
 
+    void addChar(char c) { buffer.push_back(c); }
 
 private:
     std::string buffer;

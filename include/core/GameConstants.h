@@ -14,6 +14,7 @@ namespace GameConstants {
     constexpr float POINT_STEP = 0.025f;
 
     constexpr int PLAYER_COUNT = 2;
+    constexpr int UNITS_PER_PLAYER = 2;
     constexpr int OBSTACLE_COUNT = 20;
 
     constexpr float EPS = 1e-3f;
@@ -21,7 +22,7 @@ namespace GameConstants {
     constexpr float SHOT_DISPLAY_TIME = 5.0f;
     constexpr int POINTS_PER_SECOND = 1000;
 
-    constexpr float HIT_RADIUS = 0.5f;
+    constexpr float HIT_RADIUS = 0.75f;
     constexpr float PLAYER_RADIUS = 0.33f;
     constexpr float OBSTACLE_RADIUS = 2.f;
 
@@ -35,6 +36,11 @@ namespace GameConstants {
 
     constexpr float PLAYER_WIDTH_OFFSET = 20.f;
     constexpr float PLAYER_HEIGHT_OFFSET = 50.f;
+
+
+    constexpr float BOT_THINK_TIME = 1.f;
+    constexpr float BOT_TYPING_DELAY = 0.2f;
+    constexpr float BOT_POST_TYPING_DELAY = 1.f;
 }
 
 
