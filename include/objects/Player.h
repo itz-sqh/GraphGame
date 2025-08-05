@@ -7,7 +7,7 @@
 
 class Player : public CircleObject {
 public:
-    Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS);
+    Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS, bool isBot = false);
 
     void draw(sf::RenderTarget& target) const;
 
@@ -18,10 +18,12 @@ public:
     [[nodiscard]] sf::Color getColor() const;
     void switchCurrent();
 
-    bool isCurrent() const;
+    [[nodiscard]] bool isCurrent() const;
+    [[nodiscard]] bool isBot() const {return bot;}
 
 private:
     bool gotHit = false;
+    bool bot = false;
     bool isCurrentPlayer = false;
     sf::Color color;
 };

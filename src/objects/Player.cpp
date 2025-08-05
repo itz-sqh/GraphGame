@@ -2,15 +2,15 @@
 
 
 
-Player::Player(sf::Vector2f position, sf::Color color, float radius)
-        : CircleObject(position,radius), color(color) {}
+Player::Player(sf::Vector2f position, sf::Color color, float radius, bool isBot)
+        : CircleObject(position,radius), color(color), bot(isBot) {}
 
 
 void Player::draw(sf::RenderTarget &target) const {
     if (gotHit) return;
     const sf::Vector2u size = target.getSize();
     const float windowRadius = Geometry::mapToWindow(radius+GameConstants::MIN_X,size.x);
-    if (isCurrentPlayer) {
+    if (isCurrentPlayer && !bot) {
         sf::CircleShape outerRing(2 * windowRadius);
         outerRing.setFillColor(sf::Color::White);
         outerRing.setOutlineThickness(2);

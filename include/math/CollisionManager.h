@@ -41,6 +41,11 @@ public:
         const std::vector<std::shared_ptr<Obstacle>>& obstacles,
         const std::vector<std::shared_ptr<Player>>& players
     );
+    static bool canHitPlayer(
+        const std::shared_ptr<Player>& player1,
+        const std::shared_ptr<Player>& player2,
+        const std::vector<std::shared_ptr<Obstacle>>& obstacles
+    );
 
 private:
     enum class SearchDirection {Left,Right};

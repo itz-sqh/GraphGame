@@ -1,6 +1,7 @@
 file(GLOB_RECURSE SOURCES
         *.cpp
         "core/*.cpp"
+        "core/bot/*.cpp"
         "expression/*.cpp"
         "math/*.cpp"
         "objects/*.cpp"
@@ -11,6 +12,7 @@ file(GLOB_RECURSE SOURCES
 
 file(GLOB_RECURSE HEADERS
         "../${INCLUDE_DIR}/core/*.h"
+        "../${INCLUDE_DIR}/core/bot/*.h"
         "../${INCLUDE_DIR}/expression/*.h"
         "../${INCLUDE_DIR}/math/*.h"
         "../${INCLUDE_DIR}/objects/*.h"

@@ -91,11 +91,66 @@ void Expression::add(const Token &token) {
 }
 
 std::string Expression::toString() const {
-    std::string res;
-    for (const Token &token: tokens) {
-        res += token.val + " ";
+    if (!this->isValid()) return "";
+
+    std::stack<std::string> st;
+
+    for (const Token& token : tokens) {
+        switch (token.type) {
+            case TokenType::Constant:
+            case TokenType::Variable:
+                st.push(token.val);
+                break;
+
+            case TokenType::UnaryOperator: {
+                std::string operand = st.top();
+                st.pop();
+                std::string op_symbol = token.val.substr(1);
+                st.push(op_symbol + operand);
+                break;
+            }
+
+            case TokenType::BinaryOperator: {
+                std::string right = st.top();
+                st.pop();
+                std::string left = st.top();
+                st.pop();
+
+                st.push("(" + left + " " + token.val + " " + right + ")");
+                break;
+            }
+
+            case TokenType::Function: {
+                auto it = ExprOps::FUNCTIONS.find(token.val);
+                int argCount = it->second.argCount;
+
+                std::vector<std::string> args(argCount);
+                for (int i = argCount - 1; i >= 0; --i) {
+                    args[i] = st.top();
+                    st.pop();
+                }
+
+                std::string args_str;
+                for (int i = 0; i < argCount; ++i) {
+                    if (i != 0) args_str += ", ";
+                    args_str += args[i];
+                }
+
+                st.push(token.val + "(" + args_str + ")");
+                break;
+            }
+
+            default:
+                break;
+        }
     }
+
+    std::string res = st.top();
+
+    if (res.size() > 1 && res.front() == '(' && res.back() == ')')
+        res = res.substr(1,res.size()-2);
     return res;
+
 }
 
 bool Expression::isValid() const {
