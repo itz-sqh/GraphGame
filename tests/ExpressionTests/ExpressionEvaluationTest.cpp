@@ -4,6 +4,7 @@
 #include "core/Game.h"
 #include "core/GameConstants.h"
 
+
 void test_expression(const std::string &infix, const std::function<float(float)> &func, float from, float to,
                      float step,
                      float eps = GameConstants::EPS) {

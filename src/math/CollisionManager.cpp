@@ -157,16 +157,14 @@ CollisionManager::findPlayerHits(
 }
 
 bool CollisionManager::canHitPlayer(
-    const std::shared_ptr<Player>& player1,
-    const std::shared_ptr<Player>& player2,
+    const std::shared_ptr<Player> &player1,
+    const std::shared_ptr<Player> &player2,
     const std::vector<std::shared_ptr<Obstacle> > &obstacles
 ) {
-    const sf::Vector2f& p1 = player1->getPosition();
-    const sf::Vector2f& p2 = player2->getPosition();
+    const sf::Vector2f &p1 = player1->getPosition();
+    const sf::Vector2f &p2 = player2->getPosition();
 
     auto intersection = findClosestObstacleIntersection(obstacles, p1, p2, p1);
 
     return !intersection.has_value();
-
-
 }

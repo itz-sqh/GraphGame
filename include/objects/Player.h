@@ -9,21 +9,25 @@ class Player : public CircleObject {
 public:
     Player(sf::Vector2f position, sf::Color color, float radius = GameConstants::PLAYER_RADIUS, bool isBot = false);
 
-    void draw(sf::RenderTarget& target) const;
+    void draw(sf::RenderTarget &target) const;
 
     ~Player() override = default;
 
     [[nodiscard]] bool isAlive() const;
+
     void kill();
+
     [[nodiscard]] sf::Color getColor() const;
+
     void switchCurrent();
 
     [[nodiscard]] bool isCurrent() const;
-    [[nodiscard]] bool isBot() const {return bot;}
+
+    [[nodiscard]] bool isBot() const { return m_isBot; }
 
 private:
-    bool gotHit = false;
-    bool bot = false;
-    bool isCurrentPlayer = false;
-    sf::Color color;
+    bool m_gotHit = false;
+    bool m_isBot = false;
+    bool m_isCurrentPlayer = false;
+    sf::Color m_color;
 };

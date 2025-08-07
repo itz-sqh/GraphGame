@@ -5,6 +5,6 @@
 #include"ExpressionOperators.h"
 
 class ExpressionTokenizer {
-    public:
-    static ParseResult<std::vector<Token>> tokenize(const std::string& infix);
+public:
+    static ParseResult<std::vector<Token> > tokenize(const std::string &infix);
 };

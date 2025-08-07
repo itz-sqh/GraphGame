@@ -1,8 +1,5 @@
 #include "core/bot/BotFactory.h"
 
-#include "core/bot/EasyLinearBotStrategy.h"
-#include "core/bot/HardLinearBotStrategy.h"
-
 
 std::unique_ptr<BotStrategy> BotFactory::create(Difficulty difficulty) {
     switch (difficulty) {

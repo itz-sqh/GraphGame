@@ -1,5 +1,7 @@
 #pragma once
 #include "BotStrategy.h"
+#include "core/bot/EasyLinearBotStrategy.h"
+#include "core/bot/HardLinearBotStrategy.h"
 #include <memory>
 
 class BotFactory {

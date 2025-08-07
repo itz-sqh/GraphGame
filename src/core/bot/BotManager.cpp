@@ -9,6 +9,11 @@ void BotManager::eraseBot(const std::shared_ptr<Player> &bot) {
     bots.erase(bot);
 }
 
+void BotManager::clear() {
+    bots.clear();
+}
+
+
 Expression BotManager::calculateExpression(const std::shared_ptr<Player> &bot,
                                            const std::vector<std::shared_ptr<Player> > &players,
                                            const std::vector<std::shared_ptr<Obstacle> > &obstacles) {

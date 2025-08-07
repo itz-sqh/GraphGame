@@ -1,5 +1,7 @@
 #pragma once
 #include "BotStrategy.h"
+#include "math/CollisionManager.h"
+#include "math/Rng.h"
 
 class HardLinearBotStrategy : public BotStrategy {
 public:

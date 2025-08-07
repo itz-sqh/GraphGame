@@ -58,8 +58,7 @@ void InputState::update(Game &game) {
                     game.getInputManager().addChar(botInput[id++]);
                     botTimer.restart();
                 }
-            }
-            else if (botTimer.getElapsedTime().asSeconds() >=
+            } else if (botTimer.getElapsedTime().asSeconds() >=
                        GameConstants::BOT_POST_TYPING_DELAY) {
                 world.fireProjectile(botExpression, currentPlayer->getColor());
                 game.changeState(std::make_unique<ShootingState>());
@@ -75,9 +74,9 @@ void InputState::render(Game &game) {
 
     game.getWorld().draw(game.getWindow());
 
-    inputBox.draw(game.getWindow(),
-                  game.getInputManager().getCurrentInput(),
-                  game.getWorld().getCurrentPlayer()->getColor());
+    game.getInputBox().draw(game.getWindow(),
+                            game.getInputManager().getCurrentInput(),
+                            game.getWorld().getCurrentPlayer()->getColor());
 
     game.getWindow().display();
 }

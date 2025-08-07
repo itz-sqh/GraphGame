@@ -1,7 +1,5 @@
 #include "core/bot/HardLinearBotStrategy.h"
 
-#include "math/CollisionManager.h"
-#include "math/Rng.h"
 
 Expression HardLinearBotStrategy::calculateExpression(const std::shared_ptr<Player> &bot,
                                                       const std::vector<std::shared_ptr<Player> > &players,

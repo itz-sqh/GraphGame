@@ -10,8 +10,8 @@
 
 class ExpressionParser {
 public:
-    static ParseResult<Expression> parse(const std::string& infix);
+    static ParseResult<Expression> parse(const std::string &infix);
 
 private:
-    static ParseResult<Expression> shuntingYard(const std::vector<Token>& tokens);
+    static ParseResult<Expression> shuntingYard(const std::vector<Token> &tokens);
 };

@@ -10,15 +10,18 @@ public:
 
     void clear();
 
-    [[nodiscard]] const std::string &getCurrentInput() const { return buffer; }
-    [[nodiscard]] bool isValidExpression() const { return expr.has_value(); }
-    [[nodiscard]] std::optional<Expression> getExpression() const { return expr; }
+    [[nodiscard]] const std::string &getCurrentInput() const;
 
-    void addChar(char c) { buffer.push_back(c); }
+    [[nodiscard]] bool isValidExpression() const;
+
+    [[nodiscard]] std::optional<Expression> getExpression() const;
+
+    void addChar(char c);
 
 private:
-    std::string buffer;
-    std::optional<Expression> expr;
+    std::string m_buffer;
+    std::optional<Expression> m_expr;
 
+private:
     void validateInput();
 };

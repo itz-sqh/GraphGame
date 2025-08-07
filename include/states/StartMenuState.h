@@ -1,13 +1,15 @@
 #pragma once
 #include "BaseState.h"
 #include "ui/MenuContainer.h"
+#include "core/Game.h"
 #include "core/GameConstants.h"
 #include "ui/MenuTextItem.h"
-#include "core/Game.h"
+#include "states/SettingsState.h"
+#include "states/SetupGameConfigState.h"
 
-class SettingsState : public BaseState {
+class StartMenuState : public BaseState {
 public:
-    explicit SettingsState(Game &game);
+    explicit StartMenuState(Game &game);
 
     void handleEvents(Game &game) override;
 
@@ -19,7 +21,4 @@ private:
     Game &m_game;
     std::unique_ptr<MenuContainer> m_menu;
     sf::Font m_font;
-    bool m_shouldExit = false;
-
-    std::function<std::string()> textProvider;
 };

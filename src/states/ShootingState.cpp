@@ -8,23 +8,27 @@ void ShootingState::handleEvents(Game &game) {
 }
 
 void ShootingState::update(Game &game) {
-    float dt = 1.0f/60.0f;
+    float dt = 1.0f / 60.0f;
     game.getWorld().update(dt);
 
-    if (!game.getWorld().isProjectileActive())
-        game.changeState(std::make_unique<InputState>());
+    if (!game.getWorld().isProjectileActive()) {
+        if (game.getWorld().isGameOver()) {
+            sf::Color winner = game.getWorld().getCurrentPlayer()->getColor();
+            game.cleanWorld();
+            game.changeState(std::make_unique<GameOverState>(winner, game.getConfigManager().getResolution()));
+        } else {
+            game.changeState(std::make_unique<InputState>());
+        }
+    }
 }
 
-void ShootingState::render(Game& game) {
+void ShootingState::render(Game &game) {
     game.getWindow().clear(sf::Color::White);
     game.getWorld().draw(game.getWindow());
 
-    InputBox& box = game.getInputBox();
+    InputBox &box = game.getInputBox();
     game.getInputManager().clear();
     box.drawInactive(game.getWindow(), game.getInputManager().getCurrentInput());
 
     game.getWindow().display();
 }
-
-
-

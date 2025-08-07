@@ -19,5 +19,5 @@ public:
     ~Obstacle() override = default;
 
 private:
-    std::vector<CircleObject> overlaps;
+    std::vector<CircleObject> m_overlaps;
 };

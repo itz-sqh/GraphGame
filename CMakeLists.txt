@@ -28,10 +28,3 @@ endif()
 
 add_subdirectory(src)
 
-
-option(BUILD_TESTS "Build tests" ON)
-if(BUILD_TESTS)
-    find_package(Boost 1.74 REQUIRED COMPONENTS unit_test_framework)
-    enable_testing()
-    add_subdirectory(tests)
-endif()

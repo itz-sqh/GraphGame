@@ -123,6 +123,7 @@ namespace Geometry {
         }
         return static_cast<int>(vertices.getVertexCount()) - 1;
     }
+
     int findCenterIndex(const std::vector<sf::Vector2f> &vertices, sf::Vector2f position) {
         for (int i = 0; i < static_cast<int>(vertices.size()); i++) {
             if (vertices[i].x >= position.x) {
@@ -131,9 +132,10 @@ namespace Geometry {
         }
         return static_cast<int>(vertices.size()) - 1;
     }
-    bool isPointInSegmentBounds(const sf::Vector2f& p,
-                               const sf::Vector2f& seg1,
-                               const sf::Vector2f& seg2) {
+
+    bool isPointInSegmentBounds(const sf::Vector2f &p,
+                                const sf::Vector2f &seg1,
+                                const sf::Vector2f &seg2) {
         const float minX = std::min(seg1.x, seg2.x);
         const float maxX = std::max(seg1.x, seg2.x);
         return (p.x >= minX && p.x <= maxX);

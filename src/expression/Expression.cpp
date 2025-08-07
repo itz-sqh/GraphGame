@@ -85,9 +85,8 @@ namespace {
 }
 
 
-
 void Expression::add(const Token &token) {
-    tokens.push_back(token);
+    m_tokens.push_back(token);
 }
 
 std::string Expression::toString() const {
@@ -95,7 +94,7 @@ std::string Expression::toString() const {
 
     std::stack<std::string> st;
 
-    for (const Token& token : tokens) {
+    for (const Token &token: m_tokens) {
         switch (token.type) {
             case TokenType::Constant:
             case TokenType::Variable:
@@ -148,14 +147,13 @@ std::string Expression::toString() const {
     std::string res = st.top();
 
     if (res.size() > 1 && res.front() == '(' && res.back() == ')')
-        res = res.substr(1,res.size()-2);
+        res = res.substr(1, res.size() - 2);
     return res;
-
 }
 
 bool Expression::isValid() const {
     int stackSize = 0;
-    for (const Token &token: tokens) {
+    for (const Token &token: m_tokens) {
         switch (token.type) {
             case TokenType::Constant:
             case TokenType::Variable:
@@ -189,14 +187,13 @@ bool Expression::isValid() const {
 }
 
 
-
 std::optional<float> Expression::evaluate(const float x) const {
     if (!this->isValid())
         return std::nullopt;
 
     std::stack<float> st;
 
-    for (const Token &token: tokens) {
+    for (const Token &token: m_tokens) {
         bool success = false;
 
         switch (token.type) {
@@ -231,7 +228,7 @@ std::optional<float> Expression::evaluate(const float x) const {
 
 
 bool Expression::isEqual(const Expression &lhs, const Expression &rhs) {
-    return lhs.tokens == rhs.tokens;
+    return lhs.m_tokens == rhs.m_tokens;
 }
 
 Expression::Expression(const std::vector<Token> &tokens) {
@@ -241,5 +238,5 @@ Expression::Expression(const std::vector<Token> &tokens) {
 }
 
 Expression::Expression(const Expression &expression) {
-    tokens = expression.tokens;
+    m_tokens = expression.m_tokens;
 }

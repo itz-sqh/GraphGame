@@ -1,4 +1,4 @@
-file(GLOB_RECURSE TEST_SOURCES "*.cpp")
+file(GLOB_RECURSE TEST_SOURCES "**/*.cpp")
 
 file(GLOB_RECURSE LIB_SOURCES
         "../${SOURCE_DIR}/core/*.cpp"
@@ -26,7 +26,6 @@ foreach(TEST_FILE ${TEST_SOURCES})
     target_link_libraries(${TEST_NAME} PRIVATE
             ${PROJECT_NAME}_test_lib
             ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-            SFML::System
             SFML::Graphics
     )
 

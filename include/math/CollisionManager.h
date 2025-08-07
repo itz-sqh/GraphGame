@@ -15,7 +15,7 @@ public:
         std::shared_ptr<Obstacle> obstacle;
         sf::Vector2f point;
     };
-    
+
     struct PlayerHit {
         std::shared_ptr<Player> player;
         sf::Vector2f point;
@@ -31,36 +31,38 @@ public:
     struct IntersectionResult {
         int index{};
         std::optional<sf::Vector2f> intersectionPoint;
-        std::optional<std::shared_ptr<Obstacle>> obstacle;
+        std::optional<std::shared_ptr<Obstacle> > obstacle;
     };
 
     static CollisionResult checkCollisions(
-        const sf::VertexArray& vertices,
+        const sf::VertexArray &vertices,
         sf::Vector2f origin,
         sf::Color color,
-        const std::vector<std::shared_ptr<Obstacle>>& obstacles,
-        const std::vector<std::shared_ptr<Player>>& players
+        const std::vector<std::shared_ptr<Obstacle> > &obstacles,
+        const std::vector<std::shared_ptr<Player> > &players
     );
+
     static bool canHitPlayer(
-        const std::shared_ptr<Player>& player1,
-        const std::shared_ptr<Player>& player2,
-        const std::vector<std::shared_ptr<Obstacle>>& obstacles
+        const std::shared_ptr<Player> &player1,
+        const std::shared_ptr<Player> &player2,
+        const std::vector<std::shared_ptr<Obstacle> > &obstacles
     );
 
 private:
-    enum class SearchDirection {Left,Right};
-    static IntersectionResult findIntersection(
-       const sf::VertexArray& vertices,
-       const std::vector<std::shared_ptr<Obstacle>>& obstacles,
-       int centerIndex,
-       sf::Vector2f origin,
-       SearchDirection direction
-   );
+    enum class SearchDirection { Left, Right };
 
-    static std::vector<std::tuple<sf::Vector2f, std::shared_ptr<Player>>>
+    static IntersectionResult findIntersection(
+        const sf::VertexArray &vertices,
+        const std::vector<std::shared_ptr<Obstacle> > &obstacles,
+        int centerIndex,
+        sf::Vector2f origin,
+        SearchDirection direction
+    );
+
+    static std::vector<std::tuple<sf::Vector2f, std::shared_ptr<Player> > >
     findPlayerHits(
-        const sf::VertexArray& vertices,
-        const std::vector<std::shared_ptr<Player>>& players,
-        const sf::Vector2f& origin
+        const sf::VertexArray &vertices,
+        const std::vector<std::shared_ptr<Player> > &players,
+        const sf::Vector2f &origin
     );
 };
