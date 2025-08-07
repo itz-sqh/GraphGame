@@ -12,6 +12,7 @@ enum class TokenType {
     RightParen,
     Comma
 };
+
 class Token {
 public:
     TokenType type;
@@ -19,5 +20,5 @@ public:
 
     Token(TokenType type, std::string val);
 
-    bool operator==(const Token& other) const;
+    bool operator==(const Token &other) const;
 };

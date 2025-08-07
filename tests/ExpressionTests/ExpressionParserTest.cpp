@@ -1,12 +1,13 @@
 #define BOOST_TEST_MODULE ExpressionParserTest
 #include<boost/test/unit_test.hpp>
 #include "expression/ExpressionParser.h"
+#include"expression/ExpressionTokenizer.h"
 
 
 BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
 
     BOOST_AUTO_TEST_CASE(tokenizer_test) { {
-            auto tokens = ExpressionParser::tokenize("3 + 4.25");
+            auto tokens = ExpressionTokenizer::tokenize("3 + 4.25");
             BOOST_TEST(tokens.has_value());
             auto observed = tokens.value();
 
@@ -18,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
             BOOST_CHECK_EQUAL(observed.size(), expected.size());
             BOOST_TEST(std::equal(observed.begin(), observed.end(), expected.begin()));
         } {
-            auto tokens = ExpressionParser::tokenize("X + sin(X)");
+            auto tokens = ExpressionTokenizer::tokenize("X + sin(X)");
             BOOST_TEST(tokens.has_value());
             auto observed = tokens.value();
             std::vector<Token> expected = {
@@ -32,18 +33,18 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
             BOOST_CHECK_EQUAL(observed.size(), expected.size());
             BOOST_TEST(std::equal(observed.begin(), observed.end(), expected.begin()));
         } {
-            auto tokens = ExpressionParser::tokenize("pi + e");
+            auto tokens = ExpressionTokenizer::tokenize("pi + e");
             BOOST_TEST(tokens.has_value());
             auto observed = tokens.value();
             std::vector<Token> expected = {
-                {TokenType::Constant, std::to_string(Constants::PI)},
+                {TokenType::Constant, std::to_string(ExprOps::PI)},
                 {TokenType::BinaryOperator, "+"},
-                {TokenType::Constant, std::to_string(Constants::E)}
+                {TokenType::Constant, std::to_string(ExprOps::E)}
             };
             BOOST_CHECK_EQUAL(observed.size(), expected.size());
             BOOST_TEST(std::equal(observed.begin(), observed.end(), expected.begin()));
         } {
-            auto tokens = ExpressionParser::tokenize("-3 + +X");
+            auto tokens = ExpressionTokenizer::tokenize("-3 + +X");
             BOOST_TEST(tokens.has_value());
             auto observed = tokens.value();
             std::vector<Token> expected = {
@@ -56,7 +57,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
             BOOST_CHECK_EQUAL(observed.size(), expected.size());
             BOOST_TEST(std::equal(observed.begin(), observed.end(), expected.begin()));
         } {
-            auto tokens = ExpressionParser::tokenize("((x) + (2))*(3)");
+            auto tokens = ExpressionTokenizer::tokenize("((x) + (2))*(3)");
             BOOST_TEST(tokens.has_value());
             auto observed = tokens.value();
             std::vector<Token> expected = {
@@ -119,7 +120,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionParserTest)
                 {TokenType::Function, "max"},
                 {TokenType::Constant, "3"},
                 {TokenType::BinaryOperator, "/"},
-                {TokenType::Constant, std::to_string(Constants::PI)},
+                {TokenType::Constant, std::to_string(ExprOps::PI)},
                 {TokenType::BinaryOperator, "*"},
                 {TokenType::Function, "sin"}
             };

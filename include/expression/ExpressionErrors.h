@@ -7,9 +7,11 @@
 struct LexerError {
     std::string msg;
 };
+
 struct ParserError {
     std::string msg;
 };
+
 struct ValidationError {
     std::string msg;
 };
@@ -17,4 +19,4 @@ struct ValidationError {
 using ParseError = std::variant<LexerError, ParserError, ValidationError>;
 
 template<typename T>
-using ParseResult = std::expected<T,ParseError>;
+using ParseResult = std::expected<T, ParseError>;
