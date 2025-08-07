@@ -33,21 +33,21 @@ public:
           int centerIndex
       );
 
-    int findClosestVertexIndex(sf::Vector2f point) const;
+    [[nodiscard]] int findClosestVertexIndex(sf::Vector2f point) const;
 
 private:
-    Function function;
-    sf::Color color;
-    sf::Vector2f origin;
-    float progress = 0.f;
-    bool active = true;
-    sf::Clock clock;
+    Function m_function;
+    sf::Color m_color;
+    sf::Vector2f m_origin;
+    float m_progress = 0.f;
+    bool m_active = true;
+    sf::Clock m_clock;
 
-    sf::VertexArray vertices;
-    sf::VertexArray collidedVertices;
-    int centerIndex = -1;
+    sf::VertexArray m_vertices;
+    sf::VertexArray m_collidedVertices;
+    int m_centerIndex = -1;
 
-    float pointsShown = 0.f;
+    float m_pointsShown = 0.f;
 
     struct HitEvent {
         int index;
@@ -55,5 +55,5 @@ private:
         std::function<void()> action;
     };
 
-    std::vector<HitEvent> hitEvents;
+    std::vector<HitEvent> m_hitEvents;
 };

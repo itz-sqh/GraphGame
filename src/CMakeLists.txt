@@ -1,24 +1,20 @@
 file(GLOB_RECURSE SOURCES
-        *.cpp
-        "core/*.cpp"
-        "expression/*.cpp"
-        "math/*.cpp"
-        "objects/*.cpp"
-        "states/*.cpp"
-        "ui/*.cpp"
+        "*.cpp"
+        "**/*.cpp"
 )
 
 
 file(GLOB_RECURSE HEADERS
-        "../${INCLUDE_DIR}/core/*.h"
-        "../${INCLUDE_DIR}/expression/*.h"
-        "../${INCLUDE_DIR}/math/*.h"
-        "../${INCLUDE_DIR}/objects/*.h"
-        "../${INCLUDE_DIR}/states/*.h"
-        "../${INCLUDE_DIR}/ui/*.h"
+        "../${INCLUDE_DIR}/*.h"
+        "../${INCLUDE_DIR}/**/*.h"
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS}
+        ../include/ui/MenuComponent.h
+        ../include/ui/MenuTextItem.h
+        ../include/ui/MenuContainer.h
+        ui/MenuTextItem.cpp
+        ui/MenuContainer.cpp)
 
 if(TARGET ${PROJECT_NAME})
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
