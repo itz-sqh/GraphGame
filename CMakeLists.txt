@@ -17,7 +17,6 @@ find_package(SFML 3.0 COMPONENTS System Window Graphics REQUIRED
         ${SFML_DIR}
         "$ENV{SFML_DIR}"
         "C:/SFML"
-        "C:/Program Files/SFML"
         PATH_SUFFIXES "lib/cmake/SFML"
 )
 

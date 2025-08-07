@@ -9,20 +9,15 @@ file(GLOB_RECURSE HEADERS
         "../${INCLUDE_DIR}/**/*.h"
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS}
-        ../include/ui/MenuComponent.h
-        ../include/ui/MenuTextItem.h
-        ../include/ui/MenuContainer.h
-        ui/MenuTextItem.cpp
-        ui/MenuContainer.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-if(TARGET ${PROJECT_NAME})
+if (TARGET ${PROJECT_NAME})
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/${RESOURCES_DIR}/
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/${RESOURCES_DIR}/
     )
-endif()
+endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_SOURCE_DIR}/${INCLUDE_DIR}
@@ -37,3 +32,11 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/${RESOURCES_DIR}/ DESTINATION ${RESOURCES_DIR})
+if (WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME}} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "C:/SFML/bin/sfml-graphics-d-3.dll"
+            "C:/SFML/bin/sfml-window-d-3.dll"
+            "C:/SFML/bin/sfml-system-d-3.dll"
+    )
+endif ()

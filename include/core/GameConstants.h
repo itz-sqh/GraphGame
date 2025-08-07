@@ -2,10 +2,10 @@
 #include<SFML/Graphics/Color.hpp>
 
 namespace GameConstants {
-    constexpr float MAX_X = 25.f;
-    constexpr float MIN_X = -25.f;
-    constexpr float MAX_Y = 14.0625f;
-    constexpr float MIN_Y = -14.0625f;
+    constexpr float MAX_X = 50.f/2.f;
+    constexpr float MIN_X = -50.f/2.f;
+    constexpr float MAX_Y = 28.125f/2.f;
+    constexpr float MIN_Y = -28.125f/2.f;
 
     inline unsigned int WIDTH = 960;
     inline unsigned int HEIGHT = 540;
