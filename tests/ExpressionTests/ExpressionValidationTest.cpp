@@ -64,6 +64,8 @@ BOOST_AUTO_TEST_SUITE(ExpressionValidationTest)
 
         BOOST_TEST(!ExpressionParser::parse("()").has_value());
 
+        BOOST_TEST(!ExpressionParser::parse("sin(x,x)").has_value());
+
 
         BOOST_TEST(!ExpressionParser::parse("(,)").has_value());
     }

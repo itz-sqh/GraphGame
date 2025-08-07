@@ -11,13 +11,11 @@ class Function {
 public:
     explicit Function(const std::string &infix);
 
-    explicit Function(const Expression& expression);
+    explicit Function(const Expression &expression);
 
-    [[nodiscard]] std::vector<sf::Vector2f> generatePoints(float minX = GameConstants::MIN_X, float maxX = GameConstants::MAX_X) const;
-
+    [[nodiscard]] std::vector<sf::Vector2f> generatePoints(float minX = GameConstants::MIN_X,
+                                                           float maxX = GameConstants::MAX_X) const;
 
 private:
-
-    Expression expression;
+    Expression m_expression;
 };
-

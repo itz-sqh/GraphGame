@@ -4,6 +4,7 @@
 #include "core/Game.h"
 #include "core/GameConstants.h"
 
+
 void test_expression(const std::string &infix, const std::function<float(float)> &func, float from, float to,
                      float step,
                      float eps = GameConstants::EPS) {
@@ -60,7 +61,7 @@ BOOST_AUTO_TEST_SUITE(ExpressionEvaluationTest)
         expr = ExpressionParser::parse("pi + 1").value();
         res = expr.evaluate(0);
         BOOST_TEST(res.has_value());
-        BOOST_CHECK_CLOSE(res.value(), Constants::PI + 1, GameConstants::EPS);
+        BOOST_CHECK_CLOSE(res.value(), ExprOps::PI + 1, GameConstants::EPS);
     }
 
     BOOST_AUTO_TEST_CASE(combined_expressions) {

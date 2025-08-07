@@ -1,38 +1,64 @@
 #include "core/Game.h"
 
 Game::Game() {
-    window = std::make_unique<sf::RenderWindow>(sf::VideoMode(
-        {GameConstants::WIDTH,GameConstants::HEIGHT}),
-        "Graph Game"
-        );
-    window->setFramerateLimit(60);
-
-    pushState(std::make_unique<InputState>());
+    m_configManager.loadConfig();
+    m_inputBox = InputBox(m_configManager);
+    recreateWindow();
 }
 
 void Game::run() {
-    while (window->isOpen() && !world.isGameOver()) {
-        states.top()->handleEvents(*this);
-        states.top()->update(*this);
-        states.top()->render(*this);
+    changeState(std::make_unique<StartMenuState>(*this));
+
+    while (m_window->isOpen()) {
+        m_states.top()->handleEvents(*this);
+        m_states.top()->update(*this);
+        m_states.top()->render(*this);
     }
 }
 
-void Game::changeState(std::unique_ptr<GameState> state) {
-    if (!states.empty()) {
-        states.pop();
+void Game::changeState(std::unique_ptr<BaseState> state) {
+    if (!m_states.empty()) {
+        m_states.pop();
     }
-    states.push(std::move(state));
+    m_states.push(std::move(state));
 }
 
-void Game::pushState(std::unique_ptr<GameState> state) {
-    states.push(std::move(state));
+void Game::pushState(std::unique_ptr<BaseState> state) {
+    m_states.push(std::move(state));
 }
 
 void Game::popState() {
-    if (!states.empty()) {
-        states.pop();
+    if (!m_states.empty()) {
+        m_states.pop();
     }
 }
 
+void Game::initWorld() {
+    cleanWorld();
+    m_world = std::make_unique<World>(m_configManager);
 
+    auto &botManager = m_world->getBotManager();
+
+    for (int i = 0; i < m_configManager.getPlayerCount(); ++i) {
+        if (m_configManager.getPlayerConfig(i).isBot)
+            botManager.addBot(m_world->getPlayers()[i],
+                              BotFactory::create(m_configManager.getPlayerConfig(i).difficulty));
+    }
+}
+
+void Game::cleanWorld() {
+    if (m_world) {
+        m_world->clear();
+    }
+}
+
+void Game::recreateWindow() {
+    sf::Vector2u resolution = m_configManager.getResolution();
+
+    m_window = std::make_unique<sf::RenderWindow>(
+        sf::VideoMode(resolution),
+        "Graph Game",
+        sf::Style::Close
+    );
+    m_window->setFramerateLimit(60);
+}

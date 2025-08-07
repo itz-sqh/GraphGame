@@ -1,20 +1,20 @@
 #pragma once
-#include<SFML/Graphics.hpp>
+#include<SFML/Graphics/Color.hpp>
 
 namespace GameConstants {
-    // x y must be in the same proportion as (width,height)
     constexpr float MAX_X = 25.f;
     constexpr float MIN_X = -25.f;
-    constexpr float MAX_Y = 18.75f;
-    constexpr float MIN_Y = -18.75f;
+    constexpr float MAX_Y = 14.0625f;
+    constexpr float MIN_Y = -14.0625f;
 
-    constexpr int WIDTH = 800;
-    constexpr int HEIGHT = 600;
+    inline unsigned int WIDTH = 960;
+    inline unsigned int HEIGHT = 540;
 
     constexpr float POINT_STEP = 0.025f;
 
     constexpr int PLAYER_COUNT = 2;
-    constexpr int OBSTACLE_COUNT = 20;
+    constexpr int UNITS_PER_PLAYER = 2;
+    constexpr int OBSTACLE_COUNT = 15;
 
     constexpr float EPS = 1e-3f;
 
@@ -29,14 +29,16 @@ namespace GameConstants {
     constexpr float DISTANCE_BETWEEN_PLAYER_AND_OBSTACLE = OBSTACLE_RADIUS + PLAYER_RADIUS;
     constexpr float DISTANCE_BETWEEN_OBSTACLES = OBSTACLE_RADIUS;
 
-    constexpr sf::Color PLAYER_COLOR[] = {sf::Color::Red, sf::Color::Blue, sf::Color::Green, sf::Color::Yellow};
+    constexpr sf::Color PLAYER_COLOR[] = {sf::Color::Red, sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, sf::Color::Magenta, sf::Color::Cyan, sf::Color::Black};
+    constexpr sf::Color BACKGROUND_COLOR = sf::Color(0x181818FF);
 
     constexpr unsigned int MAX_INPUT_SIZE = 50;
 
-    constexpr float PLAYER_WIDTH_OFFSET = 20.f;
-    constexpr float PLAYER_HEIGHT_OFFSET = 50.f;
+    constexpr float PLAYER_WIDTH_OFFSET = PLAYER_RADIUS;
+    constexpr float PLAYER_HEIGHT_OFFSET = PLAYER_RADIUS;
+
+
+    constexpr float BOT_THINK_TIME = 1.f;
+    constexpr float BOT_TYPING_DELAY = 0.2f;
+    constexpr float BOT_POST_TYPING_DELAY = 1.f;
 }
-
-
-
-
