@@ -35,8 +35,13 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/${RESOURCES_DIR}/ DESTINATION ${RESOURCES_
 if (WIN32)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "C:/SFML/bin/sfml-graphics-d-3.dll"
-            "C:/SFML/bin/sfml-window-d-3.dll"
-            "C:/SFML/bin/sfml-system-d-3.dll"
+            C:/SFML/bin/sfml-system-d-3.dll
+            $<TARGET_FILE_DIR:GraphGame>/sfml-system-d-3.dll
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            C:/SFML/bin/sfml-window-d-3.dll
+            $<TARGET_FILE_DIR:GraphGame>/sfml-window-d-3.dll
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            C:/SFML/bin/sfml-graphics-d-3.dll
+            $<TARGET_FILE_DIR:GraphGame>/sfml-graphics-d-3.dll
     )
 endif ()
