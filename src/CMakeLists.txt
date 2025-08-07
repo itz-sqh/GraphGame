@@ -33,7 +33,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/${RESOURCES_DIR}/ DESTINATION ${RESOURCES_DIR})
 if (WIN32)
-    add_custom_command(TARGET ${PROJECT_NAME}} POST_BUILD
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "C:/SFML/bin/sfml-graphics-d-3.dll"
             "C:/SFML/bin/sfml-window-d-3.dll"
