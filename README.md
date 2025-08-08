@@ -51,7 +51,7 @@ The game can also be built on Windows using CMake:
 ```bash
 git clone --depth=1 https://github.com/itz-sqh/GraphGame # Clone repository
 cd GraphGame
-cmake -S . -B build -G "MinGW Makefiles" && cmake --build build # Configure and build, that will generate .exe in build/bin
-cd build/bin
+cmake -S . -B build -G "MinGW Makefiles" && cmake --build build # Configure and build
+cd build/bin # that will generate .exe in build/bin
 GraphGame.exe # Run the game
 ```
