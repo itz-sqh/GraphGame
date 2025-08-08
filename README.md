@@ -19,7 +19,7 @@ This is simple strategy game in which you to hit enemies using mathematical func
 
 ### Linux (Debian/Ubuntu)
 
-# Install SFML 3.0.0
+# Build SFML 3.0.0
 ```bash
 git clone --depth=1 --branch 3.0.0 https://github.com/SFML/SFML.git SFML # Clone repository
 cd SFML
