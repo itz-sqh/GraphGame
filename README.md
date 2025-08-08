@@ -1,7 +1,7 @@
 # GraphGame
 
 A lightweight clone of [Graphwar](https://www.graphwar.com/) built using SFML 3.0.0 for graphics and Boost for testing. 
-This is simple strategy game in which you to hit enemies using mathematical functions - the trajectory of your shot is determined by the function you write.
+This is simple strategy game in which you must hit enemies using mathematical functions - the trajectory of your shot is determined by the function you write.
 
 ## Screenshots
 
