@@ -44,7 +44,8 @@ cd bin
 The game can also be built on Windows using CMake:
 
 1. Install dependencies:
-   - Get SFML 3.0.0 from the official [SFML website](https://www.sfml-dev.org/download/sfml/3.0.0)
+   - Get SFML 3.0.0 from the official [SFML website](https://www.sfml-dev.org/download/sfml/3.0.0), 
+      but note, the build requires SFML to be installed in `C:\SFML` with that exact name!
    - Install CMake (via winget: `winget install cmake` for example)
 
 2. Build the game:
