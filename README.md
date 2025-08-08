@@ -5,8 +5,8 @@ This is simple strategy game in which you to hit enemies using mathematical func
 
 ## Screenshots
 
-![Example 1](./Screenshots/Screenshot_from_2025-08-08_02-36-44.png)
-![Example 2](./Screenshots/Screenshot_from_2025-08-08_02-36-44.png)
+![Example 1](/Screenshots/Screenshot from 2025-08-08 02-36-44.png)
+![Example 2](/Screenshots/Screenshot from 2025-08-08 02-36-56.png)
 
 ## Requirements
 
@@ -20,15 +20,16 @@ This is simple strategy game in which you to hit enemies using mathematical func
 ### Linux (Debian/Ubuntu)
 
 # Install SFML 3.0.0
-
+```bash
 git clone --depth=1 --branch 3.0.0 https://github.com/SFML/SFML.git SFML # Clone repository
 cd SFML
 mkdir build && cd build
 cmake .. # Configure SFML build
 make -j4 # Build SFML with 4 threads
+```
 
 # Build GraphGame
-
+```bash
 git clone --depth=1 https://github.com/itz-sqh/GraphGame # Clone repository
 cd GraphGame
 mkdir build && cd build # Create a directory for cmake
@@ -36,6 +37,7 @@ cmake .. # Configure project
 make -j4 # Build the project
 cd bin
 ./GraphGame # Run the game
+```
 
 ### Windows (MinGW)
 
@@ -46,8 +48,10 @@ The game can also be built on Windows using CMake:
    - Install CMake (via winget: `winget install cmake` for example)
 
 2. Build the game:
+```bash
 git clone --depth=1 https://github.com/itz-sqh/GraphGame # Clone repository
 cd GraphGame
 cmake -S . -B build -G "MinGW Makefiles" && cmake --build build # Configure and build, that will generate .exe in build/bin
 cd build/bin
 GraphGame.exe # Run the game
+```
