@@ -5,8 +5,8 @@ This is simple strategy game in which you to hit enemies using mathematical func
 
 ## Screenshots
 
-![Example 1](/Screenshots/Screenshot from 2025-08-08 02-36-44.png)
-![Example 2](/Screenshots/Screenshot from 2025-08-08 02-36-56.png)
+![Example 1](/Screenshots/Screenshot_from_2025-08-08_02-36-44.png)
+![Example 2](/Screenshots/Screenshot_from_2025-08-08_02-36-56.png)
 
 ## Requirements
 
